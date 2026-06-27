@@ -1,0 +1,18 @@
+name: 'Setup pnpm with cache'
+description: 'Setup pnpm, configure cache, and setup Node.js'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v4.2.0
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v6.3.0
+      with:
+        node-version-file: '.nvmrc'
+        cache: "pnpm"
+  
+    - name: Install dependencies
+      shell: bash
+      run: pnpm install --frozen-lockfile --prefer-offline

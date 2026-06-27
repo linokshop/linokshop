@@ -1,0 +1,1 @@
+web: cd apps/strapi && node scripts/seed-runner.mjs start

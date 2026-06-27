@@ -1,0 +1,177 @@
+name: Auto Create Pull Requests
+
+on:
+  push:
+    branches: [dev]
+  schedule:
+    # Run daily at 9 AM UTC to check for differences
+    - cron: "0 9 * * *"
+  workflow_dispatch: # Allow manual trigger
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  auto-pr-dev-to-main:
+    if: github.ref == 'refs/heads/dev' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7.0.0
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Check if main branch exists
+        id: check-main
+        run: |
+          if git show-ref --verify --quiet refs/remotes/origin/main; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "ERROR: main branch does not exist!"
+            exit 1
+          fi
+
+      - name: Check for differences between dev and main
+        id: check-diff
+        run: |
+          git fetch origin main
+          if git diff --quiet origin/dev origin/main; then
+            echo "has-changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has-changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check if PR already exists
+        id: check-pr
+        if: steps.check-diff.outputs.has-changes == 'true'
+        run: |
+          PR_NUMBER=$(gh pr list --head dev --base main --state open --json number --jq '.[0].number // empty')
+          if [ -n "$PR_NUMBER" ]; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+            echo "number=$PR_NUMBER" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "number=" >> $GITHUB_OUTPUT
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build PR body
+        id: build-body
+        if: steps.check-diff.outputs.has-changes == 'true'
+        run: |
+          BASE=origin/main
+          HEAD_REF=origin/dev
+          RANGE="$BASE..$HEAD_REF"
+
+          CHANGED=$(git diff --name-only "$BASE" "$HEAD_REF" || true)
+
+          # Env vars this sync introduces/changes: declarations added or modified in a
+          # canonical .env example file (the documented set operators must configure).
+          # Diffing the example files directly avoids the false positives we'd get from
+          # matching every CONSTANT_CASE token in commit messages / code (API, URL, ...).
+          # `|| true` keeps the step green when nothing matched (grep exits non-zero).
+          git diff "$BASE" "$HEAD_REF" -- '*.env.example' '*.env.local.example' \
+            | grep -E '^\+[A-Za-z_][A-Za-z0-9_]*=' \
+            | sed -E 's/^\+([A-Za-z_][A-Za-z0-9_]*)=.*/- `env.\1`/' \
+            | sort -u > env_vars_list.txt || true
+
+          cat > pr_body.md << 'EOF'
+          ## Development to Production Sync
+
+          **Auto-generated PR**: Syncing latest development changes to production environment.
+          EOF
+
+          # --- Deploy notes: flag changes that need action on production deploy ---
+          { echo; echo "### Deploy Notes"; } >> pr_body.md
+          RISK=0
+          if printf '%s\n' "$CHANGED" | grep -qE '^apps/strapi/database/migrations/'; then
+            echo "- ⚠️ Strapi **DB migrations** changed — run/verify migrations on deploy" >> pr_body.md; RISK=1
+          fi
+          if printf '%s\n' "$CHANGED" | grep -qE '^apps/strapi/src/.*content-types/.*/schema\.json$'; then
+            echo "- ⚠️ Strapi **content-type schema** changed — review data migration impact" >> pr_body.md; RISK=1
+          fi
+          if printf '%s\n' "$CHANGED" | grep -qE '(^|/)(pnpm-lock\.yaml|package\.json)$'; then
+            echo "- 📦 **Dependencies** changed — clean rebuild needed" >> pr_body.md; RISK=1
+          fi
+          if printf '%s\n' "$CHANGED" | grep -qE '^\.github/workflows/'; then
+            echo "- 🔧 **CI workflows** changed" >> pr_body.md; RISK=1
+          fi
+          if [ "$RISK" = 0 ]; then
+            echo "- ✅ No migration, schema, dependency, or CI changes detected" >> pr_body.md
+          fi
+
+          # --- Environment variable changes ---
+          if [ -s env_vars_list.txt ]; then
+            { echo; echo "### Environmental Variables Changes"; } >> pr_body.md
+            cat env_vars_list.txt >> pr_body.md
+          fi
+
+          # --- Areas changed: per app/package blast radius ---
+          AREAS=$(printf '%s\n' "$CHANGED" | awk -F/ 'NF{ if ($1=="apps"||$1=="packages") print $1"/"$2; else if (NF>1) print $1; else print "(root)" }' | sort | uniq -c | sort -rn || true)
+          if [ -n "$AREAS" ]; then
+            { echo; echo "### Areas Changed"; echo; echo "| Area | Files |"; echo "|------|------:|"; } >> pr_body.md
+            printf '%s\n' "$AREAS" | awk '{printf "| %s | %s |\n", $2, $1}' >> pr_body.md
+          fi
+
+          # --- Commits grouped by conventional-commit type ---
+          { echo; echo "### Commits"; } >> pr_body.md
+          if git log "$RANGE" --no-merges --format='%s%n%b' | grep -qE '(^[a-z]+(\([^)]+\))?!:|BREAKING[ -]CHANGE)'; then
+            { echo; echo "> ⚠️ **Contains breaking changes**"; } >> pr_body.md
+          fi
+          emit_group() {
+            if [ -n "$2" ]; then
+              { echo; echo "**$1**"; printf '%s\n' "$2" | sed 's/^/- /'; } >> pr_body.md
+            fi
+          }
+          LOG=$(git log "$RANGE" --no-merges --pretty=format:'%h %s' || true)
+          emit_group "Features" "$(printf '%s\n' "$LOG" | grep -E '^[0-9a-f]+ feat(\([^)]+\))?!?:' || true)"
+          emit_group "Fixes"    "$(printf '%s\n' "$LOG" | grep -E '^[0-9a-f]+ fix(\([^)]+\))?!?:' || true)"
+          emit_group "Other"    "$(printf '%s\n' "$LOG" | grep -vE '^[0-9a-f]+ (feat|fix)(\([^)]+\))?!?:' || true)"
+
+          cat >> pr_body.md << 'EOF'
+
+          ### Pre-Merge Checklist
+          - [ ] All CI/CD checks are passing
+          - [ ] Test environment testing completed
+          - [ ] Breaking changes documented (if any)
+          - [ ] All Jira issues are linked and moved to specific column in Jira
+          - [ ] All collections required to backup are set in the repository variables
+
+          ### Merge Instructions
+          - **IMPORTANT: Use "Create a merge commit" when merging**
+          - Do NOT use squash or rebase merge
+
+          ---
+          *This PR was created automatically by GitHub Actions*
+          EOF
+
+      - name: Create Pull Request dev → main
+        if: steps.check-diff.outputs.has-changes == 'true' && steps.check-pr.outputs.exists == 'false'
+        run: |
+          gh pr create \
+            --title "Sync: dev → main" \
+            --body-file pr_body.md \
+            --head dev \
+            --base main \
+            --label "auto-generated" \
+            --assignee "${{ github.actor }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update existing Pull Request dev → main
+        if: steps.check-diff.outputs.has-changes == 'true' && steps.check-pr.outputs.exists == 'true'
+        run: |
+          gh pr edit ${{ steps.check-pr.outputs.number }} \
+            --body-file pr_body.md
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

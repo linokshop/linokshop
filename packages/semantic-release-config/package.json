@@ -1,0 +1,16 @@
+{
+  "name": "@repo/semantic-release-config",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    ".": "./index.js"
+  },
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint -c ../../eslint.config.mjs './**/*.{js,ts,jsx,tsx,cjs,mjs}'",
+    "lint:fix": "pnpm lint --fix"
+  },
+  "engines": {
+    "node": "^24.0.0"
+  }
+}

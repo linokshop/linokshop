@@ -1,0 +1,12 @@
+
+# Playwright
+node_modules/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+.env
+/axe/reports/
+/perfo/.lighthouseci/
+/visual/visual.spec.ts-snapshots/*darwin*.png
+/visual/visual.spec.ts-snapshots/*win32*.png

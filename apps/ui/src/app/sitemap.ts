@@ -1,0 +1,121 @@
+import { strapiCacheTag } from "@repo/shared-data"
+import type { MetadataRoute } from "next"
+import type { Locale } from "next-intl"
+
+import { getEnvVar } from "@/lib/env-vars"
+import { isDevelopment, isProduction } from "@/lib/general-helpers"
+import { createPublicFullPath, routing } from "@/lib/navigation"
+import { fetchAllPages } from "@/lib/strapi-api/content/server"
+
+// This should be static or dynamic based on build/runtime needs
+export const dynamic = "force-dynamic"
+
+/**
+ * Note: We could use generateSitemaps to separate the sitemaps, however that does not create the root sitemap.
+ */
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  if (!isProduction() && !isDevelopment()) {
+    // Deployment environments other than production should not generate sitemap
+    return []
+  }
+
+  if (!getEnvVar("APP_PUBLIC_URL")) {
+    return []
+  }
+
+  const promises = routing.locales.map((locale) =>
+    generateLocalizedSitemap(locale)
+  )
+  const results = await Promise.allSettled(promises)
+
+  return results
+    .filter((result) => result.status === "fulfilled")
+    .reduce((acc, curr) => {
+      acc.push(...curr.value)
+
+      return acc
+    }, [] as MetadataRoute.Sitemap)
+}
+
+/**
+ * Fetches all entries in a given collection - by default this is API::page.page
+ * and generates sitemap entries for a single locale
+ * @param locale locale to retrieve (must be defined in routing `@/lib/navigation`)
+ * @returns Sitemap entries for a single locale
+ */
+async function generateLocalizedSitemap(
+  locale: Locale
+): Promise<MetadataRoute.Sitemap> {
+  const pageEntities: Partial<
+    Record<PageEntityUID, Awaited<ReturnType<typeof fetchAllPages>>["data"]>
+  > = {}
+
+  // Fetch all records for each entity individually
+  for (const entityUid of pageEntityUids) {
+    const entityResponse = await fetchAllPages(
+      entityUid,
+      locale,
+      {
+        populate: { seo: true },
+        filters: {
+          $or: [
+            // No seo component configured -> include
+            { seo: { $null: true } },
+            // seo.metaRobots explicitly not set to noindex variants
+            {
+              seo: {
+                metaRobots: {
+                  $notIn: ["noindex", "noindex,nofollow", "noindex,follow"],
+                },
+              },
+            },
+            // seo.metaRobots is null/undefined -> include
+            { seo: { metaRobots: { $null: true } } },
+          ],
+        },
+      },
+      // Cache the page list; the tag invalidates it instantly on page changes,
+      // the TTL is a backstop.
+      { next: { revalidate: 3600, tags: [strapiCacheTag("api::page.page")] } }
+    )
+
+    if (entityResponse.data.length > 0) {
+      pageEntities[entityUid] = entityResponse.data
+    }
+  }
+
+  /**
+   * iterate over all pageable collections, and push each entry into the sitemap array,
+   * alongside mapping of changeFrequency
+   */
+  return Object.entries(pageEntities).reduce((acc, [uid, pages]) => {
+    for (const page of pages) {
+      if (page.fullPath) {
+        acc.push({
+          url: createPublicFullPath(page.fullPath, String(page.locale)),
+          lastModified: page.updatedAt ?? page.createdAt ?? undefined,
+          changeFrequency:
+            entityChangeFrequency[uid as PageEntityUID] ?? "monthly",
+        })
+      }
+    }
+
+    return acc
+  }, [] as MetadataRoute.Sitemap)
+}
+
+// Should you have multiple "pageable" collections, add them to this array
+const pageEntityUids = ["api::page.page"] as const
+
+type PageEntityUID = (typeof pageEntityUids)[number]
+
+/**
+ * Object that determines default changeFrequency attribute for crawlers.
+ * For example, pages may change once a month or year, whereas blog articles could update weekly
+ */
+const entityChangeFrequency: Record<
+  PageEntityUID,
+  MetadataRoute.Sitemap[number]["changeFrequency"]
+> = {
+  "api::page.page": "monthly",
+}

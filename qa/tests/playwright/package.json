@@ -1,0 +1,39 @@
+{
+  "name": "@repo/tests-playwright",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "license": "ISC",
+  "author": "",
+  "main": "index.js",
+  "scripts": {
+    "axe-test": "playwright test --project=axe",
+    "lhci-perfo-check": "tsx perfo/lhci.ts",
+    "lint": "eslint -c ../../../eslint.config.mjs './**/*.{js,ts,jsx,tsx,cjs,mjs}'",
+    "lint:fix": "pnpm lint --fix",
+    "playwright-e2e-tests": "playwright test e2e",
+    "playwright-interactive-mode": "playwright test e2e --ui",
+    "playwright-seo-tests": "playwright test --project=seo",
+    "playwright-visual-tests": "playwright test --project=visual-chromium --project=visual-firefox --project=visual-webkit",
+    "playwright-visual-tests-docker": "bash visual/compare-snapshots-docker.sh visual-chromium visual-firefox",
+    "playwright-visual-update-snapshots-docker": "bash visual/update-snapshots-docker.sh visual-chromium visual-firefox",
+    "playwright-visual-update-tests": "playwright test --project=visual-chromium --project=visual-firefox --project=visual-webkit --update-snapshots"
+  },
+  "dependencies": {
+    "@axe-core/playwright": "4.11.3",
+    "axe-core": "4.12.1",
+    "get-sitemap-links": "1.1.0"
+  },
+  "devDependencies": {
+    "@lhci/cli": "0.15.1",
+    "@playwright/test": "1.61.0",
+    "@types/node": "24.13.2",
+    "dotenv": "17.4.2",
+    "eslint-plugin-playwright": "2.10.4",
+    "tsx": "4.22.4",
+    "typescript": "6.0.3"
+  },
+  "engines": {
+    "node": "^24.0.0"
+  }
+}
