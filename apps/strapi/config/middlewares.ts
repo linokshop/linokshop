@@ -16,6 +16,7 @@ export default [
             "https://maps.googleapis.com",
             "*.amazonaws.com",
             "*.blob.core.windows.net",
+            "*.digitaloceanspaces.com",
           ],
           "img-src": [
             "'self'",
@@ -45,6 +46,7 @@ export default [
             "market-assets.strapi.io",
             "*.amazonaws.com",
             "*.blob.core.windows.net",
+            "*.digitaloceanspaces.com",
           ],
         },
       },
