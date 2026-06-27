@@ -149,7 +149,9 @@ async function runStrapi(args) {
     process.platform === "win32" ? "strapi.cmd" : "strapi"
   )
 
-  await runCommand(strapiBin, args)
+  // On Windows the bin is a .cmd file, which Node refuses to spawn without a
+  // shell (EINVAL) since the CVE-2024-27980 hardening. Use a shell there.
+  await runCommand(strapiBin, args, { shell: process.platform === "win32" })
 }
 
 async function confirm(question) {
@@ -175,6 +177,7 @@ function runCommand(command, args, options = {}) {
       cwd: appDir,
       env: process.env,
       stdio: "inherit",
+      shell: options.shell ?? false,
     })
 
     child.on("error", reject)
