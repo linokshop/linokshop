@@ -58,6 +58,11 @@ const nextConfig = {
         protocol: "https",
         hostname: "*",
       },
+      // DigitalOcean Spaces (origin + CDN) hosting Strapi media uploads.
+      {
+        protocol: "https",
+        hostname: "**.digitaloceanspaces.com",
+      },
       {
         protocol: "http",
         hostname: "127.0.0.1",
