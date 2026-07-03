@@ -13,11 +13,11 @@ export default getRequestConfig(async ({ requestLocale }) => {
   return {
     locale,
     messages: (
-      await (locale === "en"
-        ? // When using Turbopack, this will enable HMR for `en`
-          import("../../locales/en.json")
+      await (locale === "uk"
+        ? // When using Turbopack, this will enable HMR for the default locale
+          import("../../locales/uk.json")
         : import(`../../locales/${locale}.json`))
     ).default,
-    timeZone: "Europe/Prague",
+    timeZone: "Europe/Kyiv",
   }
 })
