@@ -77,6 +77,8 @@ ssl
 nbproject
 public/uploads/*
 !public/uploads/.gitkeep
+# Media backups Strapi auto-creates on data/media import (seed import)
+public/uploads_backup_*/
 
 ############################
 # Node.js
