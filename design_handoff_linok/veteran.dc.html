@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Golos+Text:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin:0; }
+  a { text-decoration:none; color:inherit; }
+  .phd { display:flex; align-items:center; justify-content:center; font-family:'Golos Text',monospace; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:#7c9684; background-image:repeating-linear-gradient(135deg,#1b3826 0 10px,#21422d 10px 20px); }
+  @media (max-width:1024px){
+    .vet-steps { grid-template-columns:1fr !important; }
+    .vet-cats { grid-template-columns:repeat(2,1fr) !important; }
+    .vet-sec { padding-left:24px !important; padding-right:24px !important; }
+  }
+  @media (max-width:900px){
+    .vet-hero { flex-direction:column !important; min-height:0 !important; }
+    .vet-hero-txt { padding:56px 28px !important; }
+    .vet-hero-img { width:100% !important; min-height:340px !important; border-left:none !important; border-top:4px solid #ef8a1f !important; }
+  }
+  @media (max-width:600px){
+    .vet-h1 { font-size:56px !important; }
+    .vet-sec-title { font-size:30px !important; }
+    .vet-thanks { font-size:30px !important; }
+    .vet-thanks2 { font-size:19px !important; }
+  }
+</style>
+</helmet>
+<div style="background:#0c2740; font-family:'Golos Text',sans-serif;">
+  <dc-import name="Header" active="veteran" hint-size="100%,160px"></dc-import>
+
+  <!-- hero -->
+  <div class="vet-hero" style="position:relative; min-height:620px; display:flex; overflow:hidden;">
+    <div class="vet-hero-txt" style="flex:1.15; padding:72px 56px; display:flex; flex-direction:column; justify-content:center; color:#fff;">
+      <div style="display:inline-flex; align-self:flex-start; align-items:center; gap:9px; background:#ef8a1f; color:#0c2740; font-family:'Oswald',sans-serif; font-weight:600; font-size:13px; letter-spacing:.07em; text-transform:uppercase; padding:9px 17px; border-radius:5px; margin-bottom:26px;">Державна програма · застосунок «Дія»</div>
+      <h1 class="vet-h1" style="font-family:'Oswald',sans-serif; font-weight:700; font-size:78px; line-height:.93; margin:0 0 22px; text-transform:uppercase; letter-spacing:.01em;">Ветеранський<br><span style="color:#ef8a1f;">спорт</span></h1>
+      <p style="font-size:19px; line-height:1.65; color:#c2d2df; margin:0 0 32px; max-width:560px;">У магазині «ЛінОк» діє державна програма для ветеранів та ветеранок. Оплачуйте рибальське й туристичне спорядження державною підтримкою — швидко та зручно через застосунок «Дія».</p>
+      <div style="display:flex; gap:14px; align-items:center;">
+        <a href="catalog.dc.html" style="display:inline-flex; align-items:center; padding:17px 36px; background:#ef8a1f; color:#0c2740; font-family:'Oswald',sans-serif; font-size:16px; font-weight:600; text-transform:uppercase; letter-spacing:.05em; border-radius:5px;">Обрати спорядження →</a>
+        <img src="assets/veteran-badge.jpg" alt="Ветеранський спорт" style="width:72px; height:72px; object-fit:contain; border-radius:12px; background:#fff;">
+      </div>
+    </div>
+    <div class="vet-hero-img" style="position:relative; width:46%; flex:none; border-left:4px solid #ef8a1f; overflow:hidden;">
+      <img src="assets/vet-seated.jpg" alt="Ветеран на риболовлі" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center 40%;">
+      <div style="position:absolute; inset:0; background:linear-gradient(90deg, rgba(12,39,64,.6) 0%, rgba(12,39,64,.05) 35%, rgba(12,39,64,0) 100%);"></div>
+    </div>
+  </div>
+
+  <!-- what is it -->
+  <div style="background:#15301f;">
+    <div style="max-width:1100px; margin:0 auto; padding:72px 40px; text-align:center;">
+      <h2 style="font-family:'Oswald',sans-serif; font-weight:600; font-size:38px; color:#f1efe2; text-transform:uppercase; letter-spacing:.02em; margin:0 0 18px;">Що таке «Ветеранський спорт»</h2>
+      <p style="font-size:18px; line-height:1.8; color:#a9b6aa; margin:0 auto; max-width:780px;">Це державна програма підтримки ветеранів та ветеранок, спрямована на залучення до спорту, активного відпочинку й відновлення. Учасники отримують кошти, які можна витратити на спортивні та туристичні товари — зокрема в нашому магазині «ЛінОк».</p>
+    </div>
+  </div>
+
+  <!-- how to use -->
+  <div style="background:#0c2740; color:#fff;">
+    <div class="vet-sec" style="max-width:1320px; margin:0 auto; padding:72px 40px;">
+      <h2 class="vet-sec-title" style="font-family:'Oswald',sans-serif; font-weight:600; font-size:38px; text-transform:uppercase; letter-spacing:.02em; margin:0 0 40px; text-align:center;">Як скористатися — 3 кроки</h2>
+      <div class="vet-steps" style="display:grid; grid-template-columns:repeat(3,1fr); gap:24px;">
+        <div style="background:#103450; border:1px solid #1d4a6b; border-radius:12px; padding:34px;">
+          <div style="font-family:'Oswald',sans-serif; font-size:54px; font-weight:700; color:#ef8a1f; line-height:1; margin-bottom:16px;">01</div>
+          <div style="font-family:'Oswald',sans-serif; font-size:21px; text-transform:uppercase; letter-spacing:.02em; margin-bottom:10px;">Подайте заявку в «Дія»</div>
+          <p style="font-size:15px; line-height:1.65; color:#9fb2c2; margin:0;">Відкрийте застосунок «Дія», знайдіть програму «Ветеранський спорт» і подайте заявку на участь.</p>
+        </div>
+        <div style="background:#103450; border:1px solid #1d4a6b; border-radius:12px; padding:34px;">
+          <div style="font-family:'Oswald',sans-serif; font-size:54px; font-weight:700; color:#ef8a1f; line-height:1; margin-bottom:16px;">02</div>
+          <div style="font-family:'Oswald',sans-serif; font-size:21px; text-transform:uppercase; letter-spacing:.02em; margin-bottom:10px;">Оберіть товари в «ЛінОк»</div>
+          <p style="font-size:15px; line-height:1.65; color:#9fb2c2; margin:0;">Складіть кошик зі снастей, екіпіровки чи туристичного спорядження — онлайн або в магазині.</p>
+        </div>
+        <div style="background:#103450; border:1px solid #1d4a6b; border-radius:12px; padding:34px;">
+          <div style="font-family:'Oswald',sans-serif; font-size:54px; font-weight:700; color:#ef8a1f; line-height:1; margin-bottom:16px;">03</div>
+          <div style="font-family:'Oswald',sans-serif; font-size:21px; text-transform:uppercase; letter-spacing:.02em; margin-bottom:10px;">Оплатіть підтримкою</div>
+          <p style="font-size:15px; line-height:1.65; color:#9fb2c2; margin:0;">На оформленні оберіть оплату за програмою — кошти спишуться з вашого рахунку в «Дія».</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- eligible categories -->
+  <div style="background:#15301f;">
+    <div class="vet-sec" style="max-width:1320px; margin:0 auto; padding:72px 40px;">
+      <h2 class="vet-sec-title" style="font-family:'Oswald',sans-serif; font-weight:600; font-size:38px; color:#f1efe2; text-transform:uppercase; letter-spacing:.02em; margin:0 0 12px; text-align:center;">Що можна придбати</h2>
+      <p style="font-size:16px; color:#9fb0a2; text-align:center; margin:0 0 40px;">Спорядження для активного відпочинку та риболовлі</p>
+      <div class="vet-cats" style="display:grid; grid-template-columns:repeat(4,1fr); gap:20px;">
+        <a href="catalog.dc.html" style="background:#102619; border:1px solid #25422f; border-radius:12px; padding:30px; text-align:center;"><div class="phd" style="width:60px; height:60px; border-radius:12px; margin:0 auto 16px;">і</div><div style="font-family:'Oswald',sans-serif; font-size:18px; text-transform:uppercase; letter-spacing:.03em; color:#f1efe2;">Рибальські снасті</div></a>
+        <a href="catalog.dc.html" style="background:#102619; border:1px solid #25422f; border-radius:12px; padding:30px; text-align:center;"><div class="phd" style="width:60px; height:60px; border-radius:12px; margin:0 auto 16px;">і</div><div style="font-family:'Oswald',sans-serif; font-size:18px; text-transform:uppercase; letter-spacing:.03em; color:#f1efe2;">Туристичне спорядження</div></a>
+        <a href="catalog.dc.html" style="background:#102619; border:1px solid #25422f; border-radius:12px; padding:30px; text-align:center;"><div class="phd" style="width:60px; height:60px; border-radius:12px; margin:0 auto 16px;">і</div><div style="font-family:'Oswald',sans-serif; font-size:18px; text-transform:uppercase; letter-spacing:.03em; color:#f1efe2;">Активний відпочинок</div></a>
+        <a href="catalog.dc.html" style="background:#102619; border:1px solid #25422f; border-radius:12px; padding:30px; text-align:center;"><div class="phd" style="width:60px; height:60px; border-radius:12px; margin:0 auto 16px;">і</div><div style="font-family:'Oswald',sans-serif; font-size:18px; text-transform:uppercase; letter-spacing:.03em; color:#f1efe2;">Кемпінг та природа</div></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- thank you band -->
+  <div style="background:#ef8a1f; color:#0c2740;">
+    <div style="max-width:1100px; margin:0 auto; padding:60px 40px; text-align:center;">
+      <div class="vet-thanks" style="font-family:'Oswald',sans-serif; font-size:40px; font-weight:700; text-transform:uppercase; letter-spacing:.02em; line-height:1.05;">Дякуємо кожному ветерану та ветеранці</div>
+      <div class="vet-thanks2" style="font-family:'Oswald',sans-serif; font-size:24px; font-weight:500; text-transform:uppercase; letter-spacing:.04em; margin-top:10px;">за силу, мужність і захист України</div>
+      <div style="font-family:'Oswald',sans-serif; font-size:18px; margin-top:18px; letter-spacing:.06em; text-transform:uppercase;">Разом до перемоги!</div>
+    </div>
+  </div>
+
+  <dc-import name="Footer" hint-size="100%,420px"></dc-import>
+</div>
+</x-dc>
+</body>
+</html>

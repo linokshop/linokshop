@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Golos+Text:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin:0; }
+  a { text-decoration:none; color:inherit; }
+  .phd { display:flex; align-items:center; justify-content:center; font-family:'Golos Text',monospace; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:#7c9684; background-image:repeating-linear-gradient(135deg,#1b3826 0 10px,#21422d 10px 20px); }
+  @media (max-width:1024px){
+    .pm-wrap { padding-left:24px !important; padding-right:24px !important; }
+    .pm-cards { grid-template-columns:1fr 1fr !important; }
+  }
+  @media (max-width:700px){
+    .pm-cards { grid-template-columns:1fr !important; }
+    .pm-news-item { flex-direction:column !important; }
+    .pm-news-img { width:100% !important; height:180px !important; }
+    .pm-news-txt { padding:22px !important; }
+  }
+  @media (max-width:600px){
+    .pm-h1 { font-size:38px !important; }
+    .pm-feat-title { font-size:32px !important; }
+    .pm-feat-inner { padding:32px 26px !important; }
+  }
+</style>
+</helmet>
+<div style="background:#15301f; font-family:'Golos Text',sans-serif;">
+  <dc-import name="Header" active="promos" hint-size="100%,160px"></dc-import>
+
+  <div class="pm-wrap" style="max-width:1320px; margin:0 auto; padding:40px 40px 24px;">
+    <div style="font-size:13px; color:#7e9a85; font-family:'Oswald',sans-serif; text-transform:uppercase; letter-spacing:.06em; margin-bottom:14px;"><a href="index.dc.html" style="color:#7e9a85;">Головна</a> · Акції та новини</div>
+    <h1 class="pm-h1" style="font-family:'Oswald',sans-serif; font-weight:700; font-size:52px; color:#f1efe2; text-transform:uppercase; letter-spacing:.01em; margin:0;">Акції та новини</h1>
+  </div>
+
+  <!-- featured promo -->
+  <div class="pm-wrap" style="max-width:1320px; margin:0 auto; padding:8px 40px 0;">
+    <div style="position:relative; border-radius:14px; overflow:hidden; min-height:320px; display:flex; align-items:center;">
+      <div class="phd" style="position:absolute; inset:0;">фото — сезонна акція</div>
+      <div style="position:absolute; inset:0; background:linear-gradient(90deg, rgba(191,122,51,.95) 0%, rgba(191,122,51,.7) 50%, rgba(191,122,51,.2) 100%);"></div>
+      <div class="pm-feat-inner" style="position:relative; padding:48px 56px; color:#fff;">
+        <div style="font-family:'Oswald',sans-serif; font-size:13px; letter-spacing:.14em; text-transform:uppercase; margin-bottom:14px; color:#fbe9d2;">Головна акція місяця</div>
+        <div class="pm-feat-title" style="font-family:'Oswald',sans-serif; font-size:46px; font-weight:700; text-transform:uppercase; letter-spacing:.01em; line-height:1; margin-bottom:14px;">Сезон відкрито —<br>знижки до 40%</div>
+        <p style="font-size:16px; color:#fff3e6; margin:0 0 24px; max-width:440px;">На приманки, прикормку та аксесуари. Встигніть до кінця місяця.</p>
+        <a href="catalog.dc.html" style="display:inline-flex; align-items:center; padding:15px 32px; background:#15301f; color:#f1efe2; font-family:'Oswald',sans-serif; font-size:15px; font-weight:500; text-transform:uppercase; letter-spacing:.05em; border-radius:5px;">Дивитись товари →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- promo cards -->
+  <div class="pm-wrap" style="max-width:1320px; margin:0 auto; padding:40px 40px 16px;">
+    <div class="pm-cards" style="display:grid; grid-template-columns:repeat(3,1fr); gap:22px;">
+      <div style="background:#102619; border:1px solid #25422f; border-radius:12px; overflow:hidden;">
+        <div class="phd" style="height:170px; position:relative;"><span style="position:absolute; top:12px; left:12px; background:#7a2e2e; color:#fff; font-size:12px; font-weight:700; padding:5px 11px; border-radius:4px; font-family:'Oswald',sans-serif;">−25%</span>фото</div>
+        <div style="padding:22px;"><div style="font-size:19px; font-weight:600; color:#f1efe2; margin-bottom:8px;">Вудилища зі знижкою</div><p style="font-size:14.5px; line-height:1.6; color:#9fb0a2; margin:0 0 14px;">Фідер і спінінг популярних серій — мінус чверть ціни.</p><a href="catalog.dc.html" style="font-family:'Oswald',sans-serif; font-size:14px; text-transform:uppercase; letter-spacing:.04em; color:#cdbf86;">До акції →</a></div>
+      </div>
+      <div style="background:#102619; border:1px solid #25422f; border-radius:12px; overflow:hidden;">
+        <div class="phd" style="height:170px; position:relative;"><span style="position:absolute; top:12px; left:12px; background:#2f6b46; color:#fff; font-size:12px; font-weight:700; padding:5px 11px; border-radius:4px; font-family:'Oswald',sans-serif;">1+1</span>фото</div>
+        <div style="padding:22px;"><div style="font-size:19px; font-weight:600; color:#f1efe2; margin-bottom:8px;">Прикормка 1+1</div><p style="font-size:14.5px; line-height:1.6; color:#9fb0a2; margin:0 0 14px;">Купуй дві упаковки прикормки — третя у подарунок.</p><a href="catalog.dc.html" style="font-family:'Oswald',sans-serif; font-size:14px; text-transform:uppercase; letter-spacing:.04em; color:#cdbf86;">До акції →</a></div>
+      </div>
+      <a href="veteran.dc.html" style="background:#103450; border:1px solid #1d4a6b; border-radius:12px; overflow:hidden; display:block;">
+        <div style="position:relative; height:170px;"><img src="assets/vet-seated.jpg" alt="" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center 24%;"><span style="position:absolute; top:12px; left:12px; background:#ef8a1f; color:#0c2740; font-size:12px; font-weight:700; padding:5px 11px; border-radius:4px; font-family:'Oswald',sans-serif;">ДІЯ</span></div>
+        <div style="padding:22px;"><div style="font-size:19px; font-weight:600; color:#fff; margin-bottom:8px;">Ветеранський спорт</div><p style="font-size:14.5px; line-height:1.6; color:#9fb2c2; margin:0 0 14px;">Державна підтримка ветеранів на спорядження через «Дія».</p><span style="font-family:'Oswald',sans-serif; font-size:14px; text-transform:uppercase; letter-spacing:.04em; color:#ef8a1f;">Дізнатися →</span></div>
+      </a>
+    </div>
+  </div>
+
+  <!-- news -->
+  <div class="pm-wrap" style="max-width:1320px; margin:0 auto; padding:48px 40px 70px;">
+    <h2 style="font-family:'Oswald',sans-serif; font-weight:600; font-size:32px; color:#f1efe2; text-transform:uppercase; letter-spacing:.02em; margin:0 0 26px;">Новини магазину</h2>
+    <div style="display:flex; flex-direction:column; gap:18px;">
+      <div class="pm-news-item" style="display:flex; gap:24px; background:#102619; border:1px solid #25422f; border-radius:12px; overflow:hidden;">
+        <div class="phd pm-news-img" style="width:240px; flex:none;">фото</div>
+        <div class="pm-news-txt" style="padding:24px 24px 24px 0;"><div style="font-family:'Oswald',sans-serif; font-size:13px; color:#7e9a85; text-transform:uppercase; letter-spacing:.05em; margin-bottom:8px;">12 червня 2026</div><div style="font-size:20px; font-weight:600; color:#f1efe2; margin-bottom:8px;">Нове надходження спінінгів сезону 2026</div><p style="font-size:15px; line-height:1.65; color:#9fb0a2; margin:0;">Поповнили склад новими моделями спінінгів і котушок під весняно-літню ловлю. Заходьте обирати.</p></div>
+      </div>
+      <div class="pm-news-item" style="display:flex; gap:24px; background:#102619; border:1px solid #25422f; border-radius:12px; overflow:hidden;">
+        <div class="phd pm-news-img" style="width:240px; flex:none;">фото</div>
+        <div class="pm-news-txt" style="padding:24px 24px 24px 0;"><div style="font-family:'Oswald',sans-serif; font-size:13px; color:#7e9a85; text-transform:uppercase; letter-spacing:.05em; margin-bottom:8px;">28 травня 2026</div><div style="font-size:20px; font-weight:600; color:#f1efe2; margin-bottom:8px;">Тепер працюємо за програмою «Ветеранський спорт»</div><p style="font-size:15px; line-height:1.65; color:#9fb0a2; margin:0;">Ветерани та ветеранки можуть оплатити спорядження державною підтримкою через «Дія». Деталі — на сторінці програми.</p></div>
+      </div>
+      <div class="pm-news-item" style="display:flex; gap:24px; background:#102619; border:1px solid #25422f; border-radius:12px; overflow:hidden;">
+        <div class="phd pm-news-img" style="width:240px; flex:none;">фото</div>
+        <div class="pm-news-txt" style="padding:24px 24px 24px 0;"><div style="font-family:'Oswald',sans-serif; font-size:13px; color:#7e9a85; text-transform:uppercase; letter-spacing:.05em; margin-bottom:8px;">10 травня 2026</div><div style="font-size:20px; font-weight:600; color:#f1efe2; margin-bottom:8px;">Поради: як обрати фідерне вудилище</div><p style="font-size:15px; line-height:1.65; color:#9fb0a2; margin:0;">Розбираємо тести, довжину й матеріал бланка — щоб вибір був точним під ваш водойм.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <dc-import name="Footer" hint-size="100%,420px"></dc-import>
+</div>
+</x-dc>
+</body>
+</html>

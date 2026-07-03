@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Golos+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  a { text-decoration: none; }
+  @media (max-width:900px){
+    .ft-cols { grid-template-columns:1fr 1fr !important; gap:32px !important; padding:40px 24px 32px !important; }
+    .ft-ribbon { padding:14px 20px !important; gap:10px !important; }
+    .ft-ribbon-txt { font-size:13px !important; }
+    .ft-bottom { flex-direction:column !important; gap:8px !important; text-align:center !important; padding:18px 24px !important; }
+  }
+  @media (max-width:600px){
+    .ft-cols { grid-template-columns:1fr !important; gap:28px !important; }
+    .ft-ribbon-txt { font-size:12px !important; }
+  }
+</style>
+</helmet>
+<div style="font-family:'Golos Text',sans-serif; background:#102619; color:#a9ad96;">
+  <!-- veteran ribbon -->
+  <a href="veteran.dc.html" class="ft-ribbon" style="display:flex; align-items:center; justify-content:center; gap:14px; background:#103450; color:#fff; padding:16px 40px; border-bottom:3px solid #ef8a1f; text-align:center;">
+    <img src="assets/vet-seated.jpg" alt="" style="width:42px; height:42px; border-radius:8px; object-fit:cover; object-position:center 22%; flex:none;">
+    <span class="ft-ribbon-txt" style="font-family:'Oswald',sans-serif; font-size:15px; text-transform:uppercase; letter-spacing:.04em;">Ми підтримуємо програму «Ветеранський спорт»</span>
+    <span class="ft-ribbon-txt" style="font-family:'Oswald',sans-serif; font-size:14px; color:#ef8a1f; text-transform:uppercase; letter-spacing:.04em; font-weight:600;">Детальніше →</span>
+  </a>
+
+  <div class="ft-cols" style="display:grid; grid-template-columns:1.4fr 1fr 1fr 1.2fr; gap:40px; padding:54px 40px 40px;">
+    <div>
+      <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
+        <img src="assets/logo.jpg" alt="ЛінОк" style="width:46px; height:46px; border-radius:50%; object-fit:cover;">
+        <span style="font-family:'Oswald',sans-serif; font-weight:600; font-size:23px; color:#f1efe2;">ЛінОк</span>
+      </div>
+      <p style="font-size:14.5px; line-height:1.7; color:#8fa092; margin:0 0 18px; max-width:300px;">Рибальський магазин у Житомирі. Снасті, приманки та екіпіровка для риболовлі й активного відпочинку.</p>
+      <div style="font-family:'Oswald',sans-serif; font-size:13px; letter-spacing:.06em; text-transform:uppercase; color:#cdbf86;">Там, де клює — там я!</div>
+    </div>
+
+    <div>
+      <div style="font-family:'Oswald',sans-serif; font-size:13px; letter-spacing:.1em; text-transform:uppercase; color:#e7e5d2; margin-bottom:16px;">Каталог</div>
+      <div style="display:flex; flex-direction:column; gap:11px; font-size:14.5px;">
+        <a href="catalog.dc.html" style="color:#a9ad96;">Вудилища</a>
+        <a href="catalog.dc.html" style="color:#a9ad96;">Котушки</a>
+        <a href="catalog.dc.html" style="color:#a9ad96;">Приманки</a>
+        <a href="catalog.dc.html" style="color:#a9ad96;">Екіпіровка</a>
+        <a href="catalog.dc.html" style="color:#a9ad96;">Прикормка</a>
+      </div>
+    </div>
+
+    <div>
+      <div style="font-family:'Oswald',sans-serif; font-size:13px; letter-spacing:.1em; text-transform:uppercase; color:#e7e5d2; margin-bottom:16px;">Магазин</div>
+      <div style="display:flex; flex-direction:column; gap:11px; font-size:14.5px;">
+        <a href="about.dc.html" style="color:#a9ad96;">Про магазин</a>
+        <a href="veteran.dc.html" style="color:#a9ad96;">Ветеранський спорт</a>
+        <a href="promos.dc.html" style="color:#a9ad96;">Акції та новини</a>
+        <a href="delivery.dc.html" style="color:#a9ad96;">Доставка і оплата</a>
+        <a href="contacts.dc.html" style="color:#a9ad96;">Контакти</a>
+      </div>
+    </div>
+
+    <div>
+      <div style="font-family:'Oswald',sans-serif; font-size:13px; letter-spacing:.1em; text-transform:uppercase; color:#e7e5d2; margin-bottom:16px;">Контакти</div>
+      <div style="display:flex; flex-direction:column; gap:12px; font-size:14.5px; color:#c2c8bb;">
+        <span>м. Житомир,<br>вул. Народицька, 15</span>
+        <a href="tel:+380970000000" style="color:#f1efe2; font-family:'Oswald',sans-serif; font-size:18px; letter-spacing:.02em;">+38 (097) 000-00-00</a>
+        <span style="color:#8fa092;">Пн–Нд: 9:00 – 19:00</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="ft-bottom" style="display:flex; align-items:center; justify-content:space-between; padding:20px 40px; border-top:1px solid #25422f; font-size:13px; color:#7e8a7e;">
+    <span>© 2026 ЛінОк · Рибальський магазин</span>
+    <span>Нова Пошта по Україні · Оплата карткою та при отриманні</span>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:420}}"></script>
+</body>
+</html>

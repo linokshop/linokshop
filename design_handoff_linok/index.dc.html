@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bitter:wght@600;700;800&family=Oswald:wght@400;500;600;700&family=Golos+Text:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin:0; }
+  a { text-decoration:none; color:inherit; }
+  .phd { display:flex; align-items:center; justify-content:center; font-family:'Golos Text',monospace; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:#7c9684; background-image:repeating-linear-gradient(135deg,#1b3826 0 10px,#21422d 10px 20px); }
+  @media (max-width:1024px){
+    .idx-cat-grid { grid-template-columns:repeat(3,1fr) !important; }
+    .idx-prod-grid { grid-template-columns:repeat(2,1fr) !important; }
+    .idx-sec { padding-left:24px !important; padding-right:24px !important; }
+  }
+  @media (max-width:900px){
+    .idx-hero { flex-direction:column !important; height:auto !important; }
+    .idx-hero-l { min-height:400px !important; padding:56px 28px !important; }
+    .idx-hero-r { width:100% !important; min-height:460px !important; border-left:none !important; border-top:4px solid #ef8a1f !important; }
+    .idx-vet { grid-template-columns:1fr !important; }
+    .idx-vet-img { min-height:300px !important; }
+    .idx-vet-txt { padding:44px 28px !important; }
+    .idx-promo { flex-direction:column !important; gap:20px !important; text-align:center !important; padding:40px 28px !important; }
+  }
+  @media (max-width:600px){
+    .idx-cat-grid { grid-template-columns:repeat(2,1fr) !important; }
+    .idx-prod-grid { grid-template-columns:repeat(2,1fr) !important; gap:14px !important; }
+    .idx-h1 { font-size:44px !important; }
+    .sec-title { font-size:30px !important; }
+    .idx-prod-title { font-size:34px !important; }
+    .idx-vet-feats { grid-template-columns:1fr !important; }
+    .idx-promo-title { font-size:24px !important; }
+  }
+</style>
+</helmet>
+<div style="background:#15301f; font-family:'Golos Text',sans-serif;">
+  <dc-import name="Header" active="index" hint-size="100%,160px"></dc-import>
+
+  <!-- hero -->
+  <div class="idx-hero" style="position:relative; height:560px; overflow:hidden; display:flex;">
+    <div class="idx-hero-l" style="position:relative; flex:1; overflow:hidden; display:flex; flex-direction:column; justify-content:center; padding:0 56px;">
+      <div class="phd" style="position:absolute; inset:0;">фото — рибалка на світанку, темна вода</div>
+      <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(16,38,25,.45) 0%, rgba(16,38,25,.78) 100%);"></div>
+      <div style="position:relative; max-width:560px;">
+        <span style="display:block; font-family:'Oswald',sans-serif; font-size:14px; letter-spacing:.3em; text-transform:uppercase; color:#cdbf86; margin-bottom:18px;">Спорядження для серйозної ловлі</span>
+        <h1 class="idx-h1" style="font-family:'Oswald',sans-serif; font-weight:700; font-size:62px; line-height:.96; margin:0 0 18px; color:#f1efe2; text-transform:uppercase; letter-spacing:.01em;">Там, де клює —<br><span style="color:#bf7a33;">там я!</span></h1>
+        <p style="font-size:17px; line-height:1.6; color:#d6d7c4; margin:0 0 30px; max-width:440px;">Перевірені снасті, спортивні приманки й надійна екіпіровка. Усе, що тримає рибу на гачку.</p>
+        <div style="display:flex; gap:14px;">
+          <a href="catalog.dc.html" style="display:inline-flex; align-items:center; padding:16px 32px; background:#bf7a33; color:#fff; font-family:'Oswald',sans-serif; font-size:16px; font-weight:500; text-transform:uppercase; letter-spacing:.06em; border-radius:4px;">Перейти в каталог</a>
+          <a href="promos.dc.html" style="display:inline-flex; align-items:center; padding:16px 32px; border:1.5px solid rgba(241,239,226,.5); color:#f1efe2; font-family:'Oswald',sans-serif; font-size:16px; font-weight:500; text-transform:uppercase; letter-spacing:.06em; border-radius:4px;">Акції тижня</a>
+        </div>
+      </div>
+    </div>
+    <a href="veteran.dc.html" class="idx-hero-r" style="position:relative; width:534px; flex:none; border-left:4px solid #ef8a1f; overflow:hidden; color:#fff; display:block; background:#0c2740;">
+      <img src="assets/vet-hero-c.jpg" alt="Ветеран ловить рибу" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center;">
+      <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(12,39,64,.55) 0%, rgba(12,39,64,.12) 16%, rgba(12,39,64,0) 38%, rgba(12,39,64,.5) 68%, rgba(12,39,64,.94) 100%);"></div>
+      <div style="position:absolute; top:26px; left:34px; display:inline-flex; align-items:center; gap:8px; background:#ef8a1f; color:#0c2740; font-family:'Oswald',sans-serif; font-weight:600; font-size:12.5px; letter-spacing:.06em; text-transform:uppercase; padding:8px 15px; border-radius:5px;">Ексклюзивно · застосунок «Дія»</div>
+      <div style="position:absolute; left:34px; right:34px; bottom:30px;">
+        <h2 style="font-family:'Oswald',sans-serif; font-weight:700; font-size:42px; line-height:.94; margin:0 0 12px; text-transform:uppercase; letter-spacing:.01em; text-shadow:0 2px 16px rgba(8,26,42,.8);">Ветеранський <span style="color:#ef8a1f;">спорт</span></h2>
+        <p style="font-size:15px; line-height:1.5; color:#e9eef3; margin:0 0 18px; max-width:430px; text-shadow:0 1px 12px rgba(8,26,42,.9);">Державна програма для ветеранів та ветеранок — оплачуйте спорядження для риболовлі через «Дія».</p>
+        <span style="display:inline-flex; align-items:center; padding:14px 30px; background:#ef8a1f; color:#0c2740; font-family:'Oswald',sans-serif; font-size:15px; font-weight:600; text-transform:uppercase; letter-spacing:.05em; border-radius:5px;">Як скористатися →</span>
+      </div>
+    </a>
+  </div>
+
+  <!-- categories -->
+  <div class="idx-sec" style="max-width:1320px; margin:0 auto; padding:32px 40px 8px;">
+    <div style="display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:26px;">
+      <h2 class="sec-title" style="font-family:'Oswald',sans-serif; font-weight:600; font-size:40px; color:#f1efe2; text-transform:uppercase; letter-spacing:.02em; margin:0;">Категорії товарів</h2>
+      <a href="catalog.dc.html" style="font-family:'Oswald',sans-serif; font-size:15px; text-transform:uppercase; letter-spacing:.04em; color:#cdbf86;">Увесь каталог →</a>
+    </div>
+    <div class="idx-cat-grid" style="display:grid; grid-template-columns:repeat(6,1fr); gap:18px;">
+      <a href="catalog.dc.html" style="display:block; background:#102619; border:1px solid #25422f; border-radius:12px; overflow:hidden;">
+        <div class="phd" style="height:104px;">фото</div>
+        <div style="padding:14px 14px; text-align:center;"><div style="font-family:'Oswald',sans-serif; font-size:16px; text-transform:uppercase; letter-spacing:.04em; color:#f1efe2;">Вудилища</div><div style="font-size:12.5px; color:#7e9a85; margin-top:4px;">142 товари</div></div>
+      </a>
+      <a href="catalog.dc.html" style="display:block; background:#102619; border:1px solid #25422f; border-radius:12px; overflow:hidden;">
+        <div class="phd" style="height:104px;">фото</div>
+        <div style="padding:14px 14px; text-align:center;"><div style="font-family:'Oswald',sans-serif; font-size:16px; text-transform:uppercase; letter-spacing:.04em; color:#f1efe2;">Котушки</div><div style="font-size:12.5px; color:#7e9a85; margin-top:4px;">98 товарів</div></div>
+      </a>
+      <a href="catalog.dc.html" style="display:block; background:#102619; border:1px solid #25422f; border-radius:12px; overflow:hidden;">
+        <div class="phd" style="height:104px;">фото</div>
+        <div style="padding:14px 14px; text-align:center;"><div style="font-family:'Oswald',sans-serif; font-size:16px; text-transform:uppercase; letter-spacing:.04em; color:#f1efe2;">Приманки</div><div style="font-size:12.5px; color:#7e9a85; margin-top:4px;">310 товарів</div></div>
+      </a>
+      <a href="catalog.dc.html" style="display:block; background:#102619; border:1px solid #25422f; border-radius:12px; overflow:hidden;">
+        <div class="phd" style="height:104px;">фото</div>
+        <div style="padding:14px 14px; text-align:center;"><div style="font-family:'Oswald',sans-serif; font-size:16px; text-transform:uppercase; letter-spacing:.04em; color:#f1efe2;">Екіпіровка</div><div style="font-size:12.5px; color:#7e9a85; margin-top:4px;">76 товарів</div></div>
+      </a>
+      <a href="catalog.dc.html" style="display:block; background:#102619; border:1px solid #25422f; border-radius:12px; overflow:hidden;">
+        <div class="phd" style="height:104px;">фото</div>
+        <div style="padding:14px 14px; text-align:center;"><div style="font-family:'Oswald',sans-serif; font-size:16px; text-transform:uppercase; letter-spacing:.04em; color:#f1efe2;">Човни</div><div style="font-size:12.5px; color:#7e9a85; margin-top:4px;">24 товари</div></div>
+      </a>
+      <a href="catalog.dc.html" style="display:block; background:#102619; border:1px solid #25422f; border-radius:12px; overflow:hidden;">
+        <div class="phd" style="height:104px;">фото</div>
+        <div style="padding:14px 14px; text-align:center;"><div style="font-family:'Oswald',sans-serif; font-size:16px; text-transform:uppercase; letter-spacing:.04em; color:#f1efe2;">Прикормка</div><div style="font-size:12.5px; color:#7e9a85; margin-top:4px;">187 товарів</div></div>
+      </a>
+    </div>
+  </div>
+
+  <!-- featured products -->
+  <div class="idx-sec" style="max-width:1320px; margin:0 auto; padding:64px 40px;">
+    <div style="display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:30px;">
+      <h2 class="sec-title idx-prod-title" style="font-family:'Oswald',sans-serif; font-weight:600; font-size:40px; color:#f1efe2; text-transform:uppercase; letter-spacing:.02em; margin:0;">Топ спорядження</h2>
+      <a href="catalog.dc.html" style="font-family:'Oswald',sans-serif; font-size:15px; text-transform:uppercase; letter-spacing:.04em; color:#cdbf86;">Усі товари →</a>
+    </div>
+    <div class="idx-prod-grid" style="display:grid; grid-template-columns:repeat(4,1fr); gap:22px;">
+      <a href="product.dc.html" style="background:#102619; border:1px solid #25422f; border-radius:6px; overflow:hidden; display:block;">
+        <div class="phd" style="height:210px; position:relative;"><span style="position:absolute; top:12px; left:12px; background:#bf7a33; color:#fff; font-size:11px; font-weight:700; padding:4px 9px; border-radius:3px; font-family:'Oswald',sans-serif;">ХІТ</span>фото товару</div>
+        <div style="padding:18px;"><div style="font-size:12px; color:#7e9a85; text-transform:uppercase; letter-spacing:.05em; font-family:'Oswald',sans-serif;">Вудилища</div><div style="font-size:16px; font-weight:600; color:#f1efe2; line-height:1.35; margin:6px 0 12px;">Вудилище фідерне 3.6 м</div><div style="display:flex; align-items:center; justify-content:space-between;"><span style="font-family:'Oswald',sans-serif; font-size:23px; font-weight:600; color:#cdbf86;">1 290 ₴</span><span style="width:40px; height:40px; display:inline-flex; align-items:center; justify-content:center; background:#bf7a33; color:#fff; border-radius:6px; font-size:20px;">+</span></div></div>
+      </a>
+      <a href="product.dc.html" style="background:#102619; border:1px solid #25422f; border-radius:6px; overflow:hidden; display:block;">
+        <div class="phd" style="height:210px;">фото товару</div>
+        <div style="padding:18px;"><div style="font-size:12px; color:#7e9a85; text-transform:uppercase; letter-spacing:.05em; font-family:'Oswald',sans-serif;">Котушки</div><div style="font-size:16px; font-weight:600; color:#f1efe2; line-height:1.35; margin:6px 0 12px;">Котушка безінерційна 2500</div><div style="display:flex; align-items:center; justify-content:space-between;"><span style="font-family:'Oswald',sans-serif; font-size:23px; font-weight:600; color:#cdbf86;">1 850 ₴</span><span style="width:40px; height:40px; display:inline-flex; align-items:center; justify-content:center; background:#bf7a33; color:#fff; border-radius:6px; font-size:20px;">+</span></div></div>
+      </a>
+      <a href="product.dc.html" style="background:#102619; border:1px solid #25422f; border-radius:6px; overflow:hidden; display:block;">
+        <div class="phd" style="height:210px;">фото товару</div>
+        <div style="padding:18px;"><div style="font-size:12px; color:#7e9a85; text-transform:uppercase; letter-spacing:.05em; font-family:'Oswald',sans-serif;">Приманки</div><div style="font-size:16px; font-weight:600; color:#f1efe2; line-height:1.35; margin:6px 0 12px;">Набір воблерів, 5 шт</div><div style="display:flex; align-items:center; justify-content:space-between;"><span style="font-family:'Oswald',sans-serif; font-size:23px; font-weight:600; color:#cdbf86;">640 ₴</span><span style="width:40px; height:40px; display:inline-flex; align-items:center; justify-content:center; background:#bf7a33; color:#fff; border-radius:6px; font-size:20px;">+</span></div></div>
+      </a>
+      <a href="product.dc.html" style="background:#102619; border:1px solid #25422f; border-radius:6px; overflow:hidden; display:block;">
+        <div class="phd" style="height:210px; position:relative;"><span style="position:absolute; top:12px; left:12px; background:#7a2e2e; color:#fff; font-size:11px; font-weight:700; padding:4px 9px; border-radius:3px; font-family:'Oswald',sans-serif;">−40%</span>фото товару</div>
+        <div style="padding:18px;"><div style="font-size:12px; color:#7e9a85; text-transform:uppercase; letter-spacing:.05em; font-family:'Oswald',sans-serif;">Прикормка</div><div style="font-size:16px; font-weight:600; color:#f1efe2; line-height:1.35; margin:6px 0 12px;">Прикормка фідерна, 1 кг</div><div style="display:flex; align-items:center; justify-content:space-between;"><span style="display:flex; align-items:baseline; gap:8px;"><span style="font-family:'Oswald',sans-serif; font-size:23px; font-weight:600; color:#cdbf86;">95 ₴</span><span style="font-size:13px; color:#6e7a6b; text-decoration:line-through;">160 ₴</span></span><span style="width:40px; height:40px; display:inline-flex; align-items:center; justify-content:center; background:#bf7a33; color:#fff; border-radius:6px; font-size:20px;">+</span></div></div>
+      </a>
+    </div>
+  </div>
+
+  <!-- veteran program band -->
+  <div class="idx-vet" style="display:grid; grid-template-columns:.82fr 1.18fr; background:#103450; color:#fff;">
+    <div class="idx-vet-img" style="position:relative; min-height:460px; background:#0c2740;">
+      <img src="assets/vet-seated.jpg" alt="Ветеран на риболовлі" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center 28%;">
+    </div>
+    <div class="idx-vet-txt" style="padding:60px 56px; display:flex; flex-direction:column; justify-content:center;">
+      <div style="display:inline-flex; align-self:flex-start; align-items:center; gap:9px; background:#ef8a1f; color:#0c2740; font-family:'Oswald',sans-serif; font-weight:600; font-size:13px; letter-spacing:.06em; text-transform:uppercase; padding:8px 16px; border-radius:4px; margin-bottom:22px;">Державна програма · «Дія»</div>
+      <h2 class="sec-title" style="font-family:'Oswald',sans-serif; font-weight:700; font-size:50px; line-height:.98; margin:0 0 18px; text-transform:uppercase; letter-spacing:.01em;">Ветеранський <span style="color:#ef8a1f;">спорт</span></h2>
+      <p style="font-size:17px; line-height:1.65; color:#c2d2df; margin:0 0 28px; max-width:520px;">У нашому магазині працює державна програма для ветеранів та ветеранок. Використовуйте підтримку на спортивні товари й активний відпочинок через застосунок «Дія».</p>
+      <div class="idx-vet-feats" style="display:grid; grid-template-columns:1fr 1fr; gap:13px 26px; margin-bottom:30px; max-width:480px; font-family:'Oswald',sans-serif; text-transform:uppercase; letter-spacing:.03em; font-size:14px;">
+        <div style="display:flex; align-items:center; gap:11px; color:#e4ebf1;"><span style="width:22px; height:22px; border-radius:50%; background:#ef8a1f; color:#0c2740; display:inline-flex; align-items:center; justify-content:center; font-size:13px; font-weight:800; flex:none;">✓</span>Рибальські снасті</div>
+        <div style="display:flex; align-items:center; gap:11px; color:#e4ebf1;"><span style="width:22px; height:22px; border-radius:50%; background:#ef8a1f; color:#0c2740; display:inline-flex; align-items:center; justify-content:center; font-size:13px; font-weight:800; flex:none;">✓</span>Туристичне спорядження</div>
+        <div style="display:flex; align-items:center; gap:11px; color:#e4ebf1;"><span style="width:22px; height:22px; border-radius:50%; background:#ef8a1f; color:#0c2740; display:inline-flex; align-items:center; justify-content:center; font-size:13px; font-weight:800; flex:none;">✓</span>Активний відпочинок</div>
+        <div style="display:flex; align-items:center; gap:11px; color:#e4ebf1;"><span style="width:22px; height:22px; border-radius:50%; background:#ef8a1f; color:#0c2740; display:inline-flex; align-items:center; justify-content:center; font-size:13px; font-weight:800; flex:none;">✓</span>Кемпінг та природа</div>
+      </div>
+      <a href="veteran.dc.html" style="display:inline-flex; align-self:flex-start; align-items:center; padding:16px 34px; background:#ef8a1f; color:#0c2740; font-family:'Oswald',sans-serif; font-size:16px; font-weight:600; text-transform:uppercase; letter-spacing:.05em; border-radius:5px;">Дізнатися більше →</a>
+    </div>
+  </div>
+
+  <!-- promo band -->
+  <a href="promos.dc.html" class="idx-promo" style="display:flex; align-items:center; justify-content:space-between; padding:44px 56px; background:#bf7a33;">
+    <div>
+      <div class="idx-promo-title" style="font-family:'Oswald',sans-serif; font-size:32px; font-weight:700; color:#fff; text-transform:uppercase; letter-spacing:.02em;">Сезон відкрито — знижки до 40%</div>
+      <div style="font-size:16px; color:#fbe9d2; margin-top:6px;">На приманки, прикормку та аксесуари. До кінця місяця.</div>
+    </div>
+    <span style="display:inline-flex; align-items:center; padding:16px 32px; background:#15301f; color:#f1efe2; font-family:'Oswald',sans-serif; font-size:16px; font-weight:500; text-transform:uppercase; letter-spacing:.06em; border-radius:4px;">До акцій →</span>
+  </a>
+
+  <dc-import name="Footer" hint-size="100%,420px"></dc-import>
+</div>
+</x-dc>
+</body>
+</html>

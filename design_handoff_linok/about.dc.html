@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bitter:wght@600;700;800&family=Oswald:wght@400;500;600;700&family=Golos+Text:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin:0; }
+  a { text-decoration:none; color:inherit; }
+  .ph { display:flex; align-items:center; justify-content:center; font-family:'Golos Text',monospace; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:#8c8a76; background-image:repeating-linear-gradient(135deg,#dad8c6 0 10px,#e3e1d0 10px 20px); }
+  @media (max-width:1024px){
+    .ab-wrap { padding-left:24px !important; padding-right:24px !important; }
+    .ab-values { grid-template-columns:1fr !important; }
+  }
+  @media (max-width:900px){
+    .ab-story { grid-template-columns:1fr !important; gap:32px !important; }
+    .ab-story-img { height:300px !important; }
+    .ab-vet { grid-template-columns:1fr !important; }
+    .ab-vet-img { min-height:220px !important; }
+    .ab-vet-txt { padding:36px 26px !important; }
+  }
+  @media (max-width:600px){
+    .ab-h1 { font-size:38px !important; }
+    .ab-stats { flex-wrap:wrap !important; gap:24px !important; }
+    .ab-hero-inner { padding:56px 24px !important; }
+  }
+</style>
+</helmet>
+<div style="background:#e7e5d2; font-family:'Golos Text',sans-serif;">
+  <dc-import name="Header" active="about" hint-size="100%,160px"></dc-import>
+
+  <!-- hero -->
+  <div style="background:#f1efe2; border-bottom:1px solid #d6d4c0;">
+    <div class="ab-hero-inner" style="max-width:1100px; margin:0 auto; padding:72px 40px; text-align:center;">
+      <span style="display:inline-block; font-family:'Oswald',sans-serif; font-size:13px; letter-spacing:.18em; text-transform:uppercase; color:#bf7a33; margin-bottom:18px;">Про магазин</span>
+      <h1 class="ab-h1" style="font-family:'Bitter',serif; font-weight:800; font-size:54px; line-height:1.08; color:#1c3a27; margin:0 auto 20px; max-width:760px;">Ми самі рибалимо — і знаємо, що працює</h1>
+      <p style="font-size:18px; line-height:1.7; color:#5c6b5a; margin:0 auto; max-width:620px;">«ЛінОк» — рибальський магазин у Житомирі. Ми тестуємо те, що продаємо, і радимо чесно: під ваш водойм, рибу й бюджет.</p>
+    </div>
+  </div>
+
+  <!-- story -->
+  <div class="ab-wrap ab-story" style="max-width:1320px; margin:0 auto; padding:72px 40px; display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center;">
+    <div class="ph ab-story-img" style="height:420px; border-radius:14px;">фото — магазин / власник з уловом</div>
+    <div>
+      <h2 style="font-family:'Bitter',serif; font-weight:700; font-size:34px; color:#1c3a27; line-height:1.15; margin:0 0 18px;">Наша історія</h2>
+      <p style="font-size:16.5px; line-height:1.8; color:#46544a; margin:0 0 16px;">Усе почалося з любові до тихих ранків на воді. Ми зібрали магазин таким, яким хотіли б бачити його самі: з перевіреними снастями, чесними цінами й живими порадами.</p>
+      <p style="font-size:16.5px; line-height:1.8; color:#46544a; margin:0;">Сьогодні «ЛінОк» — це понад 1200 товарів у наявності, швидка відправка по Україні та спільнота рибалок, які повертаються знову.</p>
+      <div class="ab-stats" style="display:flex; gap:44px; margin-top:34px;">
+        <div><div style="font-family:'Bitter',serif; font-size:38px; font-weight:800; color:#1c3a27;">8 років</div><div style="font-size:13px; color:#5c6b5a; margin-top:4px;">на ринку</div></div>
+        <div><div style="font-family:'Bitter',serif; font-size:38px; font-weight:800; color:#1c3a27;">1200+</div><div style="font-size:13px; color:#5c6b5a; margin-top:4px;">товарів у наявності</div></div>
+        <div><div style="font-family:'Bitter',serif; font-size:38px; font-weight:800; color:#1c3a27;">24 год</div><div style="font-size:13px; color:#5c6b5a; margin-top:4px;">відправка замовлень</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- values -->
+  <div style="background:#f1efe2; border-top:1px solid #d6d4c0; border-bottom:1px solid #d6d4c0;">
+    <div class="ab-wrap" style="max-width:1320px; margin:0 auto; padding:64px 40px;">
+      <h2 style="font-family:'Bitter',serif; font-weight:700; font-size:34px; color:#1c3a27; text-align:center; margin:0 0 40px;">Чому обирають «ЛінОк»</h2>
+      <div class="ab-values" style="display:grid; grid-template-columns:repeat(3,1fr); gap:22px;">
+        <div style="background:#fbfaf3; border:1px solid #d6d4c0; border-radius:12px; padding:32px;"><div class="ph" style="width:54px; height:54px; border-radius:10px; margin-bottom:18px;">і</div><div style="font-size:20px; font-weight:600; color:#1c3a27; margin-bottom:10px;">Перевірений товар</div><p style="font-size:15px; line-height:1.65; color:#5c6b5a; margin:0;">Тестуємо снасті самі та не тримаємо на полицях те, що не радимо друзям.</p></div>
+        <div style="background:#fbfaf3; border:1px solid #d6d4c0; border-radius:12px; padding:32px;"><div class="ph" style="width:54px; height:54px; border-radius:10px; margin-bottom:18px;">і</div><div style="font-size:20px; font-weight:600; color:#1c3a27; margin-bottom:10px;">Чесна порада</div><p style="font-size:15px; line-height:1.65; color:#5c6b5a; margin:0;">Підкажемо під ваш водойм, рибу й бюджет — без нав'язування зайвого.</p></div>
+        <div style="background:#fbfaf3; border:1px solid #d6d4c0; border-radius:12px; padding:32px;"><div class="ph" style="width:54px; height:54px; border-radius:10px; margin-bottom:18px;">і</div><div style="font-size:20px; font-weight:600; color:#1c3a27; margin-bottom:10px;">Швидка доставка</div><p style="font-size:15px; line-height:1.65; color:#5c6b5a; margin:0;">Відправляємо Новою Поштою протягом доби по всій Україні.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- veteran band -->
+  <div class="ab-wrap" style="max-width:1320px; margin:0 auto; padding:64px 40px;">
+    <a href="veteran.dc.html" class="ab-vet" style="display:grid; grid-template-columns:.7fr 1.3fr; background:#103450; color:#fff; border-radius:14px; overflow:hidden;">
+      <div class="ab-vet-img" style="position:relative; min-height:240px; background:#0c2740;"><img src="assets/vet-seated.jpg" alt="Ветеран на риболовлі" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center 26%;"></div>
+      <div class="ab-vet-txt" style="padding:44px 48px; display:flex; flex-direction:column; justify-content:center;">
+        <div style="display:inline-flex; align-self:flex-start; align-items:center; gap:8px; background:#ef8a1f; color:#0c2740; font-family:'Oswald',sans-serif; font-weight:600; font-size:12.5px; letter-spacing:.06em; text-transform:uppercase; padding:7px 14px; border-radius:5px; margin-bottom:18px;">Державна програма · «Дія»</div>
+        <h2 style="font-family:'Oswald',sans-serif; font-weight:700; font-size:36px; text-transform:uppercase; letter-spacing:.01em; margin:0 0 12px;">Ми підтримуємо <span style="color:#ef8a1f;">ветеранів</span></h2>
+        <p style="font-size:16px; line-height:1.65; color:#c2d2df; margin:0 0 20px; max-width:540px;">У «ЛінОк» діє програма «Ветеранський спорт» — ветерани та ветеранки можуть оплатити спорядження державною підтримкою через «Дія».</p>
+        <span style="font-family:'Oswald',sans-serif; font-size:15px; text-transform:uppercase; letter-spacing:.04em; color:#ef8a1f; font-weight:600;">Дізнатися більше →</span>
+      </div>
+    </a>
+  </div>
+
+  <dc-import name="Footer" hint-size="100%,420px"></dc-import>
+</div>
+</x-dc>
+</body>
+</html>

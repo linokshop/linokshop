@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Golos+Text:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin:0; }
+  a { text-decoration:none; color:inherit; }
+  .phd { display:flex; align-items:center; justify-content:center; font-family:'Golos Text',monospace; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:#7c9684; background-image:repeating-linear-gradient(135deg,#1b3826 0 10px,#21422d 10px 20px); }
+  @media (max-width:1024px){
+    .pr-wrap { padding-left:24px !important; padding-right:24px !important; }
+    .pr-related { grid-template-columns:repeat(2,1fr) !important; }
+  }
+  @media (max-width:900px){
+    .pr-main { grid-template-columns:1fr !important; gap:32px !important; }
+    .pr-specs { grid-template-columns:1fr !important; gap:32px !important; }
+    .pr-gallery { height:380px !important; }
+  }
+  @media (max-width:600px){
+    .pr-title { font-size:32px !important; }
+    .pr-price { font-size:38px !important; }
+    .pr-related { grid-template-columns:repeat(2,1fr) !important; gap:14px !important; }
+    .pr-addrow { flex-wrap:wrap !important; }
+  }
+</style>
+</helmet>
+<div style="background:#15301f; font-family:'Golos Text',sans-serif;">
+  <dc-import name="Header" active="catalog" hint-size="100%,160px"></dc-import>
+
+  <div class="pr-wrap" style="max-width:1320px; margin:0 auto; padding:32px 40px 16px;">
+    <div style="font-size:13px; color:#7e9a85; font-family:'Oswald',sans-serif; text-transform:uppercase; letter-spacing:.06em;"><a href="index.dc.html" style="color:#7e9a85;">Головна</a> · <a href="catalog.dc.html" style="color:#7e9a85;">Каталог</a> · <a href="catalog.dc.html" style="color:#7e9a85;">Вудилища</a> · <span style="color:#c2c8bb;">Вудилище фідерне 3.6 м</span></div>
+  </div>
+
+  <div class="pr-wrap pr-main" style="max-width:1320px; margin:0 auto; padding:16px 40px 60px; display:grid; grid-template-columns:1.05fr 1fr; gap:48px; align-items:start;">
+
+    <!-- gallery -->
+    <div>
+      <div class="phd pr-gallery" style="height:480px; border-radius:12px; position:relative;">
+        <span style="position:absolute; top:16px; left:16px; background:#bf7a33; color:#fff; font-size:12px; font-weight:700; padding:5px 12px; border-radius:4px; font-family:'Oswald',sans-serif;">ХІТ ПРОДАЖІВ</span>
+        фото товару · 4 ракурси
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:14px;">
+        <div class="phd" style="height:96px; border-radius:8px; border:2px solid #bf7a33;">1</div>
+        <div class="phd" style="height:96px; border-radius:8px;">2</div>
+        <div class="phd" style="height:96px; border-radius:8px;">3</div>
+        <div class="phd" style="height:96px; border-radius:8px;">4</div>
+      </div>
+    </div>
+
+    <!-- info -->
+    <div>
+      <div style="font-family:'Oswald',sans-serif; font-size:13px; color:#7e9a85; text-transform:uppercase; letter-spacing:.06em; margin-bottom:10px;">Вудилища · Fishmaster</div>
+      <h1 class="pr-title" style="font-family:'Oswald',sans-serif; font-weight:700; font-size:40px; line-height:1.05; color:#f1efe2; margin:0 0 14px; text-transform:uppercase; letter-spacing:.01em;">Вудилище фідерне 3.6 м</h1>
+      <div style="display:flex; align-items:center; gap:16px; margin-bottom:24px;">
+        <span style="color:#e8b84b; font-size:16px;">★★★★★</span>
+        <span style="font-size:14px; color:#9fb0a2;">4.8 · 64 відгуки</span>
+        <span style="font-size:14px; color:#2f9b5e;">● В наявності</span>
+      </div>
+
+      <div style="display:flex; align-items:baseline; gap:14px; margin-bottom:26px;">
+        <span class="pr-price" style="font-family:'Oswald',sans-serif; font-size:46px; font-weight:700; color:#cdbf86;">1 290 ₴</span>
+        <span style="font-size:20px; color:#6e7a6b; text-decoration:line-through;">1 590 ₴</span>
+        <span style="background:#7a2e2e; color:#fff; font-size:13px; font-weight:700; padding:5px 11px; border-radius:4px; font-family:'Oswald',sans-serif;">−19%</span>
+      </div>
+
+      <!-- options -->
+      <div style="margin-bottom:24px;">
+        <div style="font-family:'Oswald',sans-serif; font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:#9fb0a2; margin-bottom:12px;">Тест, г</div>
+        <div style="display:flex; gap:10px;">
+          <span style="padding:11px 20px; border:1.5px solid #bf7a33; background:rgba(191,122,51,.12); color:#f1efe2; border-radius:6px; font-family:'Oswald',sans-serif; font-size:15px;">60–120</span>
+          <span style="padding:11px 20px; border:1.5px solid #2f4f3a; color:#c2c8bb; border-radius:6px; font-family:'Oswald',sans-serif; font-size:15px;">80–150</span>
+          <span style="padding:11px 20px; border:1.5px solid #2f4f3a; color:#c2c8bb; border-radius:6px; font-family:'Oswald',sans-serif; font-size:15px;">100–200</span>
+        </div>
+      </div>
+
+      <!-- add to cart -->
+      <div class="pr-addrow" style="display:flex; gap:14px; margin-bottom:22px;">
+        <div style="display:flex; align-items:center; border:1.5px solid #2f4f3a; border-radius:8px; overflow:hidden;">
+          <span style="width:46px; height:54px; display:flex; align-items:center; justify-content:center; color:#c2c8bb; font-size:20px;">−</span>
+          <span style="width:46px; text-align:center; color:#f1efe2; font-size:17px; font-family:'Oswald',sans-serif;">1</span>
+          <span style="width:46px; height:54px; display:flex; align-items:center; justify-content:center; color:#c2c8bb; font-size:20px;">+</span>
+        </div>
+        <a href="cart.dc.html" style="flex:1; display:inline-flex; align-items:center; justify-content:center; background:#bf7a33; color:#fff; font-family:'Oswald',sans-serif; font-size:17px; font-weight:500; text-transform:uppercase; letter-spacing:.05em; border-radius:8px;">Додати в кошик</a>
+        <span style="width:54px; height:54px; display:inline-flex; align-items:center; justify-content:center; border:1.5px solid #2f4f3a; color:#c2c8bb; border-radius:8px; font-size:20px;">♡</span>
+      </div>
+
+      <!-- veteran note -->
+      <a href="veteran.dc.html" style="display:flex; align-items:center; gap:16px; background:#103450; border-left:3px solid #ef8a1f; border-radius:8px; padding:16px 20px; margin-bottom:22px;">
+        <img src="assets/vet-seated.jpg" alt="" style="width:46px; height:46px; border-radius:8px; object-fit:cover; object-position:center 22%; flex:none;">
+        <div style="flex:1;">
+          <div style="font-family:'Oswald',sans-serif; font-size:14px; color:#fff; text-transform:uppercase; letter-spacing:.04em;">Доступно за програмою «Ветеранський спорт»</div>
+          <div style="font-size:13px; color:#9fb2c2; margin-top:3px;">Оплата державною підтримкою через «Дія» для ветеранів та ветеранок</div>
+        </div>
+        <span style="color:#ef8a1f; font-size:20px;">→</span>
+      </a>
+
+      <!-- delivery -->
+      <div style="border-top:1px solid #25422f; padding-top:20px; display:flex; flex-direction:column; gap:12px; font-size:14.5px; color:#c2c8bb;">
+        <div style="display:flex; gap:12px;"><span style="color:#cdbf86;">●</span>Доставка Новою Поштою — 1–2 дні, від 60 ₴</div>
+        <div style="display:flex; gap:12px;"><span style="color:#cdbf86;">●</span>Оплата карткою онлайн або при отриманні</div>
+        <div style="display:flex; gap:12px;"><span style="color:#cdbf86;">●</span>Гарантія 12 місяців · обмін 14 днів</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- description + specs -->
+  <div class="pr-wrap pr-specs" style="max-width:1320px; margin:0 auto; padding:0 40px 60px; display:grid; grid-template-columns:1fr 1fr; gap:48px;">
+    <div>
+      <h2 style="font-family:'Oswald',sans-serif; font-weight:600; font-size:26px; color:#f1efe2; text-transform:uppercase; letter-spacing:.02em; margin:0 0 16px;">Опис</h2>
+      <p style="font-size:15.5px; line-height:1.8; color:#a9b6aa; margin:0 0 14px;">Універсальне фідерне вудилище довжиною 3.6 м для ловлі на спокійній воді та помірній течії. Бланк із карбонового композиту тримає вагу й добре відпрацьовує вивід риби.</p>
+      <p style="font-size:15.5px; line-height:1.8; color:#a9b6aa; margin:0;">У комплекті три змінні вершинки різної жорсткості, котушкотримач гвинтового типу та надійні пропускні кільця на металевих лапках.</p>
+    </div>
+    <div>
+      <h2 style="font-family:'Oswald',sans-serif; font-weight:600; font-size:26px; color:#f1efe2; text-transform:uppercase; letter-spacing:.02em; margin:0 0 16px;">Характеристики</h2>
+      <div style="display:flex; flex-direction:column;">
+        <div style="display:flex; justify-content:space-between; padding:13px 0; border-bottom:1px solid #25422f; font-size:15px;"><span style="color:#9fb0a2;">Довжина</span><span style="color:#f1efe2;">3.6 м</span></div>
+        <div style="display:flex; justify-content:space-between; padding:13px 0; border-bottom:1px solid #25422f; font-size:15px;"><span style="color:#9fb0a2;">Тест</span><span style="color:#f1efe2;">60–120 г</span></div>
+        <div style="display:flex; justify-content:space-between; padding:13px 0; border-bottom:1px solid #25422f; font-size:15px;"><span style="color:#9fb0a2;">Матеріал</span><span style="color:#f1efe2;">Карбоновий композит</span></div>
+        <div style="display:flex; justify-content:space-between; padding:13px 0; border-bottom:1px solid #25422f; font-size:15px;"><span style="color:#9fb0a2;">Транспортна довжина</span><span style="color:#f1efe2;">125 см</span></div>
+        <div style="display:flex; justify-content:space-between; padding:13px 0; border-bottom:1px solid #25422f; font-size:15px;"><span style="color:#9fb0a2;">Вершинки в комплекті</span><span style="color:#f1efe2;">3 шт</span></div>
+        <div style="display:flex; justify-content:space-between; padding:13px 0; font-size:15px;"><span style="color:#9fb0a2;">Виробник</span><span style="color:#f1efe2;">Fishmaster</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- related -->
+  <div class="pr-wrap" style="max-width:1320px; margin:0 auto; padding:0 40px 70px;">
+    <h2 style="font-family:'Oswald',sans-serif; font-weight:600; font-size:32px; color:#f1efe2; text-transform:uppercase; letter-spacing:.02em; margin:0 0 26px;">Схожі товари</h2>
+    <div class="pr-related" style="display:grid; grid-template-columns:repeat(4,1fr); gap:22px;">
+      <a href="product.dc.html" style="background:#102619; border:1px solid #25422f; border-radius:6px; overflow:hidden; display:block;"><div class="phd" style="height:190px;">фото товару</div><div style="padding:16px;"><div style="font-size:15px; font-weight:600; color:#f1efe2; line-height:1.35; margin-bottom:10px;">Спінінг штекерний 2.7 м</div><div style="display:flex; align-items:center; justify-content:space-between;"><span style="font-family:'Oswald',sans-serif; font-size:20px; font-weight:600; color:#cdbf86;">980 ₴</span><span style="width:36px; height:36px; display:inline-flex; align-items:center; justify-content:center; background:#bf7a33; color:#fff; border-radius:6px; font-size:18px;">+</span></div></div></a>
+      <a href="product.dc.html" style="background:#102619; border:1px solid #25422f; border-radius:6px; overflow:hidden; display:block;"><div class="phd" style="height:190px;">фото товару</div><div style="padding:16px;"><div style="font-size:15px; font-weight:600; color:#f1efe2; line-height:1.35; margin-bottom:10px;">Котушка безінерційна 2500</div><div style="display:flex; align-items:center; justify-content:space-between;"><span style="font-family:'Oswald',sans-serif; font-size:20px; font-weight:600; color:#cdbf86;">1 850 ₴</span><span style="width:36px; height:36px; display:inline-flex; align-items:center; justify-content:center; background:#bf7a33; color:#fff; border-radius:6px; font-size:18px;">+</span></div></div></a>
+      <a href="product.dc.html" style="background:#102619; border:1px solid #25422f; border-radius:6px; overflow:hidden; display:block;"><div class="phd" style="height:190px;">фото товару</div><div style="padding:16px;"><div style="font-size:15px; font-weight:600; color:#f1efe2; line-height:1.35; margin-bottom:10px;">Підсака телескопічна</div><div style="display:flex; align-items:center; justify-content:space-between;"><span style="font-family:'Oswald',sans-serif; font-size:20px; font-weight:600; color:#cdbf86;">520 ₴</span><span style="width:36px; height:36px; display:inline-flex; align-items:center; justify-content:center; background:#bf7a33; color:#fff; border-radius:6px; font-size:18px;">+</span></div></div></a>
+      <a href="product.dc.html" style="background:#102619; border:1px solid #25422f; border-radius:6px; overflow:hidden; display:block;"><div class="phd" style="height:190px;">фото товару</div><div style="padding:16px;"><div style="font-size:15px; font-weight:600; color:#f1efe2; line-height:1.35; margin-bottom:10px;">Прикормка фідерна, 1 кг</div><div style="display:flex; align-items:center; justify-content:space-between;"><span style="font-family:'Oswald',sans-serif; font-size:20px; font-weight:600; color:#cdbf86;">95 ₴</span><span style="width:36px; height:36px; display:inline-flex; align-items:center; justify-content:center; background:#bf7a33; color:#fff; border-radius:6px; font-size:18px;">+</span></div></div></a>
+    </div>
+  </div>
+
+  <dc-import name="Footer" hint-size="100%,420px"></dc-import>
+</div>
+</x-dc>
+</body>
+</html>

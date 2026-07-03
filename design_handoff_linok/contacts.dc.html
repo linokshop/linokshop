@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bitter:wght@600;700;800&family=Oswald:wght@400;500;600;700&family=Golos+Text:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin:0; }
+  a { text-decoration:none; color:inherit; }
+  .ph { display:flex; align-items:center; justify-content:center; font-family:'Golos Text',monospace; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:#8c8a76; background-image:repeating-linear-gradient(135deg,#dad8c6 0 10px,#e3e1d0 10px 20px); }
+  .fld { background:#fbfaf3; border:1px solid #d6d4c0; border-radius:8px; padding:13px 16px; color:#46544a; font-size:15px; }
+  @media (max-width:1024px){
+    .ct-wrap { padding-left:24px !important; padding-right:24px !important; }
+  }
+  @media (max-width:900px){
+    .ct-layout { grid-template-columns:1fr !important; gap:32px !important; }
+    .ct-map { height:320px !important; }
+  }
+  @media (max-width:600px){
+    .ct-h1 { font-size:38px !important; }
+    .ct-form2 { grid-template-columns:1fr !important; }
+    .ct-social { flex-wrap:wrap !important; }
+  }
+</style>
+</helmet>
+<div style="background:#e7e5d2; font-family:'Golos Text',sans-serif;">
+  <dc-import name="Header" active="contacts" hint-size="100%,160px"></dc-import>
+
+  <!-- hero -->
+  <div style="background:#f1efe2; border-bottom:1px solid #d6d4c0;">
+    <div class="ct-wrap" style="max-width:1320px; margin:0 auto; padding:56px 40px;">
+      <span style="display:inline-block; font-family:'Oswald',sans-serif; font-size:13px; letter-spacing:.18em; text-transform:uppercase; color:#bf7a33; margin-bottom:14px;">Контакти</span>
+      <h1 class="ct-h1" style="font-family:'Bitter',serif; font-weight:800; font-size:50px; line-height:1.05; color:#1c3a27; margin:0;">Як нас знайти</h1>
+    </div>
+  </div>
+
+  <div class="ct-wrap ct-layout" style="max-width:1320px; margin:0 auto; padding:56px 40px 30px; display:grid; grid-template-columns:1fr 1.25fr; gap:48px; align-items:start;">
+    <!-- contact info -->
+    <div>
+      <div style="display:flex; flex-direction:column; gap:26px;">
+        <div>
+          <div style="font-family:'Oswald',sans-serif; font-size:13px; text-transform:uppercase; letter-spacing:.08em; color:#bf7a33; margin-bottom:8px;">Адреса</div>
+          <div style="font-size:20px; font-weight:600; color:#1c3a27; line-height:1.4;">м. Житомир,<br>вул. Народицька, 15</div>
+          <div style="font-size:14.5px; color:#5c6b5a; margin-top:6px;">Магазин «ЛінОк»</div>
+        </div>
+        <div>
+          <div style="font-family:'Oswald',sans-serif; font-size:13px; text-transform:uppercase; letter-spacing:.08em; color:#bf7a33; margin-bottom:8px;">Телефон</div>
+          <a href="tel:+380970000000" style="font-family:'Bitter',serif; font-size:26px; font-weight:700; color:#1c3a27;">+38 (097) 000-00-00</a>
+        </div>
+        <div>
+          <div style="font-family:'Oswald',sans-serif; font-size:13px; text-transform:uppercase; letter-spacing:.08em; color:#bf7a33; margin-bottom:8px;">Графік роботи</div>
+          <div style="font-size:16px; color:#1c3a27;">Пн–Нд: 9:00 – 19:00</div>
+          <div style="font-size:14.5px; color:#5c6b5a; margin-top:4px;">Без вихідних</div>
+        </div>
+        <div>
+          <div style="font-family:'Oswald',sans-serif; font-size:13px; text-transform:uppercase; letter-spacing:.08em; color:#bf7a33; margin-bottom:10px;">Соцмережі</div>
+          <div class="ct-social" style="display:flex; gap:10px;">
+            <span style="padding:10px 18px; background:#fbfaf3; border:1px solid #d6d4c0; border-radius:8px; font-size:14px; color:#1c3a27;">Instagram</span>
+            <span style="padding:10px 18px; background:#fbfaf3; border:1px solid #d6d4c0; border-radius:8px; font-size:14px; color:#1c3a27;">Telegram</span>
+            <span style="padding:10px 18px; background:#fbfaf3; border:1px solid #d6d4c0; border-radius:8px; font-size:14px; color:#1c3a27;">Viber</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- map -->
+    <div class="ph ct-map" style="height:440px; border-radius:14px; position:relative;">
+      мапа — Житомир, вул. Народицька, 15
+      <span style="position:absolute; left:50%; top:50%; transform:translate(-50%,-100%); display:flex; flex-direction:column; align-items:center; gap:4px;">
+        <span style="width:18px; height:18px; border-radius:50% 50% 50% 0; background:#bf7a33; transform:rotate(-45deg);"></span>
+      </span>
+    </div>
+  </div>
+
+  <!-- contact form -->
+  <div style="background:#f1efe2; border-top:1px solid #d6d4c0;">
+    <div class="ct-wrap" style="max-width:760px; margin:0 auto; padding:60px 40px; text-align:center;">
+      <h2 style="font-family:'Bitter',serif; font-weight:700; font-size:32px; color:#1c3a27; margin:0 0 10px;">Напишіть нам</h2>
+      <p style="font-size:16px; color:#5c6b5a; margin:0 0 28px;">Відповімо протягом робочого дня та допоможемо з вибором.</p>
+      <div class="ct-form2" style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px; text-align:left;">
+        <div class="fld">Ваше ім'я</div>
+        <div class="fld">Телефон</div>
+      </div>
+      <div class="fld" style="text-align:left; margin-bottom:14px;">Повідомлення</div>
+      <span style="display:inline-flex; align-items:center; padding:15px 36px; background:#bf7a33; color:#fff; font-family:'Oswald',sans-serif; font-size:16px; font-weight:500; text-transform:uppercase; letter-spacing:.05em; border-radius:8px;">Надіслати</span>
+    </div>
+  </div>
+
+  <dc-import name="Footer" hint-size="100%,420px"></dc-import>
+</div>
+</x-dc>
+</body>
+</html>

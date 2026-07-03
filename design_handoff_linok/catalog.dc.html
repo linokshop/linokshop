@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Golos+Text:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin:0; }
+  a { text-decoration:none; color:inherit; }
+  .phd { display:flex; align-items:center; justify-content:center; font-family:'Golos Text',monospace; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:#7c9684; background-image:repeating-linear-gradient(135deg,#1b3826 0 10px,#21422d 10px 20px); }
+  .prod { background:#102619; border:1px solid #25422f; border-radius:6px; overflow:hidden; display:block; }
+  .chk { display:flex; align-items:center; gap:10px; font-size:14.5px; color:#c2c8bb; padding:5px 0; }
+  .box { width:18px; height:18px; border-radius:4px; border:1.5px solid #3a5a44; flex:none; }
+  .boxon { width:18px; height:18px; border-radius:4px; background:#bf7a33; border:1.5px solid #bf7a33; flex:none; display:flex; align-items:center; justify-content:center; color:#fff; font-size:12px; }
+  @media (max-width:1024px){
+    .cat-grid { grid-template-columns:repeat(2,1fr) !important; }
+    .cat-wrap { padding-left:24px !important; padding-right:24px !important; }
+    .cat-head { padding-left:24px !important; padding-right:24px !important; }
+  }
+  @media (max-width:900px){
+    .cat-layout { grid-template-columns:1fr !important; }
+    .cat-h1 { font-size:38px !important; }
+  }
+  @media (max-width:600px){
+    .cat-grid { grid-template-columns:repeat(2,1fr) !important; gap:14px !important; }
+    .cat-sort { flex-direction:column !important; align-items:flex-start !important; gap:12px !important; }
+  }
+  @media (max-width:420px){
+    .cat-grid { grid-template-columns:1fr !important; }
+  }
+</style>
+</helmet>
+<div style="background:#15301f; font-family:'Golos Text',sans-serif; min-height:100vh;">
+  <dc-import name="Header" active="catalog" hint-size="100%,160px"></dc-import>
+
+  <!-- page head -->
+  <div class="cat-head" style="max-width:1320px; margin:0 auto; padding:40px 40px 24px;">
+    <div style="font-size:13px; color:#7e9a85; font-family:'Oswald',sans-serif; text-transform:uppercase; letter-spacing:.06em; margin-bottom:14px;"><a href="index.dc.html" style="color:#7e9a85;">Головна</a> · Каталог</div>
+    <h1 class="cat-h1" style="font-family:'Oswald',sans-serif; font-weight:700; font-size:52px; color:#f1efe2; text-transform:uppercase; letter-spacing:.01em; margin:0;">Каталог товарів</h1>
+    <p style="font-size:16px; color:#9fb0a2; margin:10px 0 0;">1 248 товарів у наявності · доставка Новою Поштою по Україні</p>
+  </div>
+
+  <div class="cat-wrap cat-layout" style="max-width:1320px; margin:0 auto; padding:0 40px 70px; display:grid; grid-template-columns:268px 1fr; gap:32px; align-items:start;">
+
+    <!-- filters sidebar -->
+    <aside style="background:#102619; border:1px solid #25422f; border-radius:10px; padding:26px;">
+      <div style="font-family:'Oswald',sans-serif; font-size:15px; text-transform:uppercase; letter-spacing:.08em; color:#e7e5d2; margin-bottom:16px;">Категорії</div>
+      <div style="border-bottom:1px solid #25422f; padding-bottom:20px; margin-bottom:20px;">
+        <div class="chk"><span class="boxon">✓</span>Вудилища <span style="margin-left:auto; color:#6e7a6b;">142</span></div>
+        <div class="chk"><span class="box"></span>Котушки <span style="margin-left:auto; color:#6e7a6b;">98</span></div>
+        <div class="chk"><span class="box"></span>Приманки <span style="margin-left:auto; color:#6e7a6b;">310</span></div>
+        <div class="chk"><span class="box"></span>Екіпіровка <span style="margin-left:auto; color:#6e7a6b;">76</span></div>
+        <div class="chk"><span class="box"></span>Човни <span style="margin-left:auto; color:#6e7a6b;">24</span></div>
+        <div class="chk"><span class="box"></span>Прикормка <span style="margin-left:auto; color:#6e7a6b;">187</span></div>
+      </div>
+
+      <div style="font-family:'Oswald',sans-serif; font-size:15px; text-transform:uppercase; letter-spacing:.08em; color:#e7e5d2; margin-bottom:16px;">Ціна, ₴</div>
+      <div style="border-bottom:1px solid #25422f; padding-bottom:22px; margin-bottom:20px;">
+        <div style="display:flex; gap:10px; margin-bottom:16px;">
+          <div style="flex:1; background:#15301f; border:1px solid #2f4f3a; border-radius:6px; padding:10px 12px; color:#c2c8bb; font-size:14px;">від 0</div>
+          <div style="flex:1; background:#15301f; border:1px solid #2f4f3a; border-radius:6px; padding:10px 12px; color:#c2c8bb; font-size:14px;">до 5000</div>
+        </div>
+        <div style="height:4px; background:#2f4f3a; border-radius:2px; position:relative;"><span style="position:absolute; left:10%; right:35%; top:0; bottom:0; background:#bf7a33; border-radius:2px;"></span><span style="position:absolute; left:10%; top:50%; width:14px; height:14px; background:#f1efe2; border-radius:50%; transform:translate(-50%,-50%);"></span><span style="position:absolute; left:65%; top:50%; width:14px; height:14px; background:#f1efe2; border-radius:50%; transform:translate(-50%,-50%);"></span></div>
+      </div>
+
+      <div style="font-family:'Oswald',sans-serif; font-size:15px; text-transform:uppercase; letter-spacing:.08em; color:#e7e5d2; margin-bottom:16px;">Бренд</div>
+      <div style="border-bottom:1px solid #25422f; padding-bottom:20px; margin-bottom:20px;">
+        <div class="chk"><span class="box"></span>Fishmaster</div>
+        <div class="chk"><span class="box"></span>RiverPro</div>
+        <div class="chk"><span class="box"></span>Карповик</div>
+        <div class="chk"><span class="box"></span>Спінінг UA</div>
+      </div>
+
+      <div class="chk" style="margin-bottom:22px;"><span class="boxon">✓</span>Тільки в наявності</div>
+      <div style="display:flex; gap:10px;">
+        <span style="flex:1; text-align:center; padding:12px; background:#bf7a33; color:#fff; font-family:'Oswald',sans-serif; font-size:14px; text-transform:uppercase; letter-spacing:.04em; border-radius:6px;">Застосувати</span>
+        <span style="text-align:center; padding:12px 14px; border:1px solid #2f4f3a; color:#9fb0a2; font-size:14px; border-radius:6px;">Скинути</span>
+      </div>
+    </aside>
+
+    <!-- products -->
+    <div>
+      <!-- sort bar -->
+      <div class="cat-sort" style="display:flex; align-items:center; justify-content:space-between; background:#102619; border:1px solid #25422f; border-radius:10px; padding:14px 20px; margin-bottom:22px;">
+        <span style="font-size:14px; color:#9fb0a2;">Показано 1–12 з 142</span>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span style="font-size:14px; color:#9fb0a2;">Сортувати:</span>
+          <span style="display:inline-flex; align-items:center; gap:10px; background:#15301f; border:1px solid #2f4f3a; border-radius:6px; padding:9px 14px; color:#f1efe2; font-size:14px; font-family:'Oswald',sans-serif; text-transform:uppercase; letter-spacing:.03em;">За популярністю ▾</span>
+        </div>
+      </div>
+
+      <div class="cat-grid" style="display:grid; grid-template-columns:repeat(3,1fr); gap:22px;">
+        <sc-for list="{{products}}" as="p" hint-placeholder-count="12">
+          <a href="product.dc.html" class="prod">
+            <div class="phd" style="height:210px; position:relative;">
+              <sc-if value="{{p.badge}}" hint-placeholder-val="">
+                <span style="position:absolute; top:12px; left:12px; background:{{p.badgeBg}}; color:#fff; font-size:11px; font-weight:700; padding:4px 9px; border-radius:3px; font-family:'Oswald',sans-serif;">{{p.badge}}</span>
+              </sc-if>
+              фото товару
+            </div>
+            <div style="padding:18px;">
+              <div style="font-size:12px; color:#7e9a85; text-transform:uppercase; letter-spacing:.05em; font-family:'Oswald',sans-serif;">{{p.cat}}</div>
+              <div style="font-size:16px; font-weight:600; color:#f1efe2; line-height:1.35; margin:6px 0 12px; min-height:44px;">{{p.name}}</div>
+              <div style="display:flex; align-items:center; justify-content:space-between;">
+                <span style="font-family:'Oswald',sans-serif; font-size:23px; font-weight:600; color:#cdbf86;">{{p.price}}</span>
+                <span style="width:40px; height:40px; display:inline-flex; align-items:center; justify-content:center; background:#bf7a33; color:#fff; border-radius:6px; font-size:20px;">+</span>
+              </div>
+            </div>
+          </a>
+        </sc-for>
+      </div>
+
+      <!-- pagination -->
+      <div style="display:flex; align-items:center; justify-content:center; gap:8px; margin-top:40px; font-family:'Oswald',sans-serif;">
+        <span style="width:42px; height:42px; display:inline-flex; align-items:center; justify-content:center; background:#bf7a33; color:#fff; border-radius:6px;">1</span>
+        <span style="width:42px; height:42px; display:inline-flex; align-items:center; justify-content:center; background:#102619; border:1px solid #25422f; color:#c2c8bb; border-radius:6px;">2</span>
+        <span style="width:42px; height:42px; display:inline-flex; align-items:center; justify-content:center; background:#102619; border:1px solid #25422f; color:#c2c8bb; border-radius:6px;">3</span>
+        <span style="width:42px; height:42px; display:inline-flex; align-items:center; justify-content:center; background:#102619; border:1px solid #25422f; color:#c2c8bb; border-radius:6px;">→</span>
+      </div>
+    </div>
+  </div>
+
+  <dc-import name="Footer" hint-size="100%,420px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      products: [
+        { cat:'Вудилища', name:'Вудилище фідерне 3.6 м', price:'1 290 ₴', badge:'ХІТ', badgeBg:'#bf7a33' },
+        { cat:'Котушки', name:'Котушка безінерційна 2500', price:'1 850 ₴', badge:'', badgeBg:'' },
+        { cat:'Приманки', name:'Набір воблерів, 5 шт', price:'640 ₴', badge:'', badgeBg:'' },
+        { cat:'Прикормка', name:'Прикормка фідерна, 1 кг', price:'95 ₴', badge:'−40%', badgeBg:'#7a2e2e' },
+        { cat:'Вудилища', name:'Спінінг штекерний 2.7 м', price:'980 ₴', badge:'', badgeBg:'' },
+        { cat:'Котушки', name:'Котушка силова 4000', price:'2 350 ₴', badge:'НОВЕ', badgeBg:'#2f6b46' },
+        { cat:'Приманки', name:'Силіконові приманки, 10 шт', price:'180 ₴', badge:'', badgeBg:'' },
+        { cat:'Екіпіровка', name:'Костюм забродний, ОС', price:'2 890 ₴', badge:'', badgeBg:'' },
+        { cat:'Екіпіровка', name:'Підсака телескопічна', price:'520 ₴', badge:'', badgeBg:'' },
+        { cat:'Човни', name:'Човен надувний 2-місний', price:'8 400 ₴', badge:'ХІТ', badgeBg:'#bf7a33' },
+        { cat:'Прикормка', name:'Бойли пилячі, 1 кг', price:'240 ₴', badge:'', badgeBg:'' },
+        { cat:'Аксесуари', name:'Набір гачків, 100 шт', price:'140 ₴', badge:'', badgeBg:'' },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

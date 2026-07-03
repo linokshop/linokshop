@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Golos+Text:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin:0; }
+  a { text-decoration:none; color:inherit; }
+  .phd { display:flex; align-items:center; justify-content:center; font-family:'Golos Text',monospace; font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:#7c9684; background-image:repeating-linear-gradient(135deg,#1b3826 0 10px,#21422d 10px 20px); }
+  .fld { background:#15301f; border:1px solid #2f4f3a; border-radius:8px; padding:13px 16px; color:#c2c8bb; font-size:15px; font-family:'Golos Text',sans-serif; }
+  @media (max-width:1024px){
+    .crt-wrap { padding-left:24px !important; padding-right:24px !important; }
+  }
+  @media (max-width:900px){
+    .crt-layout { grid-template-columns:1fr !important; }
+  }
+  @media (max-width:600px){
+    .crt-h1 { font-size:38px !important; }
+    .crt-item { flex-wrap:wrap !important; gap:14px !important; }
+    .crt-item-info { flex:1 1 60% !important; min-width:150px !important; }
+    .crt-item-price { width:auto !important; text-align:left !important; margin-left:auto !important; }
+    .crt-form2 { grid-template-columns:1fr !important; }
+  }
+</style>
+</helmet>
+<div style="background:#15301f; font-family:'Golos Text',sans-serif;">
+  <dc-import name="Header" active="cart" hint-size="100%,160px"></dc-import>
+
+  <div class="crt-wrap" style="max-width:1320px; margin:0 auto; padding:40px 40px 16px;">
+    <h1 class="crt-h1" style="font-family:'Oswald',sans-serif; font-weight:700; font-size:50px; color:#f1efe2; text-transform:uppercase; letter-spacing:.01em; margin:0;">Кошик</h1>
+    <p style="font-size:16px; color:#9fb0a2; margin:10px 0 0;">2 товари · оформлення замовлення</p>
+  </div>
+
+  <div class="crt-wrap crt-layout" style="max-width:1320px; margin:0 auto; padding:24px 40px 70px; display:grid; grid-template-columns:1fr 400px; gap:32px; align-items:start;">
+
+    <!-- left: items + form -->
+    <div>
+      <!-- items -->
+      <div style="background:#102619; border:1px solid #25422f; border-radius:12px; overflow:hidden; margin-bottom:28px;">
+        <div class="crt-item" style="display:flex; align-items:center; gap:20px; padding:20px; border-bottom:1px solid #25422f;">
+          <div class="phd" style="width:96px; height:96px; border-radius:8px; flex:none;">фото</div>
+          <div class="crt-item-info" style="flex:1;">
+            <div style="font-size:12px; color:#7e9a85; text-transform:uppercase; letter-spacing:.05em; font-family:'Oswald',sans-serif;">Вудилища</div>
+            <div style="font-size:17px; font-weight:600; color:#f1efe2; margin:4px 0;">Вудилище фідерне 3.6 м</div>
+            <div style="font-size:13px; color:#9fb0a2;">Тест: 60–120 г</div>
+          </div>
+          <div style="display:flex; align-items:center; border:1.5px solid #2f4f3a; border-radius:8px; overflow:hidden;">
+            <span style="width:38px; height:44px; display:flex; align-items:center; justify-content:center; color:#c2c8bb; font-size:18px;">−</span>
+            <span style="width:38px; text-align:center; color:#f1efe2; font-family:'Oswald',sans-serif;">1</span>
+            <span style="width:38px; height:44px; display:flex; align-items:center; justify-content:center; color:#c2c8bb; font-size:18px;">+</span>
+          </div>
+          <div class="crt-item-price" style="width:120px; text-align:right; font-family:'Oswald',sans-serif; font-size:21px; font-weight:600; color:#cdbf86;">1 290 ₴</div>
+          <span style="color:#6e7a6b; font-size:20px; cursor:pointer;">✕</span>
+        </div>
+        <div class="crt-item" style="display:flex; align-items:center; gap:20px; padding:20px;">
+          <div class="phd" style="width:96px; height:96px; border-radius:8px; flex:none;">фото</div>
+          <div class="crt-item-info" style="flex:1;">
+            <div style="font-size:12px; color:#7e9a85; text-transform:uppercase; letter-spacing:.05em; font-family:'Oswald',sans-serif;">Котушки</div>
+            <div style="font-size:17px; font-weight:600; color:#f1efe2; margin:4px 0;">Котушка безінерційна 2500</div>
+            <div style="font-size:13px; color:#9fb0a2;">5+1 підшипник</div>
+          </div>
+          <div style="display:flex; align-items:center; border:1.5px solid #2f4f3a; border-radius:8px; overflow:hidden;">
+            <span style="width:38px; height:44px; display:flex; align-items:center; justify-content:center; color:#c2c8bb; font-size:18px;">−</span>
+            <span style="width:38px; text-align:center; color:#f1efe2; font-family:'Oswald',sans-serif;">1</span>
+            <span style="width:38px; height:44px; display:flex; align-items:center; justify-content:center; color:#c2c8bb; font-size:18px;">+</span>
+          </div>
+          <div class="crt-item-price" style="width:120px; text-align:right; font-family:'Oswald',sans-serif; font-size:21px; font-weight:600; color:#cdbf86;">1 850 ₴</div>
+          <span style="color:#6e7a6b; font-size:20px; cursor:pointer;">✕</span>
+        </div>
+      </div>
+
+      <!-- delivery form -->
+      <h2 style="font-family:'Oswald',sans-serif; font-weight:600; font-size:24px; color:#f1efe2; text-transform:uppercase; letter-spacing:.02em; margin:0 0 18px;">Дані отримувача</h2>
+      <div class="crt-form2" style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px;">
+        <div class="fld">Ім'я та прізвище</div>
+        <div class="fld">Телефон</div>
+      </div>
+      <div class="fld" style="margin-bottom:14px;">Місто</div>
+      <div class="fld" style="margin-bottom:28px;">Відділення Нової Пошти</div>
+
+      <!-- payment -->
+      <h2 style="font-family:'Oswald',sans-serif; font-weight:600; font-size:24px; color:#f1efe2; text-transform:uppercase; letter-spacing:.02em; margin:0 0 18px;">Оплата</h2>
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        <div style="display:flex; align-items:center; gap:14px; background:#102619; border:1.5px solid #bf7a33; border-radius:10px; padding:16px 18px;">
+          <span style="width:20px; height:20px; border-radius:50%; border:2px solid #bf7a33; display:flex; align-items:center; justify-content:center;"><span style="width:10px; height:10px; border-radius:50%; background:#bf7a33;"></span></span>
+          <span style="font-size:15.5px; color:#f1efe2;">Картка онлайн</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:14px; background:#102619; border:1.5px solid #25422f; border-radius:10px; padding:16px 18px;">
+          <span style="width:20px; height:20px; border-radius:50%; border:2px solid #3a5a44;"></span>
+          <span style="font-size:15.5px; color:#c2c8bb;">Готівкою / карткою при отриманні</span>
+        </div>
+        <a href="veteran.dc.html" style="display:flex; align-items:center; gap:14px; background:#103450; border:1.5px solid #ef8a1f; border-radius:10px; padding:16px 18px;">
+          <span style="width:20px; height:20px; border-radius:50%; border:2px solid #ef8a1f;"></span>
+          <img src="assets/vet-seated.jpg" alt="" style="width:34px; height:34px; border-radius:6px; object-fit:cover; object-position:center 22%; flex:none;">
+          <span style="flex:1;"><span style="font-size:15.5px; color:#fff; font-weight:600;">Програма «Ветеранський спорт» через «Дія»</span><br><span style="font-size:13px; color:#9fb2c2;">Для ветеранів та ветеранок — державна підтримка</span></span>
+          <span style="color:#ef8a1f; font-size:18px;">→</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- right: summary -->
+    <aside style="background:#102619; border:1px solid #25422f; border-radius:12px; padding:26px;">
+      <div style="font-family:'Oswald',sans-serif; font-size:18px; text-transform:uppercase; letter-spacing:.06em; color:#e7e5d2; margin-bottom:20px;">Разом</div>
+      <div style="display:flex; justify-content:space-between; padding:9px 0; font-size:15px; color:#c2c8bb;"><span>Товари (2)</span><span>3 140 ₴</span></div>
+      <div style="display:flex; justify-content:space-between; padding:9px 0; font-size:15px; color:#c2c8bb;"><span>Знижка</span><span style="color:#cf6b6b;">−300 ₴</span></div>
+      <div style="display:flex; justify-content:space-between; padding:9px 0; font-size:15px; color:#c2c8bb;"><span>Доставка</span><span>за тарифами НП</span></div>
+      <div style="border-top:1px solid #25422f; margin-top:14px; padding-top:18px; display:flex; justify-content:space-between; align-items:baseline;">
+        <span style="font-family:'Oswald',sans-serif; font-size:18px; text-transform:uppercase; color:#f1efe2;">До сплати</span>
+        <span style="font-family:'Oswald',sans-serif; font-size:32px; font-weight:700; color:#cdbf86;">2 840 ₴</span>
+      </div>
+      <div style="display:flex; gap:10px; margin:20px 0;">
+        <div class="fld" style="flex:1;">Промокод</div>
+        <span style="padding:13px 18px; border:1px solid #2f4f3a; color:#c2c8bb; border-radius:8px; font-family:'Oswald',sans-serif; font-size:14px; text-transform:uppercase;">ОК</span>
+      </div>
+      <span style="display:flex; align-items:center; justify-content:center; width:100%; padding:17px; background:#bf7a33; color:#fff; font-family:'Oswald',sans-serif; font-size:17px; font-weight:500; text-transform:uppercase; letter-spacing:.05em; border-radius:8px;">Оформити замовлення</span>
+      <a href="catalog.dc.html" style="display:block; text-align:center; margin-top:14px; font-size:14px; color:#9fb0a2;">← Продовжити покупки</a>
+    </aside>
+  </div>
+
+  <dc-import name="Footer" hint-size="100%,420px"></dc-import>
+</div>
+</x-dc>
+</body>
+</html>
