@@ -107,10 +107,10 @@ export async function fetchSeo(
 
 // ------ Navbar fetching functions
 
-export async function fetchNavbar(locale: Locale) {
+export async function fetchHeader(locale: Locale) {
   try {
     return await PublicStrapiClient.fetchOne(
-      "api::navbar.navbar",
+      "api::header.header",
       undefined,
       {
         locale,
@@ -123,7 +123,7 @@ export async function fetchNavbar(locale: Locale) {
       {
         next: {
           revalidate: 600, // 10 minutes; tag-revalidated on Strapi publish
-          tags: [strapiCacheTag("api::navbar.navbar")],
+          tags: [strapiCacheTag("api::header.header")],
         },
       }
     )

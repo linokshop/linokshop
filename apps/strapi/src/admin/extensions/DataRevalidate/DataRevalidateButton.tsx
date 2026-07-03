@@ -72,7 +72,7 @@ const REVALIDATE_CONFIG: Record<
         : { uid, fullPaths: [fullPath] },
     }
   },
-  "api::navbar.navbar": tagBasedAction("navbar"),
+  "api::header.header": tagBasedAction("header"),
   "api::footer.footer": tagBasedAction("footer"),
 }
 

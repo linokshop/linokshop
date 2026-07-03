@@ -19,7 +19,7 @@ const REVALIDATE_COLLECTIONS: RevalidateCollectionConfig[] = [
     mode: "path-revalidate",
     pathField: "fullPath",
   },
-  { uid: "api::navbar.navbar", mode: "tag-revalidate" },
+  { uid: "api::header.header", mode: "tag-revalidate" },
   { uid: "api::footer.footer", mode: "tag-revalidate" },
   {
     uid: "api::redirect.redirect",

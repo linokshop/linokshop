@@ -512,13 +512,13 @@ export interface ApiHierarchyHierarchy extends Struct.SingleTypeSchema {
   }
 }
 
-export interface ApiNavbarNavbar extends Struct.SingleTypeSchema {
-  collectionName: "navbars"
+export interface ApiHeaderHeader extends Struct.SingleTypeSchema {
+  collectionName: "headers"
   info: {
     description: ""
-    displayName: "Navbar"
-    pluralName: "navbars"
-    singularName: "navbar"
+    displayName: "Header"
+    pluralName: "headers"
+    singularName: "header"
   }
   options: {
     draftAndPublish: false
@@ -533,7 +533,7 @@ export interface ApiNavbarNavbar extends Struct.SingleTypeSchema {
     createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
       Schema.Attribute.Private
     locale: Schema.Attribute.String
-    localizations: Schema.Attribute.Relation<"oneToMany", "api::navbar.navbar">
+    localizations: Schema.Attribute.Relation<"oneToMany", "api::header.header">
     logoImage: Schema.Attribute.Component<"utilities.image-with-link", false> &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -546,6 +546,18 @@ export interface ApiNavbarNavbar extends Struct.SingleTypeSchema {
           localized: true
         }
       }>
+    logoSubtitle: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true
+        }
+      }>
+    logoTitle: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true
+        }
+      }>
     primaryButtons: Schema.Attribute.Component<"utilities.link", true> &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -553,6 +565,24 @@ export interface ApiNavbarNavbar extends Struct.SingleTypeSchema {
         }
       }>
     publishedAt: Schema.Attribute.DateTime
+    topStripLink: Schema.Attribute.Component<"utilities.link", false> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true
+        }
+      }>
+    topStripText: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true
+        }
+      }>
+    veteranLink: Schema.Attribute.Component<"utilities.link", false> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true
+        }
+      }>
     updatedAt: Schema.Attribute.DateTime
     updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
       Schema.Attribute.Private
@@ -1220,7 +1250,7 @@ declare module "@strapi/strapi" {
       "admin::user": AdminUser
       "api::footer.footer": ApiFooterFooter
       "api::hierarchy.hierarchy": ApiHierarchyHierarchy
-      "api::navbar.navbar": ApiNavbarNavbar
+      "api::header.header": ApiHeaderHeader
       "api::page.page": ApiPagePage
       "api::redirect.redirect": ApiRedirectRedirect
       "api::subscriber.subscriber": ApiSubscriberSubscriber

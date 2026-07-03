@@ -15,7 +15,7 @@ import { fetchAllPages } from "@/lib/strapi-api/content/server"
 // Use /[locale]/dynamic/[[...rest]] for pages that need runtime context.
 //
 // "error"        — throws if any dynamic API is used (strict static enforcement)
-//                  **Currently fails** because StrapiNavbar in root layout.tsx calls headers()
+//                  **Currently fails** because StrapiHeader in root layout.tsx calls headers()
 // "force-static" — silently ignores dynamic APIs (e.g. headers() returns empty,
 //                  so server-side auth in navbar will always return null)
 //

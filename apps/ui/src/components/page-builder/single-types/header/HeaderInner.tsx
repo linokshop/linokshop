@@ -8,70 +8,70 @@ import LocaleSwitcher from "@/components/elementary/LocaleSwitcher"
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
 import StrapiImageWithLink from "@/components/page-builder/components/utilities/StrapiImageWithLink"
 import StrapiLink from "@/components/page-builder/components/utilities/StrapiLink"
-import { NavbarAuthSection } from "@/components/page-builder/single-types/navbar/NavbarAuthSection"
+import { HeaderAuthSection } from "@/components/page-builder/single-types/header/HeaderAuthSection"
 import {
-  NavbarMobileNavigation,
-  NavbarMobileProvider,
-  NavbarMobileToggle,
-} from "@/components/page-builder/single-types/navbar/NavbarMobileControls"
+  HeaderMobileNavigation,
+  HeaderMobileProvider,
+  HeaderMobileToggle,
+} from "@/components/page-builder/single-types/header/HeaderMobileControls"
 import type { BetterAuthSessionWithStrapi } from "@/types/better-auth"
 
 import { DesktopNavigation } from "./DesktopNavigation"
 
-export function NavbarInner({
+export function HeaderInner({
   locale,
-  navbarData,
+  headerData,
   session,
 }: {
   readonly locale: Locale
-  readonly navbarData?: Data.ContentType<"api::navbar.navbar">
+  readonly headerData?: Data.ContentType<"api::header.header">
   readonly session?: BetterAuthSessionWithStrapi | null
 }) {
   return (
-    <NavbarMobileProvider>
+    <HeaderMobileProvider>
       <header className="bg-background/60 sticky top-0 z-50 h-16 w-full border-b shadow-sm backdrop-blur-md transition-colors duration-300">
         <div className="flex h-16 items-center">
           <Container className="flex h-full items-center justify-between px-6">
             {/* LEFT SIDE */}
             <div className="flex items-center gap-2">
               {/* Logo */}
-              {navbarData?.logoImage?.image && navbarData.logoImage.link ? (
-                <StrapiImageWithLink component={navbarData.logoImage} />
+              {headerData?.logoImage?.image && headerData.logoImage.link ? (
+                <StrapiImageWithLink component={headerData.logoImage} />
               ) : null}
-              {navbarData?.logoImage?.image && !navbarData.logoImage.link ? (
+              {headerData?.logoImage?.image && !headerData.logoImage.link ? (
                 <StrapiBasicImage
-                  component={navbarData.logoImage.image}
+                  component={headerData.logoImage.image}
                   width={80}
                   height={30}
                   className="h-7.5 w-20 shrink-0 object-contain"
                 />
               ) : null}
               {/* Desktop Navigation */}
-              <DesktopNavigation navbarItems={navbarData?.navbarItems} />
+              <DesktopNavigation navbarItems={headerData?.navbarItems} />
             </div>
 
             {/* RIGHT SIDE */}
             <div className="hidden h-full items-center gap-2 pl-4 lg:flex">
-              <NavbarAuthSection sessionSSR={session} />
+              <HeaderAuthSection sessionSSR={session} />
               <LocaleSwitcher locale={locale} />
               <div className="flex h-8 w-px flex-1 bg-black/70" />
-              {navbarData?.primaryButtons?.map((button) => (
+              {headerData?.primaryButtons?.map((button) => (
                 <StrapiLink key={button.id} component={button} />
               ))}
             </div>
-            <NavbarMobileToggle />
+            <HeaderMobileToggle />
           </Container>
         </div>
       </header>
-      <NavbarMobileNavigation
-        navbarItems={navbarData?.navbarItems}
-        primaryButtons={navbarData?.primaryButtons}
+      <HeaderMobileNavigation
+        navbarItems={headerData?.navbarItems}
+        primaryButtons={headerData?.primaryButtons}
         session={session}
         locale={locale}
       />
-    </NavbarMobileProvider>
+    </HeaderMobileProvider>
   )
 }
-NavbarInner.displayName = "NavbarInner"
+HeaderInner.displayName = "HeaderInner"
 
-export default NavbarInner
+export default HeaderInner

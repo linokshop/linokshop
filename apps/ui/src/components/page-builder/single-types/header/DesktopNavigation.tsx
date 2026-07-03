@@ -12,7 +12,7 @@ import {
 import { cn } from "@/lib/styles"
 
 interface DesktopNavigationProps {
-  navbarItems?: Data.ContentType<"api::navbar.navbar">["navbarItems"]
+  navbarItems?: Data.ContentType<"api::header.header">["navbarItems"]
 }
 
 export function DesktopNavigation({ navbarItems }: DesktopNavigationProps) {

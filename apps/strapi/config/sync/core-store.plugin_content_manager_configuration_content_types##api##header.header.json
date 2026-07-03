@@ -1,5 +1,5 @@
 {
-  "key": "plugin_content_manager_configuration_content_types::api::navbar.navbar",
+  "key": "plugin_content_manager_configuration_content_types::api::header.header",
   "value": {
     "settings": {
       "bulkable": true,
@@ -156,7 +156,7 @@
         ]
       ]
     },
-    "uid": "api::navbar.navbar"
+    "uid": "api::header.header"
   },
   "type": "object",
   "environment": null,

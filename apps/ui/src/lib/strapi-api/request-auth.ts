@@ -4,7 +4,7 @@ const ALLOWED_STRAPI_ENDPOINTS: Record<string, string[]> = {
   GET: [
     "api/pages",
     "api/footer",
-    "api/navbar",
+    "api/header",
     "api/users/me",
     "api/auth/local",
     // Allow specific providers callbacks if needed

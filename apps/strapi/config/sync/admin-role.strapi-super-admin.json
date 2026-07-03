@@ -189,7 +189,7 @@
     {
       "action": "plugin::content-manager.explorer.create",
       "actionParameters": {},
-      "subject": "api::navbar.navbar",
+      "subject": "api::header.header",
       "properties": {
         "fields": [
           "links.label",
@@ -216,7 +216,7 @@
     {
       "action": "plugin::content-manager.explorer.delete",
       "actionParameters": {},
-      "subject": "api::navbar.navbar",
+      "subject": "api::header.header",
       "properties": {
         "locales": [
           "en",
@@ -230,7 +230,7 @@
     {
       "action": "plugin::content-manager.explorer.publish",
       "actionParameters": {},
-      "subject": "api::navbar.navbar",
+      "subject": "api::header.header",
       "properties": {
         "locales": [
           "en",
@@ -244,7 +244,7 @@
     {
       "action": "plugin::content-manager.explorer.read",
       "actionParameters": {},
-      "subject": "api::navbar.navbar",
+      "subject": "api::header.header",
       "properties": {
         "fields": [
           "links.label",
@@ -271,7 +271,7 @@
     {
       "action": "plugin::content-manager.explorer.update",
       "actionParameters": {},
-      "subject": "api::navbar.navbar",
+      "subject": "api::header.header",
       "properties": {
         "fields": [
           "links.label",

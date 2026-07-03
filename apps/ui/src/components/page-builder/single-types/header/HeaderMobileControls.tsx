@@ -4,16 +4,16 @@ import type { Data } from "@repo/strapi-types"
 import { Menu, X } from "lucide-react"
 import type { Locale } from "next-intl"
 
-import { MobileNavigation } from "@/components/page-builder/single-types/navbar/MobileNavigation"
+import { MobileNavigation } from "@/components/page-builder/single-types/header/MobileNavigation"
 import { Button } from "@/components/ui/button"
-import { useNavbarMobile } from "@/hooks/useNavbarMobile"
+import { useHeaderMobile } from "@/hooks/useHeaderMobile"
 import { cn } from "@/lib/styles"
 import type { BetterAuthSessionWithStrapi } from "@/types/better-auth"
 
-export { NavbarMobileProvider } from "@/hooks/useNavbarMobile"
+export { HeaderMobileProvider } from "@/hooks/useHeaderMobile"
 
-export function NavbarMobileToggle() {
-  const [mobileOpen, setMobileOpen] = useNavbarMobile()
+export function HeaderMobileToggle() {
+  const [mobileOpen, setMobileOpen] = useHeaderMobile()
 
   return (
     <Button
@@ -28,18 +28,18 @@ export function NavbarMobileToggle() {
   )
 }
 
-export function NavbarMobileNavigation({
+export function HeaderMobileNavigation({
   navbarItems,
   primaryButtons,
   session,
   locale,
 }: {
-  readonly primaryButtons?: Data.ContentType<"api::navbar.navbar">["primaryButtons"]
-  readonly navbarItems?: Data.ContentType<"api::navbar.navbar">["navbarItems"]
+  readonly primaryButtons?: Data.ContentType<"api::header.header">["primaryButtons"]
+  readonly navbarItems?: Data.ContentType<"api::header.header">["navbarItems"]
   readonly session?: BetterAuthSessionWithStrapi | null
   readonly locale: Locale
 }) {
-  const [mobileOpen, setMobileOpen] = useNavbarMobile()
+  const [mobileOpen, setMobileOpen] = useHeaderMobile()
 
   return (
     <MobileNavigation

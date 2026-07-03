@@ -47,7 +47,12 @@
   --color-ring: oklch(0.708 0 0);
 
   /* Tailwind v4 config */
-  --font-sans: "Roboto", sans-serif;
+  /* ЛінОк brand fonts (loaded via next/font in apps/ui/src/lib/fonts.ts). */
+  --font-sans: var(--ff-golos), sans-serif;
+  --font-golos: var(--ff-golos), sans-serif;
+  --font-oswald: var(--ff-oswald), sans-serif;
+  --font-bitter: var(--ff-bitter), serif;
+  --font-roboto: "Roboto", sans-serif;
   --color-red-50: oklch(0.971 0.013 17.38);
   --color-red-100: oklch(0.936 0.032 17.717);
   --color-red-200: oklch(0.885 0.062 18.334);
@@ -292,6 +297,22 @@
   --color-stone-950: oklch(0.147 0.004 49.25);
   --color-black: #000;
   --color-white: #fff;
+
+  /* ЛінОк brand palette — fishing shop (dark-green + orange, veteran blue).
+     Utilities: bg-brand-green, text-brand-orange, border-brand-border, … */
+  --color-brand-green: #102619; /* primary dark background (header/pages) */
+  --color-brand-navy: #0c2740; /* deep blue — veteran sections */
+  --color-brand-steel: #103450; /* top strip / program ribbon */
+  --color-brand-surface: #15301f; /* raised surface (burger, cards) */
+  --color-brand-border: #25422f; /* dark-green borders */
+  --color-brand-orange: #ef8a1f; /* primary accent */
+  --color-brand-bronze: #bf7a33; /* buttons / hero accent */
+  --color-brand-cream: #f1efe2; /* light text on dark */
+  --color-brand-sand: #e7e5d2; /* light-theme background */
+  --color-brand-nav: #cbd2c4; /* navigation text */
+  --color-brand-muted: #7e9a85; /* muted green (subtitles) */
+  --color-brand-subtle: #a9ad96; /* muted labels (lang switch) */
+
   --spacing: 0.25rem;
   --breakpoint-sm: 40rem;
   --breakpoint-md: 48rem;

@@ -11,7 +11,7 @@
       "locale": null
     },
     {
-      "action": "api::navbar.navbar.find",
+      "action": "api::header.header.find",
       "documentId": "z4zo4qe5rpjzp1xmy4no81ko",
       "locale": null
     },

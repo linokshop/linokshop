@@ -9,11 +9,11 @@ import {
   type SetStateAction,
 } from "react"
 
-type NavbarMobileContextValue = [boolean, Dispatch<SetStateAction<boolean>>]
+type HeaderMobileContextValue = [boolean, Dispatch<SetStateAction<boolean>>]
 
-const NavbarMobileContext = createContext<NavbarMobileContextValue | null>(null)
+const HeaderMobileContext = createContext<HeaderMobileContextValue | null>(null)
 
-export function NavbarMobileProvider({
+export function HeaderMobileProvider({
   children,
 }: {
   readonly children: ReactNode
@@ -21,22 +21,22 @@ export function NavbarMobileProvider({
   const [mobileOpen, setMobileOpen] = useState(false)
 
   return (
-    <NavbarMobileContext.Provider
+    <HeaderMobileContext.Provider
       // React Compiler handles this memoization; keeping this explicit avoids
       // unnecessary useMemo noise around a tiny UI state provider.
       // eslint-disable-next-line react/jsx-no-constructed-context-values
       value={[mobileOpen, setMobileOpen]}
     >
       {children}
-    </NavbarMobileContext.Provider>
+    </HeaderMobileContext.Provider>
   )
 }
 
-export function useNavbarMobile() {
-  const context = useContext(NavbarMobileContext)
+export function useHeaderMobile() {
+  const context = useContext(HeaderMobileContext)
 
   if (context == null) {
-    throw new Error("Navbar mobile controls must be used inside provider")
+    throw new Error("Header mobile controls must be used inside provider")
   }
 
   return context

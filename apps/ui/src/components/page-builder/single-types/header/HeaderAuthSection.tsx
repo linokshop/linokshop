@@ -3,11 +3,11 @@
 import { useTranslations } from "next-intl"
 
 import AppLink from "@/components/elementary/AppLink"
-import { LoggedUserMenu } from "@/components/page-builder/single-types/navbar/LoggedUserMenu"
+import { LoggedUserMenu } from "@/components/page-builder/single-types/header/LoggedUserMenu"
 import { authClient } from "@/lib/auth-client"
 import type { BetterAuthSessionWithStrapi } from "@/types/better-auth"
 
-export function NavbarAuthSection({
+export function HeaderAuthSection({
   sessionSSR,
 }: {
   sessionSSR?: BetterAuthSessionWithStrapi | null

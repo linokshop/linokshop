@@ -7,7 +7,7 @@ import { useState } from "react"
 
 import LocaleSwitcher from "@/components/elementary/LocaleSwitcher"
 import StrapiLink from "@/components/page-builder/components/utilities/StrapiLink"
-import { NavbarAuthSection } from "@/components/page-builder/single-types/navbar/NavbarAuthSection"
+import { HeaderAuthSection } from "@/components/page-builder/single-types/header/HeaderAuthSection"
 import Typography from "@/components/typography"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/styles"
@@ -16,8 +16,8 @@ import type { BetterAuthSessionWithStrapi } from "@/types/better-auth"
 interface MobileNavigationProps {
   isOpen: boolean
   setOpen: (open: boolean) => void
-  primaryButtons?: Data.ContentType<"api::navbar.navbar">["primaryButtons"]
-  navbarItems?: Data.ContentType<"api::navbar.navbar">["navbarItems"]
+  primaryButtons?: Data.ContentType<"api::header.header">["primaryButtons"]
+  navbarItems?: Data.ContentType<"api::header.header">["navbarItems"]
   session?: BetterAuthSessionWithStrapi | null
   locale?: Locale
 }
@@ -124,7 +124,7 @@ export function MobileNavigation({
         {/* Auth + Locale */}
         {/* TO DO: these components should be changed to mobile view in the future */}
         <div className="flex w-full items-center justify-between gap-2">
-          <NavbarAuthSection sessionSSR={session} />
+          <HeaderAuthSection sessionSSR={session} />
           {locale ? <LocaleSwitcher locale={locale} /> : null}
         </div>
         {primaryButtons?.length ? (

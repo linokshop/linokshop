@@ -12,7 +12,7 @@
     },
     {
       "documentId": "yami5zx7d5f18cts8kzv1x8f",
-      "action": "api::navbar.navbar.find",
+      "action": "api::header.header.find",
       "locale": null
     },
     {
