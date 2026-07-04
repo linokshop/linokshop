@@ -1,5 +1,22 @@
 import type { Schema, Struct } from "@strapi/strapi"
 
+export interface ElementsProductCard extends Struct.ComponentSchema {
+  collectionName: "components_elements_product_cards"
+  info: {
+    description: "A product tile: image, badge, category, name and price."
+    displayName: "ProductCard"
+  }
+  attributes: {
+    badge: Schema.Attribute.String
+    category: Schema.Attribute.String
+    image: Schema.Attribute.Component<"utilities.basic-image", false>
+    link: Schema.Attribute.Component<"utilities.link", false>
+    name: Schema.Attribute.String
+    oldPrice: Schema.Attribute.String
+    price: Schema.Attribute.String
+  }
+}
+
 export interface ElementsCategoryCard extends Struct.ComponentSchema {
   collectionName: "components_elements_category_cards"
   info: {
@@ -185,6 +202,18 @@ export interface SectionsHomeCategories extends Struct.ComponentSchema {
   }
   attributes: {
     categories: Schema.Attribute.Component<"elements.category-card", true>
+    title: Schema.Attribute.String
+  }
+}
+
+export interface SectionsHomeProducts extends Struct.ComponentSchema {
+  collectionName: "components_sections_home_products"
+  info: {
+    description: "ЛінОк homepage top products grid."
+    displayName: "HomeProducts"
+  }
+  attributes: {
+    products: Schema.Attribute.Component<"elements.product-card", true>
     title: Schema.Attribute.String
   }
 }
@@ -571,6 +600,7 @@ declare module "@strapi/strapi" {
   export module Public {
     export interface ComponentSchemas {
       "elements.category-card": ElementsCategoryCard
+      "elements.product-card": ElementsProductCard
       "elements.footer-item": ElementsFooterItem
       "forms.contact-form": FormsContactForm
       "forms.newsletter-form": FormsNewsletterForm
@@ -584,6 +614,7 @@ declare module "@strapi/strapi" {
       "sections.hero": SectionsHero
       "sections.home-categories": SectionsHomeCategories
       "sections.home-hero": SectionsHomeHero
+      "sections.home-products": SectionsHomeProducts
       "sections.image-with-cta-button": SectionsImageWithCtaButton
       "sections.statistics": SectionsStatistics
       "seo-utilities.seo": SeoUtilitiesSeo

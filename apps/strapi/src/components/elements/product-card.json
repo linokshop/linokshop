@@ -1,0 +1,35 @@
+{
+  "collectionName": "components_elements_product_cards",
+  "info": {
+    "displayName": "ProductCard",
+    "description": "A product tile: image, badge, category, name and price."
+  },
+  "options": {},
+  "attributes": {
+    "badge": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "price": {
+      "type": "string"
+    },
+    "oldPrice": {
+      "type": "string"
+    },
+    "link": {
+      "type": "component",
+      "component": "utilities.link",
+      "repeatable": false
+    },
+    "image": {
+      "type": "component",
+      "component": "utilities.basic-image",
+      "repeatable": false
+    }
+  }
+}

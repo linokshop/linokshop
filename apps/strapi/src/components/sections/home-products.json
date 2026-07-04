@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_sections_home_products",
+  "info": {
+    "displayName": "HomeProducts",
+    "description": "ЛінОк homepage top products grid."
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "products": {
+      "type": "component",
+      "component": "elements.product-card",
+      "repeatable": true
+    }
+  }
+}
