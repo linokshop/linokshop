@@ -3,7 +3,6 @@ import type React from "react"
 
 import AppLink from "@/components/elementary/AppLink"
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
-import { removeThisWhenYouNeedMe } from "@/lib/general-helpers"
 
 export interface StrapiLinkProps {
   readonly component: Data.Component<"utilities.link"> | undefined | null
@@ -32,8 +31,6 @@ export function StrapiLink({
   className,
   onClick,
 }: StrapiLinkProps) {
-  removeThisWhenYouNeedMe("StrapiLink")
-
   if (component == null) {
     return null
   }
