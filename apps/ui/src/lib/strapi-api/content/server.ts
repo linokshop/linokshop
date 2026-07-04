@@ -118,6 +118,8 @@ export async function fetchHeader(locale: Locale) {
           logoImage: "smart",
           primaryButtons: "smart",
           navbarItems: "smart",
+          topStripLink: "smart",
+          veteranLink: "smart",
         },
       },
       {
@@ -151,6 +153,7 @@ export async function fetchFooter(locale: Locale) {
           sections: "smart",
           logoImage: "smart",
           links: "smart",
+          ribbonLink: "smart",
         },
       },
       {
