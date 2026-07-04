@@ -66,6 +66,8 @@
         "sections.home-hero",
         "sections.home-categories",
         "sections.home-products",
+        "sections.home-program",
+        "sections.home-promo",
         "sections.heading-with-cta-button",
         "sections.faq",
         "sections.carousel",

@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_sections_home_promos",
+  "info": {
+    "displayName": "HomePromo",
+    "description": "ЛінОк homepage promo banner."
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "text": {
+      "type": "string"
+    },
+    "link": {
+      "type": "component",
+      "component": "utilities.link",
+      "repeatable": false
+    }
+  }
+}

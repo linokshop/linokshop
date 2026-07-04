@@ -206,6 +206,35 @@ export interface SectionsHomeCategories extends Struct.ComponentSchema {
   }
 }
 
+export interface SectionsHomePromo extends Struct.ComponentSchema {
+  collectionName: "components_sections_home_promos"
+  info: {
+    description: "ЛінОк homepage promo banner."
+    displayName: "HomePromo"
+  }
+  attributes: {
+    link: Schema.Attribute.Component<"utilities.link", false>
+    text: Schema.Attribute.String
+    title: Schema.Attribute.String
+  }
+}
+
+export interface SectionsHomeProgram extends Struct.ComponentSchema {
+  collectionName: "components_sections_home_programs"
+  info: {
+    description: "ЛінОк homepage veteran-program banner."
+    displayName: "HomeProgram"
+  }
+  attributes: {
+    badge: Schema.Attribute.String
+    checklist: Schema.Attribute.Component<"utilities.text", true>
+    image: Schema.Attribute.Component<"utilities.basic-image", false>
+    link: Schema.Attribute.Component<"utilities.link", false>
+    text: Schema.Attribute.Text
+    title: Schema.Attribute.String
+  }
+}
+
 export interface SectionsHomeProducts extends Struct.ComponentSchema {
   collectionName: "components_sections_home_products"
   info: {
@@ -615,6 +644,8 @@ declare module "@strapi/strapi" {
       "sections.home-categories": SectionsHomeCategories
       "sections.home-hero": SectionsHomeHero
       "sections.home-products": SectionsHomeProducts
+      "sections.home-program": SectionsHomeProgram
+      "sections.home-promo": SectionsHomePromo
       "sections.image-with-cta-button": SectionsImageWithCtaButton
       "sections.statistics": SectionsStatistics
       "seo-utilities.seo": SeoUtilitiesSeo
