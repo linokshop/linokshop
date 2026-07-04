@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_elements_step_cards",
+  "info": {
+    "displayName": "StepCard",
+    "description": "A single numbered step: number, title and text."
+  },
+  "options": {},
+  "attributes": {
+    "number": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "text": {
+      "type": "text"
+    }
+  }
+}

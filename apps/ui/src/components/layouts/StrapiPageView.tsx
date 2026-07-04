@@ -12,7 +12,7 @@ import StrapiStructuredData from "@/components/page-builder/components/seo-utili
 import { logger } from "@/lib/logging"
 import { fetchPage } from "@/lib/strapi-api/content/server"
 import { cn } from "@/lib/styles"
-import { mockHomePage } from "@/mock/home-page"
+import { getMockPage } from "@/mock/pages"
 
 interface Props {
   params: {
@@ -30,12 +30,10 @@ export default function StrapiPageView({ params, searchParams }: Props) {
   const fullPath = ROOT_PAGE_PATH + (params.rest ?? []).join("/")
   const response = use(fetchPage(fullPath, locale))
 
-  // Fall back to mock home content while the Strapi home page is not populated.
-  // Remove the mock import once the homepage lives in Strapi.
+  // Fall back to mock content while the matching Strapi page is not populated.
+  // Remove the mock registry once pages live in Strapi.
   const data =
-    response?.data?.content == null && fullPath === ROOT_PAGE_PATH
-      ? mockHomePage
-      : response?.data
+    response?.data?.content == null ? getMockPage(fullPath) : response?.data
 
   if (data?.content == null) {
     notFound()

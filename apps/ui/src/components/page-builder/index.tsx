@@ -16,6 +16,8 @@ import StrapiHomeProducts from "@/components/page-builder/components/sections/St
 import StrapiHomeProgram from "@/components/page-builder/components/sections/StrapiHomeProgram"
 import StrapiHomePromo from "@/components/page-builder/components/sections/StrapiHomePromo"
 import StrapiImageWithCTAButton from "@/components/page-builder/components/sections/StrapiImageWithCTAButton"
+import StrapiSteps from "@/components/page-builder/components/sections/StrapiSteps"
+import StrapiTextBlock from "@/components/page-builder/components/sections/StrapiTextBlock"
 import StrapiCkEditorContent from "@/components/page-builder/components/utilities/StrapiCkEditorContent"
 import StrapiTipTapEditorContent from "@/components/page-builder/components/utilities/StrapiTipTapEditorContent"
 
@@ -46,6 +48,8 @@ export const PageContentComponents: Partial<
   "sections.home-products": StrapiHomeProducts,
   "sections.home-program": StrapiHomeProgram,
   "sections.home-promo": StrapiHomePromo,
+  "sections.steps": StrapiSteps,
+  "sections.text-block": StrapiTextBlock,
   "sections.image-with-cta-button": StrapiImageWithCTAButton,
   "sections.statistics": StrapiStatistics,
   "sections.features-list": StrapiFeaturesList,

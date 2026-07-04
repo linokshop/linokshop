@@ -68,6 +68,8 @@
         "sections.home-products",
         "sections.home-program",
         "sections.home-promo",
+        "sections.steps",
+        "sections.text-block",
         "sections.heading-with-cta-button",
         "sections.faq",
         "sections.carousel",

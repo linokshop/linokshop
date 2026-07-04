@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_sections_text_blocks",
+  "info": {
+    "displayName": "TextBlock",
+    "description": "Centered eyebrow + title + text block."
+  },
+  "options": {},
+  "attributes": {
+    "eyebrow": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "text": {
+      "type": "text"
+    }
+  }
+}

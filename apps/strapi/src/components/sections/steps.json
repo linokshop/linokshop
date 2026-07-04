@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_sections_steps",
+  "info": {
+    "displayName": "Steps",
+    "description": "Numbered steps section (e.g. how it works)."
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "steps": {
+      "type": "component",
+      "component": "elements.step-card",
+      "repeatable": true
+    }
+  }
+}

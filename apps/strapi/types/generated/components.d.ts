@@ -1,5 +1,18 @@
 import type { Schema, Struct } from "@strapi/strapi"
 
+export interface ElementsStepCard extends Struct.ComponentSchema {
+  collectionName: "components_elements_step_cards"
+  info: {
+    description: "A single numbered step: number, title and text."
+    displayName: "StepCard"
+  }
+  attributes: {
+    number: Schema.Attribute.String
+    text: Schema.Attribute.Text
+    title: Schema.Attribute.String
+  }
+}
+
 export interface ElementsProductCard extends Struct.ComponentSchema {
   collectionName: "components_elements_product_cards"
   info: {
@@ -202,6 +215,31 @@ export interface SectionsHomeCategories extends Struct.ComponentSchema {
   }
   attributes: {
     categories: Schema.Attribute.Component<"elements.category-card", true>
+    title: Schema.Attribute.String
+  }
+}
+
+export interface SectionsSteps extends Struct.ComponentSchema {
+  collectionName: "components_sections_steps"
+  info: {
+    description: "Numbered steps section (e.g. how it works)."
+    displayName: "Steps"
+  }
+  attributes: {
+    steps: Schema.Attribute.Component<"elements.step-card", true>
+    title: Schema.Attribute.String
+  }
+}
+
+export interface SectionsTextBlock extends Struct.ComponentSchema {
+  collectionName: "components_sections_text_blocks"
+  info: {
+    description: "Centered eyebrow + title + text block."
+    displayName: "TextBlock"
+  }
+  attributes: {
+    eyebrow: Schema.Attribute.String
+    text: Schema.Attribute.Text
     title: Schema.Attribute.String
   }
 }
@@ -630,6 +668,7 @@ declare module "@strapi/strapi" {
     export interface ComponentSchemas {
       "elements.category-card": ElementsCategoryCard
       "elements.product-card": ElementsProductCard
+      "elements.step-card": ElementsStepCard
       "elements.footer-item": ElementsFooterItem
       "forms.contact-form": FormsContactForm
       "forms.newsletter-form": FormsNewsletterForm
@@ -646,6 +685,8 @@ declare module "@strapi/strapi" {
       "sections.home-products": SectionsHomeProducts
       "sections.home-program": SectionsHomeProgram
       "sections.home-promo": SectionsHomePromo
+      "sections.steps": SectionsSteps
+      "sections.text-block": SectionsTextBlock
       "sections.image-with-cta-button": SectionsImageWithCtaButton
       "sections.statistics": SectionsStatistics
       "seo-utilities.seo": SeoUtilitiesSeo
