@@ -13,6 +13,11 @@
       "type": "component",
       "component": "elements.step-card",
       "repeatable": true
+    },
+    "theme": {
+      "type": "enumeration",
+      "enum": ["dark", "light"],
+      "default": "dark"
     }
   }
 }

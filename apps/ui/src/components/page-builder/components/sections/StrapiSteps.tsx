@@ -3,6 +3,7 @@ import "server-only"
 import type { Data } from "@repo/strapi-types"
 
 import Typography from "@/components/typography"
+import { cn } from "@/lib/styles"
 import type { PageBuilderComponentProps } from "@/types/general"
 
 export function StrapiSteps({
@@ -10,15 +11,21 @@ export function StrapiSteps({
 }: PageBuilderComponentProps & {
   readonly component: Data.Component<"sections.steps">
 }) {
-  const { title, steps } = component
+  const { title, steps, theme } = component
+  const isLight = theme === "light"
 
   return (
-    <section className="bg-brand-green font-golos">
+    <section
+      className={cn("font-golos", isLight ? "bg-brand-sand" : "bg-brand-green")}
+    >
       <div className="px-4 py-12 sm:px-6 lg:px-10">
         {title ? (
           <Typography
             tag="h2"
-            className="font-oswald text-brand-cream mb-8 text-center text-3xl font-bold uppercase"
+            className={cn(
+              "font-oswald mb-8 text-center text-3xl font-bold uppercase",
+              isLight ? "text-brand-green" : "text-brand-cream"
+            )}
           >
             {title}
           </Typography>
@@ -28,7 +35,12 @@ export function StrapiSteps({
           {steps?.map((step) => (
             <div
               key={step.id}
-              className="border-brand-border bg-brand-surface rounded-sm border p-8"
+              className={cn(
+                "rounded-sm border p-8",
+                isLight
+                  ? "border-brand-green/10 bg-white"
+                  : "border-brand-border bg-brand-surface"
+              )}
             >
               {step.number ? (
                 <span className="font-oswald text-brand-orange text-5xl font-bold">
@@ -38,13 +50,21 @@ export function StrapiSteps({
               {step.title ? (
                 <Typography
                   tag="h3"
-                  className="font-oswald text-brand-cream mt-4 text-xl font-semibold uppercase"
+                  className={cn(
+                    "font-oswald mt-4 text-xl font-semibold uppercase",
+                    isLight ? "text-brand-green" : "text-brand-cream"
+                  )}
                 >
                   {step.title}
                 </Typography>
               ) : null}
               {step.text ? (
-                <Typography className="text-brand-nav mt-2 text-sm/6">
+                <Typography
+                  className={cn(
+                    "mt-2 text-sm/6",
+                    isLight ? "text-brand-green/70" : "text-brand-nav"
+                  )}
+                >
                   {step.text}
                 </Typography>
               ) : null}

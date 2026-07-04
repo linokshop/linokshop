@@ -227,6 +227,8 @@ export interface SectionsSteps extends Struct.ComponentSchema {
   }
   attributes: {
     steps: Schema.Attribute.Component<"elements.step-card", true>
+    theme: Schema.Attribute.Enumeration<["dark", "light"]> &
+      Schema.Attribute.DefaultTo<"dark">
     title: Schema.Attribute.String
   }
 }
@@ -240,6 +242,8 @@ export interface SectionsTextBlock extends Struct.ComponentSchema {
   attributes: {
     eyebrow: Schema.Attribute.String
     text: Schema.Attribute.Text
+    theme: Schema.Attribute.Enumeration<["dark", "light"]> &
+      Schema.Attribute.DefaultTo<"dark">
     title: Schema.Attribute.String
   }
 }
