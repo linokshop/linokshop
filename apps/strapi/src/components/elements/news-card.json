@@ -1,0 +1,29 @@
+{
+  "collectionName": "components_elements_news_cards",
+  "info": {
+    "displayName": "NewsCard",
+    "description": "A horizontal news item: image, date, title, text and link."
+  },
+  "options": {},
+  "attributes": {
+    "date": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "text": {
+      "type": "text"
+    },
+    "link": {
+      "type": "component",
+      "component": "utilities.link",
+      "repeatable": false
+    },
+    "image": {
+      "type": "component",
+      "component": "utilities.basic-image",
+      "repeatable": false
+    }
+  }
+}

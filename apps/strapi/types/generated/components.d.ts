@@ -30,6 +30,36 @@ export interface ElementsProductCard extends Struct.ComponentSchema {
   }
 }
 
+export interface ElementsInfoCard extends Struct.ComponentSchema {
+  collectionName: "components_elements_info_cards"
+  info: {
+    description: "A generic card: badge, title, text, link and image."
+    displayName: "InfoCard"
+  }
+  attributes: {
+    badge: Schema.Attribute.String
+    image: Schema.Attribute.Component<"utilities.basic-image", false>
+    link: Schema.Attribute.Component<"utilities.link", false>
+    text: Schema.Attribute.Text
+    title: Schema.Attribute.String
+  }
+}
+
+export interface ElementsNewsCard extends Struct.ComponentSchema {
+  collectionName: "components_elements_news_cards"
+  info: {
+    description: "A horizontal news item: image, date, title, text and link."
+    displayName: "NewsCard"
+  }
+  attributes: {
+    date: Schema.Attribute.String
+    image: Schema.Attribute.Component<"utilities.basic-image", false>
+    link: Schema.Attribute.Component<"utilities.link", false>
+    text: Schema.Attribute.Text
+    title: Schema.Attribute.String
+  }
+}
+
 export interface ElementsCategoryCard extends Struct.ComponentSchema {
   collectionName: "components_elements_category_cards"
   info: {
@@ -215,6 +245,34 @@ export interface SectionsHomeCategories extends Struct.ComponentSchema {
   }
   attributes: {
     categories: Schema.Attribute.Component<"elements.category-card", true>
+    title: Schema.Attribute.String
+  }
+}
+
+export interface SectionsCardGrid extends Struct.ComponentSchema {
+  collectionName: "components_sections_card_grids"
+  info: {
+    description: "A grid of generic info cards (promos, features, etc.)."
+    displayName: "CardGrid"
+  }
+  attributes: {
+    cards: Schema.Attribute.Component<"elements.info-card", true>
+    theme: Schema.Attribute.Enumeration<["dark", "light"]> &
+      Schema.Attribute.DefaultTo<"dark">
+    title: Schema.Attribute.String
+  }
+}
+
+export interface SectionsNews extends Struct.ComponentSchema {
+  collectionName: "components_sections_news"
+  info: {
+    description: "A list of horizontal news cards."
+    displayName: "News"
+  }
+  attributes: {
+    items: Schema.Attribute.Component<"elements.news-card", true>
+    theme: Schema.Attribute.Enumeration<["dark", "light"]> &
+      Schema.Attribute.DefaultTo<"dark">
     title: Schema.Attribute.String
   }
 }
@@ -671,6 +729,8 @@ declare module "@strapi/strapi" {
   export module Public {
     export interface ComponentSchemas {
       "elements.category-card": ElementsCategoryCard
+      "elements.info-card": ElementsInfoCard
+      "elements.news-card": ElementsNewsCard
       "elements.product-card": ElementsProductCard
       "elements.step-card": ElementsStepCard
       "elements.footer-item": ElementsFooterItem
@@ -688,7 +748,9 @@ declare module "@strapi/strapi" {
       "sections.home-hero": SectionsHomeHero
       "sections.home-products": SectionsHomeProducts
       "sections.home-program": SectionsHomeProgram
+      "sections.card-grid": SectionsCardGrid
       "sections.home-promo": SectionsHomePromo
+      "sections.news": SectionsNews
       "sections.steps": SectionsSteps
       "sections.text-block": SectionsTextBlock
       "sections.image-with-cta-button": SectionsImageWithCtaButton

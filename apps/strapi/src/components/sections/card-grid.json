@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_sections_card_grids",
+  "info": {
+    "displayName": "CardGrid",
+    "description": "A grid of generic info cards (promos, features, etc.)."
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "theme": {
+      "type": "enumeration",
+      "enum": ["dark", "light"],
+      "default": "dark"
+    },
+    "cards": {
+      "type": "component",
+      "component": "elements.info-card",
+      "repeatable": true
+    }
+  }
+}

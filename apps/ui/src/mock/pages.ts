@@ -5,6 +5,7 @@ import { mockAboutPage } from "@/mock/about-page"
 import { mockContactsPage } from "@/mock/contacts-page"
 import { mockDeliveryPage } from "@/mock/delivery-page"
 import { mockHomePage } from "@/mock/home-page"
+import { mockPromosPage } from "@/mock/promos-page"
 import { mockVeteranPage } from "@/mock/veteran-page"
 
 /**
@@ -20,6 +21,7 @@ export const mockPages: Record<string, Data.ContentType<"api::page.page">> = {
   "/about": mockAboutPage,
   "/delivery": mockDeliveryPage,
   "/contacts": mockContactsPage,
+  "/promos": mockPromosPage,
 }
 
 export const getMockPage = (

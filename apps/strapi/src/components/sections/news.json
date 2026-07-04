@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_sections_news",
+  "info": {
+    "displayName": "News",
+    "description": "A list of horizontal news cards."
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "theme": {
+      "type": "enumeration",
+      "enum": ["dark", "light"],
+      "default": "dark"
+    },
+    "items": {
+      "type": "component",
+      "component": "elements.news-card",
+      "repeatable": true
+    }
+  }
+}

@@ -3,6 +3,7 @@ import type { UID } from "@repo/strapi-types"
 import StrapiContactForm from "@/components/page-builder/components/forms/StrapiContactForm"
 import StrapiNewsletterForm from "@/components/page-builder/components/forms/StrapiNewsletterForm"
 import StrapiAnimatedLogoRow from "@/components/page-builder/components/sections/StrapiAnimatedLogoRow"
+import StrapiCardGrid from "@/components/page-builder/components/sections/StrapiCardGrid"
 import StrapiCarousel from "@/components/page-builder/components/sections/StrapiCarousel"
 import StrapiCTABanner from "@/components/page-builder/components/sections/StrapiCTABanner"
 import StrapiFaq from "@/components/page-builder/components/sections/StrapiFaq"
@@ -16,6 +17,7 @@ import StrapiHomeProducts from "@/components/page-builder/components/sections/St
 import StrapiHomeProgram from "@/components/page-builder/components/sections/StrapiHomeProgram"
 import StrapiHomePromo from "@/components/page-builder/components/sections/StrapiHomePromo"
 import StrapiImageWithCTAButton from "@/components/page-builder/components/sections/StrapiImageWithCTAButton"
+import StrapiNews from "@/components/page-builder/components/sections/StrapiNews"
 import StrapiSteps from "@/components/page-builder/components/sections/StrapiSteps"
 import StrapiTextBlock from "@/components/page-builder/components/sections/StrapiTextBlock"
 import StrapiCkEditorContent from "@/components/page-builder/components/utilities/StrapiCkEditorContent"
@@ -47,7 +49,9 @@ export const PageContentComponents: Partial<
   "sections.home-hero": StrapiHomeHero,
   "sections.home-products": StrapiHomeProducts,
   "sections.home-program": StrapiHomeProgram,
+  "sections.card-grid": StrapiCardGrid,
   "sections.home-promo": StrapiHomePromo,
+  "sections.news": StrapiNews,
   "sections.steps": StrapiSteps,
   "sections.text-block": StrapiTextBlock,
   "sections.image-with-cta-button": StrapiImageWithCTAButton,
