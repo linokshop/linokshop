@@ -163,6 +163,26 @@ export interface SectionsHeadingWithCtaButton extends Struct.ComponentSchema {
   }
 }
 
+export interface SectionsHomeHero extends Struct.ComponentSchema {
+  collectionName: "components_sections_home_heroes"
+  info: {
+    description: "ЛінОк homepage hero: headline + CTAs and the veteran-program card."
+    displayName: "HomeHero"
+  }
+  attributes: {
+    image: Schema.Attribute.Component<"utilities.basic-image", false>
+    primaryLink: Schema.Attribute.Component<"utilities.link", false>
+    secondaryLink: Schema.Attribute.Component<"utilities.link", false>
+    subtitle: Schema.Attribute.Text
+    title: Schema.Attribute.String
+    titleAccent: Schema.Attribute.String
+    veteranBadge: Schema.Attribute.String
+    veteranLink: Schema.Attribute.Component<"utilities.link", false>
+    veteranText: Schema.Attribute.Text
+    veteranTitle: Schema.Attribute.String
+  }
+}
+
 export interface SectionsHero extends Struct.ComponentSchema {
   collectionName: "components_sections_heroes"
   info: {
@@ -535,6 +555,7 @@ declare module "@strapi/strapi" {
       "sections.features-list": SectionsFeaturesList
       "sections.heading-with-cta-button": SectionsHeadingWithCtaButton
       "sections.hero": SectionsHero
+      "sections.home-hero": SectionsHomeHero
       "sections.image-with-cta-button": SectionsImageWithCtaButton
       "sections.statistics": SectionsStatistics
       "seo-utilities.seo": SeoUtilitiesSeo

@@ -1,0 +1,48 @@
+{
+  "collectionName": "components_sections_home_heroes",
+  "info": {
+    "displayName": "HomeHero",
+    "description": "ЛінОк homepage hero: headline + CTAs and the veteran-program card."
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "titleAccent": {
+      "type": "string"
+    },
+    "subtitle": {
+      "type": "text"
+    },
+    "primaryLink": {
+      "type": "component",
+      "component": "utilities.link",
+      "repeatable": false
+    },
+    "secondaryLink": {
+      "type": "component",
+      "component": "utilities.link",
+      "repeatable": false
+    },
+    "image": {
+      "type": "component",
+      "component": "utilities.basic-image",
+      "repeatable": false
+    },
+    "veteranBadge": {
+      "type": "string"
+    },
+    "veteranTitle": {
+      "type": "string"
+    },
+    "veteranText": {
+      "type": "text"
+    },
+    "veteranLink": {
+      "type": "component",
+      "component": "utilities.link",
+      "repeatable": false
+    }
+  }
+}
