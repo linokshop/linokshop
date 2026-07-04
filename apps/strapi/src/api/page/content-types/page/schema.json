@@ -71,6 +71,7 @@
         "sections.card-grid",
         "sections.news",
         "sections.catalog",
+        "sections.product",
         "sections.steps",
         "sections.text-block",
         "sections.heading-with-cta-button",

@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_elements_spec_rows",
+  "info": {
+    "displayName": "SpecRow",
+    "description": "A key–value specification row."
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string"
+    },
+    "value": {
+      "type": "string"
+    }
+  }
+}

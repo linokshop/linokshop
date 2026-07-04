@@ -1,5 +1,17 @@
 import type { Schema, Struct } from "@strapi/strapi"
 
+export interface ElementsSpecRow extends Struct.ComponentSchema {
+  collectionName: "components_elements_spec_rows"
+  info: {
+    description: "A key–value specification row."
+    displayName: "SpecRow"
+  }
+  attributes: {
+    label: Schema.Attribute.String
+    value: Schema.Attribute.String
+  }
+}
+
 export interface ElementsStepCard extends Struct.ComponentSchema {
   collectionName: "components_elements_step_cards"
   info: {
@@ -289,6 +301,32 @@ export interface SectionsNews extends Struct.ComponentSchema {
     theme: Schema.Attribute.Enumeration<["dark", "light"]> &
       Schema.Attribute.DefaultTo<"dark">
     title: Schema.Attribute.String
+  }
+}
+
+export interface SectionsProduct extends Struct.ComponentSchema {
+  collectionName: "components_sections_products"
+  info: {
+    description: "ЛінОк product detail: gallery, info, specs, related (visual)."
+    displayName: "Product"
+  }
+  attributes: {
+    availability: Schema.Attribute.String
+    badge: Schema.Attribute.String
+    category: Schema.Attribute.String
+    deliveryNotes: Schema.Attribute.Component<"utilities.text", true>
+    description: Schema.Attribute.Text
+    image: Schema.Attribute.Component<"utilities.basic-image", false>
+    name: Schema.Attribute.String
+    oldPrice: Schema.Attribute.String
+    optionLabel: Schema.Attribute.String
+    options: Schema.Attribute.Component<"utilities.text", true>
+    price: Schema.Attribute.String
+    rating: Schema.Attribute.String
+    related: Schema.Attribute.Component<"elements.product-card", true>
+    relatedTitle: Schema.Attribute.String
+    specs: Schema.Attribute.Component<"elements.spec-row", true>
+    veteranNote: Schema.Attribute.Text
   }
 }
 
@@ -747,6 +785,7 @@ declare module "@strapi/strapi" {
       "elements.info-card": ElementsInfoCard
       "elements.news-card": ElementsNewsCard
       "elements.product-card": ElementsProductCard
+      "elements.spec-row": ElementsSpecRow
       "elements.step-card": ElementsStepCard
       "elements.footer-item": ElementsFooterItem
       "forms.contact-form": FormsContactForm
@@ -767,6 +806,7 @@ declare module "@strapi/strapi" {
       "sections.catalog": SectionsCatalog
       "sections.home-promo": SectionsHomePromo
       "sections.news": SectionsNews
+      "sections.product": SectionsProduct
       "sections.steps": SectionsSteps
       "sections.text-block": SectionsTextBlock
       "sections.image-with-cta-button": SectionsImageWithCtaButton
