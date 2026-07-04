@@ -70,6 +70,7 @@
         "sections.home-promo",
         "sections.card-grid",
         "sections.news",
+        "sections.catalog",
         "sections.steps",
         "sections.text-block",
         "sections.heading-with-cta-button",

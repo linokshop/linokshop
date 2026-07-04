@@ -5,6 +5,7 @@ import StrapiNewsletterForm from "@/components/page-builder/components/forms/Str
 import StrapiAnimatedLogoRow from "@/components/page-builder/components/sections/StrapiAnimatedLogoRow"
 import StrapiCardGrid from "@/components/page-builder/components/sections/StrapiCardGrid"
 import StrapiCarousel from "@/components/page-builder/components/sections/StrapiCarousel"
+import StrapiCatalog from "@/components/page-builder/components/sections/StrapiCatalog"
 import StrapiCTABanner from "@/components/page-builder/components/sections/StrapiCTABanner"
 import StrapiFaq from "@/components/page-builder/components/sections/StrapiFaq"
 import { StrapiFeaturesList } from "@/components/page-builder/components/sections/StrapiFeaturesList"
@@ -50,6 +51,7 @@ export const PageContentComponents: Partial<
   "sections.home-products": StrapiHomeProducts,
   "sections.home-program": StrapiHomeProgram,
   "sections.card-grid": StrapiCardGrid,
+  "sections.catalog": StrapiCatalog,
   "sections.home-promo": StrapiHomePromo,
   "sections.news": StrapiNews,
   "sections.steps": StrapiSteps,

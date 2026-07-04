@@ -249,6 +249,21 @@ export interface SectionsHomeCategories extends Struct.ComponentSchema {
   }
 }
 
+export interface SectionsCatalog extends Struct.ComponentSchema {
+  collectionName: "components_sections_catalogs"
+  info: {
+    description: "ЛінОк catalog: filter sidebar + product grid (visual)."
+    displayName: "Catalog"
+  }
+  attributes: {
+    brands: Schema.Attribute.Component<"utilities.text", true>
+    categories: Schema.Attribute.Component<"utilities.text", true>
+    products: Schema.Attribute.Component<"elements.product-card", true>
+    resultsLabel: Schema.Attribute.String
+    title: Schema.Attribute.String
+  }
+}
+
 export interface SectionsCardGrid extends Struct.ComponentSchema {
   collectionName: "components_sections_card_grids"
   info: {
@@ -749,6 +764,7 @@ declare module "@strapi/strapi" {
       "sections.home-products": SectionsHomeProducts
       "sections.home-program": SectionsHomeProgram
       "sections.card-grid": SectionsCardGrid
+      "sections.catalog": SectionsCatalog
       "sections.home-promo": SectionsHomePromo
       "sections.news": SectionsNews
       "sections.steps": SectionsSteps
