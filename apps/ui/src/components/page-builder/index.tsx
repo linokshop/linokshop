@@ -10,6 +10,7 @@ import { StrapiFeaturesList } from "@/components/page-builder/components/section
 import { StrapiStatistics } from "@/components/page-builder/components/sections/StrapiFigures"
 import StrapiHeadingWithCTAButton from "@/components/page-builder/components/sections/StrapiHeadingWithCTAButton"
 import StrapiHero from "@/components/page-builder/components/sections/StrapiHero"
+import StrapiHomeCategories from "@/components/page-builder/components/sections/StrapiHomeCategories"
 import StrapiHomeHero from "@/components/page-builder/components/sections/StrapiHomeHero"
 import StrapiImageWithCTAButton from "@/components/page-builder/components/sections/StrapiImageWithCTAButton"
 import StrapiCkEditorContent from "@/components/page-builder/components/utilities/StrapiCkEditorContent"
@@ -37,6 +38,7 @@ export const PageContentComponents: Partial<
   "sections.carousel": StrapiCarousel,
   "sections.heading-with-cta-button": StrapiHeadingWithCTAButton,
   "sections.hero": StrapiHero,
+  "sections.home-categories": StrapiHomeCategories,
   "sections.home-hero": StrapiHomeHero,
   "sections.image-with-cta-button": StrapiImageWithCTAButton,
   "sections.statistics": StrapiStatistics,

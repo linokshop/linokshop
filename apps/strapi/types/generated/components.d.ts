@@ -1,5 +1,19 @@
 import type { Schema, Struct } from "@strapi/strapi"
 
+export interface ElementsCategoryCard extends Struct.ComponentSchema {
+  collectionName: "components_elements_category_cards"
+  info: {
+    description: "A single category tile: image, label and item count."
+    displayName: "CategoryCard"
+  }
+  attributes: {
+    count: Schema.Attribute.String
+    image: Schema.Attribute.Component<"utilities.basic-image", false>
+    label: Schema.Attribute.String
+    link: Schema.Attribute.Component<"utilities.link", false>
+  }
+}
+
 export interface ElementsFooterItem extends Struct.ComponentSchema {
   collectionName: "components_elements_footer_items"
   info: {
@@ -160,6 +174,18 @@ export interface SectionsHeadingWithCtaButton extends Struct.ComponentSchema {
     cta: Schema.Attribute.Component<"utilities.link", false>
     subText: Schema.Attribute.String
     title: Schema.Attribute.String & Schema.Attribute.Required
+  }
+}
+
+export interface SectionsHomeCategories extends Struct.ComponentSchema {
+  collectionName: "components_sections_home_categories"
+  info: {
+    description: "ЛінОк homepage category grid."
+    displayName: "HomeCategories"
+  }
+  attributes: {
+    categories: Schema.Attribute.Component<"elements.category-card", true>
+    title: Schema.Attribute.String
   }
 }
 
@@ -544,6 +570,7 @@ export interface UtilitiesTipTapRichText extends Struct.ComponentSchema {
 declare module "@strapi/strapi" {
   export module Public {
     export interface ComponentSchemas {
+      "elements.category-card": ElementsCategoryCard
       "elements.footer-item": ElementsFooterItem
       "forms.contact-form": FormsContactForm
       "forms.newsletter-form": FormsNewsletterForm
@@ -555,6 +582,7 @@ declare module "@strapi/strapi" {
       "sections.features-list": SectionsFeaturesList
       "sections.heading-with-cta-button": SectionsHeadingWithCtaButton
       "sections.hero": SectionsHero
+      "sections.home-categories": SectionsHomeCategories
       "sections.home-hero": SectionsHomeHero
       "sections.image-with-cta-button": SectionsImageWithCtaButton
       "sections.statistics": SectionsStatistics

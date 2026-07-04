@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_sections_home_categories",
+  "info": {
+    "displayName": "HomeCategories",
+    "description": "ЛінОк homepage category grid."
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "categories": {
+      "type": "component",
+      "component": "elements.category-card",
+      "repeatable": true
+    }
+  }
+}
