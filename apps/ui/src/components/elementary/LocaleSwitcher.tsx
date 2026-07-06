@@ -17,7 +17,6 @@ import { routing, usePathname, useRouter } from "@/lib/navigation"
 
 const localeTranslation: Record<Locale, string> = {
   uk: "Українська",
-  ru: "Русский",
   en: "English",
 }
 

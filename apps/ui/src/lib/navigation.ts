@@ -7,7 +7,7 @@ import { getEnvVar } from "@/lib/env-vars"
 
 export const routing = defineRouting({
   // A list of all locales that are supported
-  locales: ["en", "ru", "uk"],
+  locales: ["en", "uk"],
 
   // Used when no locale matches
   defaultLocale: "uk",
