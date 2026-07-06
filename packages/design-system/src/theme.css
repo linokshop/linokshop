@@ -47,11 +47,9 @@
   --color-ring: oklch(0.708 0 0);
 
   /* Tailwind v4 config */
-  /* ЛінОк brand fonts (loaded via next/font in apps/ui/src/lib/fonts.ts). */
-  --font-sans: var(--ff-golos), sans-serif;
-  --font-golos: var(--ff-golos), sans-serif;
-  --font-oswald: var(--ff-oswald), sans-serif;
-  --font-bitter: var(--ff-bitter), serif;
+  /* Brand fonts (--font-sans/golos/oswald/bitter) live in the `@theme inline`
+     block below: they reference next/font runtime vars (--ff-*), which Tailwind
+     only inlines correctly from an inline theme. */
   --font-roboto: "Roboto", sans-serif;
   --color-red-50: oklch(0.971 0.013 17.38);
   --color-red-100: oklch(0.936 0.032 17.717);
@@ -474,4 +472,15 @@
 
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
+}
+
+/* Brand fonts must be `inline`: their values reference next/font runtime CSS
+   variables (--ff-golos/oswald/bitter set on <body>). With `inline`, Tailwind
+   emits e.g. `.font-oswald { font-family: var(--ff-oswald), sans-serif }`
+   directly, instead of an unresolved `--font-oswald` that never reaches :root. */
+@theme inline {
+  --font-sans: var(--ff-golos), sans-serif;
+  --font-golos: var(--ff-golos), sans-serif;
+  --font-oswald: var(--ff-oswald), sans-serif;
+  --font-bitter: var(--ff-bitter), serif;
 }

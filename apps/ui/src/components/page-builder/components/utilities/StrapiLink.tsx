@@ -9,6 +9,8 @@ export interface StrapiLinkProps {
   readonly children?: React.ReactNode
   readonly className?: string
   readonly onClick?: () => void
+  /** Render as a plain text link, without shadcn button styles. */
+  readonly unstyled?: boolean
 }
 const getStrapiLinkHref = (
   component?: Data.Component<"utilities.link"> | null
@@ -30,6 +32,7 @@ export function StrapiLink({
   children,
   className,
   onClick,
+  unstyled = false,
 }: StrapiLinkProps) {
   if (component == null) {
     return null
@@ -57,6 +60,7 @@ export function StrapiLink({
       href={linkHref}
       openInNewTab={newTab ?? false}
       disableAnimations={disableAnimations ?? false}
+      unstyled={unstyled}
       className={className}
       onClick={onClick}
       startAdornment={

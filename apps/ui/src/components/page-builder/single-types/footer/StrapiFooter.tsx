@@ -3,6 +3,7 @@ import "server-only"
 import type { Locale } from "next-intl"
 import { use } from "react"
 
+import { PromoRibbon } from "@/components/page-builder/components/elements/PromoRibbon"
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
 import StrapiLink from "@/components/page-builder/components/utilities/StrapiLink"
 import { fetchFooter } from "@/lib/strapi-api/content/server"
@@ -75,21 +76,11 @@ export function StrapiFooter({ locale }: { readonly locale: Locale }) {
   return (
     <footer className="font-golos bg-brand-green text-brand-subtle">
       {/* Veteran program ribbon */}
-      {ribbonLink ? (
-        <StrapiLink
-          component={ribbonLink}
-          className="border-brand-orange bg-brand-steel flex items-center justify-center gap-3.5 border-b-[3px] px-4 py-4 text-center text-white no-underline sm:px-10"
-        >
-          {ribbonText ? (
-            <span className="font-oswald text-sm tracking-wide uppercase">
-              {ribbonText}
-            </span>
-          ) : null}
-          <span className="font-oswald text-brand-orange text-sm font-semibold tracking-wide uppercase">
-            {ribbonLink.label}
-          </span>
-        </StrapiLink>
-      ) : null}
+      <PromoRibbon
+        component={ribbonLink}
+        leadText={ribbonText}
+        variant="footer"
+      />
 
       {/* Columns */}
       <div className="grid grid-cols-1 gap-10 px-4 pt-13 pb-10 sm:grid-cols-2 sm:px-10 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
@@ -135,7 +126,8 @@ export function StrapiFooter({ locale }: { readonly locale: Locale }) {
                 <StrapiLink
                   key={linkItem.id}
                   component={linkItem}
-                  className="text-brand-subtle hover:text-brand-cream no-underline transition-colors"
+                  unstyled
+                  className="text-brand-subtle hover:text-brand-cream block transition-colors"
                 />
               ))}
             </div>

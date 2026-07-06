@@ -3,10 +3,13 @@ import "server-only"
 import type { Data } from "@repo/strapi-types"
 import type { Locale } from "next-intl"
 
-import LocaleSwitcher from "@/components/elementary/LocaleSwitcher"
+import { PromoRibbon } from "@/components/page-builder/components/elements/PromoRibbon"
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
 import StrapiLink from "@/components/page-builder/components/utilities/StrapiLink"
+// Language switcher temporarily disabled — restore once we decide on English.
+// import HeaderLocaleToggle from "@/components/page-builder/single-types/header/HeaderLocaleToggle"
 import HeaderMobileMenu from "@/components/page-builder/single-types/header/HeaderMobileMenu"
+import HeaderNavLink from "@/components/page-builder/single-types/header/HeaderNavLink"
 import { Link } from "@/lib/navigation"
 
 export function HeaderInner({
@@ -30,28 +33,17 @@ export function HeaderInner({
   return (
     <header className="font-golos sticky top-0 z-50">
       {/* Tier 1 — «Ветеранський спорт» program strip */}
-      {topStripLink ? (
-        <StrapiLink
-          component={topStripLink}
-          className="bg-brand-steel flex items-center justify-center gap-2.5 px-4 py-2.5 text-center no-underline sm:px-10"
-        >
-          <span className="bg-brand-orange size-2 shrink-0 rounded-full" />
-          {topStripText ? (
-            <span className="font-oswald text-brand-cream hidden text-[13.5px] tracking-wide uppercase sm:inline">
-              {topStripText}
-            </span>
-          ) : null}
-          <span className="font-oswald text-brand-orange text-xs font-semibold tracking-wide uppercase sm:text-[13.5px]">
-            {topStripLink.label}
-          </span>
-        </StrapiLink>
-      ) : null}
+      <PromoRibbon
+        component={topStripLink}
+        leadText={topStripText}
+        variant="header"
+      />
 
       {/* Tier 2 — main bar */}
       <div className="bg-brand-green border-brand-border relative border-b">
-        <div className="flex items-center justify-between px-4 py-4 sm:px-6 lg:px-10">
+        <div className="flex items-center justify-between px-3 py-3 min-[400px]:px-4.5 min-[900px]:px-10 min-[900px]:py-4">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3">
+          <Link href="/" className="flex items-center gap-3.25">
             {logoImage?.image ? (
               <StrapiBasicImage
                 component={logoImage.image}
@@ -63,11 +55,11 @@ export function HeaderInner({
               <span className="bg-brand-orange size-12.5 shrink-0 rounded-full" />
             )}
             <span className="flex flex-col leading-none">
-              <span className="font-oswald text-brand-cream text-[21px] font-semibold tracking-wide sm:text-[25px]">
+              <span className="font-oswald text-brand-cream text-[21px] font-semibold tracking-[0.02em] min-[600px]:text-[25px]">
                 {logoTitle}
               </span>
               {logoSubtitle ? (
-                <span className="font-oswald text-brand-muted mt-1 hidden text-[10.5px] tracking-[0.16em] uppercase sm:block">
+                <span className="font-oswald text-brand-muted mt-1 hidden text-[10.5px] tracking-[0.16em] uppercase min-[600px]:block">
                   {logoSubtitle}
                 </span>
               ) : null}
@@ -75,34 +67,34 @@ export function HeaderInner({
           </Link>
 
           {/* Desktop navigation */}
-          <nav className="hidden items-center gap-6 lg:flex">
+          <nav className="hidden items-center gap-6 min-[1200px]:flex">
             {navbarItems?.map((item) =>
               item.link ? (
-                <StrapiLink
-                  key={item.id}
-                  component={item.link}
-                  className="font-oswald text-brand-nav hover:text-brand-cream text-sm tracking-wide uppercase no-underline transition-colors"
-                />
+                <HeaderNavLink key={item.id} component={item.link} />
               ) : null
             )}
             {veteranLink ? (
               <StrapiLink
                 component={veteranLink}
-                className="font-oswald text-brand-orange text-sm font-medium tracking-wide uppercase no-underline"
+                unstyled
+                className="font-oswald text-brand-orange hover:text-brand-bronze inline-flex items-center py-1 text-sm font-medium tracking-wider uppercase transition-colors"
               />
             ) : null}
           </nav>
 
           {/* Right side — language, cart, burger */}
-          <div className="flex items-center gap-4">
-            <div className="hidden sm:block">
-              <LocaleSwitcher locale={locale} />
+          <div className="flex items-center gap-2.5 min-[600px]:gap-4">
+            {/* Language switcher — temporarily hidden until English is decided.
+            <div className="hidden min-[600px]:block">
+              <HeaderLocaleToggle locale={locale} />
             </div>
+            */}
             {primaryButtons?.map((button) => (
               <StrapiLink
                 key={button.id}
                 component={button}
-                className="bg-brand-bronze font-oswald shrink-0 rounded-sm px-4 py-2.5 text-sm font-medium tracking-wide text-white uppercase no-underline"
+                unstyled
+                className="bg-brand-bronze font-oswald inline-flex shrink-0 items-center rounded-sm px-3 py-2.5 text-sm font-medium tracking-[0.04em] text-white uppercase transition-all hover:brightness-110 min-[600px]:px-4.5"
               />
             ))}
             <HeaderMobileMenu

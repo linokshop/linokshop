@@ -16,6 +16,12 @@ export interface AppLinkProps
   readonly endAdornment?: React.ReactNode
   readonly disableAnimations?: boolean
   readonly disableInvertOnDark?: boolean
+  /**
+   * Render a plain anchor without the shadcn button styles (buttonVariants).
+   * Use for text links so they don't inherit `h-8`, `whitespace-nowrap`,
+   * `rounded-md`, `hover:underline`, etc. `group` is kept so group-hover works.
+   */
+  readonly unstyled?: boolean
 }
 
 export function AppLink({
@@ -29,13 +35,16 @@ export function AppLink({
   size = "default",
   disableAnimations = false,
   disableInvertOnDark = false,
+  unstyled = false,
   ...props
 }: AppLinkProps) {
-  const combinedClassName = cn(
-    "group flex flex-row items-center gap-2",
-    buttonVariants({ variant, size }),
-    className
-  )
+  const combinedClassName = unstyled
+    ? cn("group", className)
+    : cn(
+        "group flex flex-row items-center gap-2",
+        buttonVariants({ variant, size }),
+        className
+      )
 
   const formattedHref = formatHref(href)
   const sharedAdornmentClasses =
