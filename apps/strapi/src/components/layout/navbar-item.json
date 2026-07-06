@@ -11,16 +11,6 @@
     },
     "link": {
       "type": "component",
-      "conditions": {
-        "visible": {
-          "==": [
-            {
-              "var": "isCategoryLink"
-            },
-            true
-          ]
-        }
-      },
       "component": "utilities.link",
       "repeatable": false
     },
