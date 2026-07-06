@@ -649,6 +649,114 @@ export interface ApiHeaderHeader extends Struct.SingleTypeSchema {
   }
 }
 
+export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
+  collectionName: "categories"
+  info: {
+    description: "Product category for the ЛінОк catalog."
+    displayName: "Category"
+    pluralName: "categories"
+    singularName: "category"
+  }
+  options: {
+    draftAndPublish: true
+  }
+  pluginOptions: {
+    i18n: {
+      localized: true
+    }
+  }
+  attributes: {
+    createdAt: Schema.Attribute.DateTime
+    createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
+      Schema.Attribute.Private
+    image: Schema.Attribute.Media<"images">
+    locale: Schema.Attribute.String
+    localizations: Schema.Attribute.Relation<
+      "oneToMany",
+      "api::category.category"
+    >
+    name: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true
+        }
+      }>
+    products: Schema.Attribute.Relation<"oneToMany", "api::product.product">
+    publishedAt: Schema.Attribute.DateTime
+    slug: Schema.Attribute.UID<"name">
+    updatedAt: Schema.Attribute.DateTime
+    updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
+      Schema.Attribute.Private
+  }
+}
+
+export interface ApiProductProduct extends Struct.CollectionTypeSchema {
+  collectionName: "products"
+  info: {
+    description: "A ЛінОк catalog product."
+    displayName: "Product"
+    pluralName: "products"
+    singularName: "product"
+  }
+  options: {
+    draftAndPublish: true
+  }
+  pluginOptions: {
+    i18n: {
+      localized: true
+    }
+  }
+  attributes: {
+    badge: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true
+        }
+      }>
+    brand: Schema.Attribute.String
+    category: Schema.Attribute.Relation<"manyToOne", "api::category.category">
+    createdAt: Schema.Attribute.DateTime
+    createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
+      Schema.Attribute.Private
+    description: Schema.Attribute.Text &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true
+        }
+      }>
+    images: Schema.Attribute.Media<"images", true>
+    inStock: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>
+    locale: Schema.Attribute.String
+    localizations: Schema.Attribute.Relation<
+      "oneToMany",
+      "api::product.product"
+    >
+    name: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true
+        }
+      }>
+    oldPrice: Schema.Attribute.Decimal
+    options: Schema.Attribute.Component<"utilities.text", true>
+    price: Schema.Attribute.Decimal & Schema.Attribute.Required
+    publishedAt: Schema.Attribute.DateTime
+    rating: Schema.Attribute.Decimal
+    slug: Schema.Attribute.UID<"name">
+    specs: Schema.Attribute.Component<"elements.spec-row", true> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true
+        }
+      }>
+    updatedAt: Schema.Attribute.DateTime
+    updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
+      Schema.Attribute.Private
+  }
+}
+
 export interface ApiPagePage extends Struct.CollectionTypeSchema {
   collectionName: "pages"
   info: {
@@ -1308,10 +1416,12 @@ declare module "@strapi/strapi" {
       "admin::transfer-token": AdminTransferToken
       "admin::transfer-token-permission": AdminTransferTokenPermission
       "admin::user": AdminUser
+      "api::category.category": ApiCategoryCategory
       "api::footer.footer": ApiFooterFooter
       "api::hierarchy.hierarchy": ApiHierarchyHierarchy
       "api::header.header": ApiHeaderHeader
       "api::page.page": ApiPagePage
+      "api::product.product": ApiProductProduct
       "api::redirect.redirect": ApiRedirectRedirect
       "api::subscriber.subscriber": ApiSubscriberSubscriber
       "plugin::content-releases.release": PluginContentReleasesRelease

@@ -210,3 +210,94 @@ export async function fetchRedirects() {
     throw e instanceof Error ? e : new Error(String(e))
   }
 }
+
+// ------ Product / Category fetching functions
+
+export async function fetchProducts(locale: Locale, pageSize = 100) {
+  try {
+    return await PublicStrapiClient.fetchMany(
+      "api::product.product",
+      {
+        locale,
+        status: "published",
+        populate: { images: true, category: true },
+        pagination: { page: 1, pageSize },
+      },
+      {
+        next: {
+          revalidate: 300,
+          tags: [strapiCacheTag("api::product.product")],
+        },
+      }
+    )
+  } catch (e: unknown) {
+    logNonBlockingError({
+      message: `Error fetching products for locale '${locale}'`,
+      error: {
+        error: e instanceof Error ? e.message : String(e),
+        stack: e instanceof Error ? e.stack : undefined,
+      },
+    })
+  }
+}
+
+export async function fetchProductBySlug(slug: string, locale: Locale) {
+  try {
+    return await PublicStrapiClient.fetchOneBySlug(
+      "api::product.product",
+      slug,
+      {
+        locale,
+        status: "published",
+        populate: {
+          images: true,
+          category: true,
+          specs: true,
+          options: true,
+        },
+      },
+      {
+        next: {
+          revalidate: 300,
+          tags: [strapiCacheTag("api::product.product")],
+        },
+      }
+    )
+  } catch (e: unknown) {
+    logNonBlockingError({
+      message: `Error fetching product '${slug}' for locale '${locale}'`,
+      error: {
+        error: e instanceof Error ? e.message : String(e),
+        stack: e instanceof Error ? e.stack : undefined,
+      },
+    })
+  }
+}
+
+export async function fetchCategories(locale: Locale) {
+  try {
+    return await PublicStrapiClient.fetchMany(
+      "api::category.category",
+      {
+        locale,
+        status: "published",
+        populate: { image: true },
+        pagination: { page: 1, pageSize: 100 },
+      },
+      {
+        next: {
+          revalidate: 600,
+          tags: [strapiCacheTag("api::category.category")],
+        },
+      }
+    )
+  } catch (e: unknown) {
+    logNonBlockingError({
+      message: `Error fetching categories for locale '${locale}'`,
+      error: {
+        error: e instanceof Error ? e.message : String(e),
+        stack: e instanceof Error ? e.stack : undefined,
+      },
+    })
+  }
+}
