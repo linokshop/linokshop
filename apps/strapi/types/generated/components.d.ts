@@ -72,6 +72,20 @@ export interface ElementsNewsCard extends Struct.ComponentSchema {
   }
 }
 
+export interface ElementsCartItem extends Struct.ComponentSchema {
+  collectionName: "components_elements_cart_items"
+  info: {
+    description: "A single cart line: image, name, option and price."
+    displayName: "CartItem"
+  }
+  attributes: {
+    image: Schema.Attribute.Component<"utilities.basic-image", false>
+    name: Schema.Attribute.String
+    option: Schema.Attribute.String
+    price: Schema.Attribute.String
+  }
+}
+
 export interface ElementsCategoryCard extends Struct.ComponentSchema {
   collectionName: "components_elements_category_cards"
   info: {
@@ -273,6 +287,22 @@ export interface SectionsCatalog extends Struct.ComponentSchema {
     products: Schema.Attribute.Component<"elements.product-card", true>
     resultsLabel: Schema.Attribute.String
     title: Schema.Attribute.String
+  }
+}
+
+export interface SectionsCart extends Struct.ComponentSchema {
+  collectionName: "components_sections_carts"
+  info: {
+    description: "ЛінОк cart / checkout: items, recipient form, payment, summary (visual)."
+    displayName: "Cart"
+  }
+  attributes: {
+    delivery: Schema.Attribute.String
+    discount: Schema.Attribute.String
+    items: Schema.Attribute.Component<"elements.cart-item", true>
+    itemsTotal: Schema.Attribute.String
+    title: Schema.Attribute.String
+    total: Schema.Attribute.String
   }
 }
 
@@ -781,6 +811,7 @@ export interface UtilitiesTipTapRichText extends Struct.ComponentSchema {
 declare module "@strapi/strapi" {
   export module Public {
     export interface ComponentSchemas {
+      "elements.cart-item": ElementsCartItem
       "elements.category-card": ElementsCategoryCard
       "elements.info-card": ElementsInfoCard
       "elements.news-card": ElementsNewsCard
@@ -803,6 +834,7 @@ declare module "@strapi/strapi" {
       "sections.home-products": SectionsHomeProducts
       "sections.home-program": SectionsHomeProgram
       "sections.card-grid": SectionsCardGrid
+      "sections.cart": SectionsCart
       "sections.catalog": SectionsCatalog
       "sections.home-promo": SectionsHomePromo
       "sections.news": SectionsNews

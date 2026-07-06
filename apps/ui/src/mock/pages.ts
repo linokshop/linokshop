@@ -2,6 +2,7 @@ import { ROOT_PAGE_PATH } from "@repo/shared-data"
 import type { Data } from "@repo/strapi-types"
 
 import { mockAboutPage } from "@/mock/about-page"
+import { mockCartPage } from "@/mock/cart-page"
 import { mockCatalogPage } from "@/mock/catalog-page"
 import { mockContactsPage } from "@/mock/contacts-page"
 import { mockDeliveryPage } from "@/mock/delivery-page"
@@ -26,6 +27,7 @@ export const mockPages: Record<string, Data.ContentType<"api::page.page">> = {
   "/promos": mockPromosPage,
   "/catalog": mockCatalogPage,
   "/product": mockProductPage,
+  "/cart": mockCartPage,
 }
 
 export const getMockPage = (

@@ -72,6 +72,7 @@
         "sections.news",
         "sections.catalog",
         "sections.product",
+        "sections.cart",
         "sections.steps",
         "sections.text-block",
         "sections.heading-with-cta-button",
