@@ -96,6 +96,16 @@
       "component": "utilities.link",
       "repeatable": false
     },
+    "ribbonImage": {
+      "type": "component",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "utilities.basic-image",
+      "repeatable": false
+    },
     "contactTitle": {
       "type": "string",
       "pluginOptions": {

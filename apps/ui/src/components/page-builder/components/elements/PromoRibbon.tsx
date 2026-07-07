@@ -1,9 +1,11 @@
 import type { Data } from "@repo/strapi-types"
 
+import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
 import StrapiLink from "@/components/page-builder/components/utilities/StrapiLink"
 import { cn } from "@/lib/styles"
 
 type LinkComponent = Data.Component<"utilities.link">
+type ImageComponent = Data.Component<"utilities.basic-image">
 
 /**
  * Full-width veteran-program CTA strip shared by the header and footer.
@@ -23,8 +25,8 @@ const VARIANTS = {
   },
   footer: {
     container:
-      "bg-brand-steel border-brand-orange border-b-[3px] px-4 py-4 sm:px-10",
-    lead: "text-white text-sm",
+      "bg-brand-steel border-brand-orange border-b-[3px] px-5 py-3.5 min-[900px]:px-10 min-[900px]:py-4",
+    lead: "text-white text-[13px] min-[900px]:text-[15px]",
     label: "text-brand-orange text-sm",
     withDot: false,
     withArrow: false,
@@ -35,12 +37,15 @@ interface PromoRibbonProps {
   readonly component?: LinkComponent | null
   readonly leadText?: string | null
   readonly variant?: keyof typeof VARIANTS
+  /** Optional leading image (footer variant shows a veteran photo). */
+  readonly image?: ImageComponent | null
 }
 
 export function PromoRibbon({
   component,
   leadText,
   variant = "header",
+  image,
 }: PromoRibbonProps) {
   if (component == null) {
     return null
@@ -58,7 +63,14 @@ export function PromoRibbon({
         v.container
       )}
     >
-      {v.withDot ? (
+      {image?.media ? (
+        <StrapiBasicImage
+          component={image}
+          width={42}
+          height={42}
+          className="mr-3.5 inline-block size-10.5 shrink-0 rounded-lg object-cover [object-position:center_22%] align-middle"
+        />
+      ) : v.withDot ? (
         <span className="bg-brand-orange mr-2.5 inline-block size-2 rounded-full align-middle" />
       ) : null}
       {leadText ? (

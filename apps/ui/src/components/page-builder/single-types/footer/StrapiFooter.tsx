@@ -7,7 +7,6 @@ import { PromoRibbon } from "@/components/page-builder/components/elements/Promo
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
 import StrapiLink from "@/components/page-builder/components/utilities/StrapiLink"
 import { fetchFooter } from "@/lib/strapi-api/content/server"
-import { mockFooter } from "@/mock/footer"
 
 type MaybeString = string | null | undefined
 
@@ -51,9 +50,11 @@ function FooterContacts({
 
 export function StrapiFooter({ locale }: { readonly locale: Locale }) {
   const response = use(fetchFooter(locale))
-  // Fall back to mock content while the Strapi footer is not yet populated.
-  // Remove the mock import once the CMS content exists.
-  const footer = response?.data ?? mockFooter
+  // Footer content now lives in Strapi (no mock fallback).
+  const footer = response?.data
+  if (!footer) {
+    return null
+  }
 
   const now = new Date()
   const currentYear = now.getFullYear()
@@ -64,6 +65,7 @@ export function StrapiFooter({ locale }: { readonly locale: Locale }) {
     slogan,
     ribbonText,
     ribbonLink,
+    ribbonImage,
     sections,
     contactTitle,
     contactAddress,
@@ -79,11 +81,12 @@ export function StrapiFooter({ locale }: { readonly locale: Locale }) {
       <PromoRibbon
         component={ribbonLink}
         leadText={ribbonText}
+        image={ribbonImage}
         variant="footer"
       />
 
       {/* Columns */}
-      <div className="grid grid-cols-1 gap-10 px-4 pt-13 pb-10 sm:grid-cols-2 sm:px-10 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
+      <div className="grid grid-cols-1 gap-7 px-6 pt-10 pb-8 min-[600px]:grid-cols-2 min-[600px]:gap-8 min-[900px]:grid-cols-[1.4fr_1fr_1fr_1.2fr] min-[900px]:gap-10 min-[900px]:px-10 min-[900px]:pt-13.5 min-[900px]:pb-10">
         {/* Brand */}
         <div>
           <div className="mb-4 flex items-center gap-3">
@@ -109,7 +112,7 @@ export function StrapiFooter({ locale }: { readonly locale: Locale }) {
             </p>
           ) : null}
           {slogan ? (
-            <div className="font-oswald text-brand-subtle text-sm tracking-wider uppercase">
+            <div className="font-oswald text-brand-gold text-[13px] tracking-[0.06em] uppercase">
               {slogan}
             </div>
           ) : null}
@@ -121,7 +124,7 @@ export function StrapiFooter({ locale }: { readonly locale: Locale }) {
             <div className="font-oswald text-brand-sand mb-4 text-[13px] tracking-widest uppercase">
               {section.title}
             </div>
-            <div className="flex flex-col gap-2.5 text-sm">
+            <div className="flex flex-col gap-2.75 text-sm">
               {section.links?.map((linkItem) => (
                 <StrapiLink
                   key={linkItem.id}
@@ -144,7 +147,7 @@ export function StrapiFooter({ locale }: { readonly locale: Locale }) {
       </div>
 
       {/* Bottom bar */}
-      <div className="border-brand-border text-brand-muted flex flex-col items-center justify-between gap-2 border-t px-4 py-5 text-center text-[13px] sm:flex-row sm:px-10 sm:text-left">
+      <div className="border-brand-border text-brand-muted flex flex-col items-center justify-between gap-2 border-t px-6 py-4.5 text-center text-[13px] min-[900px]:flex-row min-[900px]:px-10 min-[900px]:py-5 min-[900px]:text-left">
         {copyRight ? (
           <span>{copyRight.split("{YEAR}").join(String(currentYear))}</span>
         ) : null}

@@ -31,16 +31,16 @@ export function HeaderInner({
   } = headerData ?? {}
 
   return (
-    <header className="font-golos sticky top-0 z-50">
-      {/* Tier 1 — «Ветеранський спорт» program strip */}
+    <>
+      {/* Tier 1 — «Ветеранський спорт» program strip (scrolls away) */}
       <PromoRibbon
         component={topStripLink}
         leadText={topStripText}
         variant="header"
       />
 
-      {/* Tier 2 — main bar */}
-      <div className="bg-brand-green border-brand-border relative border-b">
+      {/* Tier 2 — main bar (sticky) */}
+      <header className="font-golos bg-brand-green border-brand-border sticky top-0 z-50 border-b shadow-[0_16px_40px_-4px_rgba(0,0,0,0.8)]">
         <div className="flex items-center justify-between px-3 py-3 min-[400px]:px-4.5 min-[900px]:px-10 min-[900px]:py-4">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3.25">
@@ -104,8 +104,8 @@ export function HeaderInner({
             />
           </div>
         </div>
-      </div>
-    </header>
+      </header>
+    </>
   )
 }
 HeaderInner.displayName = "HeaderInner"

@@ -154,6 +154,7 @@ export async function fetchFooter(locale: Locale) {
           logoImage: "smart",
           links: "smart",
           ribbonLink: "smart",
+          ribbonImage: "smart",
         },
       },
       {

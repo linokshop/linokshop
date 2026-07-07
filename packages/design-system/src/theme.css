@@ -310,6 +310,7 @@
   --color-brand-nav: #cbd2c4; /* navigation text */
   --color-brand-muted: #7e9a85; /* muted green (subtitles) */
   --color-brand-subtle: #a9ad96; /* muted labels (lang switch) */
+  --color-brand-gold: #cdbf86; /* muted gold — footer slogan */
 
   --spacing: 0.25rem;
   --breakpoint-sm: 40rem;

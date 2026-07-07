@@ -513,6 +513,12 @@ export interface ApiFooterFooter extends Struct.SingleTypeSchema {
         }
       }>
     publishedAt: Schema.Attribute.DateTime
+    ribbonImage: Schema.Attribute.Component<"utilities.basic-image", false> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true
+        }
+      }>
     ribbonLink: Schema.Attribute.Component<"utilities.link", false> &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
