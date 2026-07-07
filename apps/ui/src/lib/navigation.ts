@@ -13,6 +13,10 @@ export const routing = defineRouting({
   defaultLocale: "uk",
 
   localePrefix: "as-needed",
+
+  // Don't auto-redirect "/" to a browser/cookie-detected locale (e.g. "/en").
+  // The site is Ukrainian-first; "/" always serves the default (uk).
+  localeDetection: false,
 })
 
 // https://next-intl-docs.vercel.app/docs/routing/navigation
