@@ -4,7 +4,8 @@ import type { Data } from "@repo/strapi-types"
 
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
 import StrapiLink from "@/components/page-builder/components/utilities/StrapiLink"
-import Typography from "@/components/typography"
+import { SECTION_X_PADDING } from "@/lib/layout"
+import { cn } from "@/lib/styles"
 import type { PageBuilderComponentProps } from "@/types/general"
 
 export function StrapiHomeProgram({
@@ -12,70 +13,79 @@ export function StrapiHomeProgram({
 }: PageBuilderComponentProps & {
   readonly component: Data.Component<"sections.home-program">
 }) {
-  const { badge, title, text, checklist, link, image } = component
+  const { badge, title, titleAccent, text, checklist, link, image } = component
 
   return (
-    <section className="bg-brand-green font-golos">
-      <div className="px-4 py-12 sm:px-6 lg:px-10">
-        <div className="bg-brand-navy grid overflow-hidden rounded-sm lg:grid-cols-[0.82fr_1.18fr]">
-          {/* Veteran photo */}
-          <div className="relative min-h-64 lg:min-h-full">
-            {image ? (
-              <StrapiBasicImage
-                component={image}
-                fill
-                className="object-cover"
-              />
-            ) : (
-              <div className="bg-brand-steel absolute inset-0" />
-            )}
-          </div>
+    <section className="bg-brand-steel font-golos grid text-white min-[900px]:grid-cols-[0.82fr_1.18fr]">
+      {/* Veteran photo — bleeds to the left edge, no card, no gap */}
+      <div className="bg-brand-navy relative min-h-75 min-[900px]:min-h-115">
+        {image?.media ? (
+          <StrapiBasicImage
+            component={image}
+            fill
+            sizes="(min-width: 900px) 42vw, 100vw"
+            // Faces sit high in these shots — centring would crop them off.
+            className="object-cover object-[center_28%]"
+          />
+        ) : null}
+      </div>
 
-          {/* Content */}
-          <div className="flex flex-col gap-5 p-8 lg:p-12">
-            {badge ? (
-              <span className="font-oswald bg-brand-orange text-brand-navy w-fit rounded-full px-3 py-1 text-xs font-semibold uppercase">
-                {badge}
-              </span>
-            ) : null}
-            {title ? (
-              <Typography
-                tag="h2"
-                className="font-oswald text-brand-cream text-3xl font-bold uppercase lg:text-4xl"
-              >
-                {title}
-              </Typography>
-            ) : null}
-            {text ? (
-              <Typography className="text-brand-nav max-w-xl text-base/7">
-                {text}
-              </Typography>
-            ) : null}
+      <div
+        className={cn(
+          SECTION_X_PADDING,
+          // The left padding is interior once the photo is beside us, so it can
+          // be wider than the page gutter; the right one stays on the shared
+          // vertical line with the header and the footer.
+          "flex flex-col justify-center py-11 min-[900px]:py-15 min-[900px]:pl-14"
+        )}
+      >
+        {badge ? (
+          <span className="font-oswald bg-brand-orange text-brand-navy mb-5.5 w-fit rounded px-4 py-2 text-[13px] font-semibold tracking-[0.06em] uppercase">
+            {badge}
+          </span>
+        ) : null}
 
-            {checklist?.length ? (
-              <ul className="grid list-none gap-3 sm:grid-cols-2">
-                {checklist.map((item) => (
-                  <li
-                    key={item.id}
-                    className="text-brand-nav flex items-start gap-2 text-sm"
-                  >
-                    <span className="text-brand-orange" aria-hidden>
-                      ✓
-                    </span>
-                    {item.text}
-                  </li>
-                ))}
-              </ul>
+        {title ? (
+          <h2 className="font-oswald mb-4.5 text-[34px] leading-[0.98] font-bold tracking-[0.01em] uppercase min-[600px]:text-[50px]">
+            {title}
+            {titleAccent ? (
+              <>
+                {" "}
+                <span className="text-brand-orange">{titleAccent}</span>
+              </>
             ) : null}
+          </h2>
+        ) : null}
 
-            {link ? (
-              <StrapiLink
-                component={link}
-                className="bg-brand-bronze font-oswald w-fit rounded-sm px-7 py-3.5 text-sm font-semibold tracking-wide text-white uppercase no-underline"
-              />
-            ) : null}
-          </div>
-        </div>
+        {text ? (
+          <p className="text-brand-mist mb-7 max-w-130 text-[17px] leading-[1.65]">
+            {text}
+          </p>
+        ) : null}
+
+        {checklist?.length ? (
+          <ul className="font-oswald mb-7.5 grid max-w-120 list-none grid-cols-1 gap-x-6.5 gap-y-3.5 text-sm tracking-[0.03em] uppercase min-[600px]:grid-cols-2">
+            {checklist.map((item) => (
+              <li key={item.id} className="flex items-center gap-2.5">
+                <span
+                  aria-hidden
+                  className="bg-brand-orange text-brand-navy flex size-5.5 shrink-0 items-center justify-center rounded-full text-[13px] font-extrabold"
+                >
+                  ✓
+                </span>
+                {item.text}
+              </li>
+            ))}
+          </ul>
+        ) : null}
+
+        {link ? (
+          <StrapiLink
+            component={link}
+            unstyled
+            className="bg-brand-orange text-brand-navy font-oswald w-fit rounded-[5px] px-8.5 py-4 text-base font-semibold tracking-[0.05em] uppercase transition-colors hover:bg-white"
+          />
+        ) : null}
       </div>
     </section>
   )

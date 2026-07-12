@@ -12,6 +12,9 @@
     "title": {
       "type": "string"
     },
+    "titleAccent": {
+      "type": "string"
+    },
     "text": {
       "type": "text"
     },

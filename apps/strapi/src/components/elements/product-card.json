@@ -9,6 +9,11 @@
     "badge": {
       "type": "string"
     },
+    "badgeColor": {
+      "type": "enumeration",
+      "enum": ["bronze", "sale", "stock"],
+      "default": "bronze"
+    },
     "category": {
       "type": "string"
     },

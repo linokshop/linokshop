@@ -310,7 +310,12 @@
   --color-brand-nav: #cbd2c4; /* navigation text */
   --color-brand-muted: #7e9a85; /* muted green (subtitles) */
   --color-brand-subtle: #a9ad96; /* muted labels (lang switch) */
-  --color-brand-gold: #cdbf86; /* muted gold — footer slogan */
+  --color-brand-gold: #cdbf86; /* muted gold — footer slogan, prices */
+  --color-brand-crimson: #7a2e2e; /* discount badge */
+  --color-brand-moss: #2f6b46; /* "in stock" badge */
+  --color-brand-faded: #6e7a6b; /* struck-through old price */
+  --color-brand-mist: #c2d2df; /* body text on the blue veteran sections */
+  --color-brand-peach: #fbe9d2; /* body text on the bronze promo band */
 
   --spacing: 0.25rem;
   --breakpoint-sm: 40rem;

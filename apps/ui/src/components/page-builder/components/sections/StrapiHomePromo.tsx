@@ -3,7 +3,8 @@ import "server-only"
 import type { Data } from "@repo/strapi-types"
 
 import StrapiLink from "@/components/page-builder/components/utilities/StrapiLink"
-import Typography from "@/components/typography"
+import { SECTION_X_PADDING } from "@/lib/layout"
+import { cn } from "@/lib/styles"
 import type { PageBuilderComponentProps } from "@/types/general"
 
 export function StrapiHomePromo({
@@ -13,30 +14,41 @@ export function StrapiHomePromo({
 }) {
   const { title, text, link } = component
 
-  return (
-    <section className="font-golos px-4 py-6 sm:px-6 lg:px-10">
-      <div className="bg-brand-bronze flex flex-col items-center justify-between gap-4 rounded-sm px-6 py-8 text-center sm:flex-row sm:text-left lg:px-12">
-        <div>
-          {title ? (
-            <Typography
-              tag="h2"
-              className="font-oswald text-2xl font-bold text-white uppercase lg:text-3xl"
-            >
-              {title}
-            </Typography>
-          ) : null}
-          {text ? (
-            <Typography className="mt-1 text-white/85">{text}</Typography>
-          ) : null}
-        </div>
-        {link ? (
-          <StrapiLink
-            component={link}
-            className="font-oswald bg-brand-navy shrink-0 rounded-sm px-7 py-3.5 text-sm font-semibold tracking-wide text-white uppercase no-underline"
-          />
+  // The whole band is one click target, so the CTA is a plain span inside it.
+  const body = (
+    <>
+      <span className="block">
+        {title ? (
+          <span className="font-oswald block text-2xl font-bold tracking-[0.02em] text-white uppercase min-[600px]:text-[32px]">
+            {title}
+          </span>
         ) : null}
-      </div>
-    </section>
+        {text ? (
+          <span className="text-brand-peach mt-1.5 block text-base">
+            {text}
+          </span>
+        ) : null}
+      </span>
+
+      {link?.label ? (
+        <span className="font-oswald bg-brand-surface text-brand-cream group-hover:bg-brand-green shrink-0 rounded px-8 py-4 text-base font-medium tracking-[0.06em] uppercase transition-colors">
+          {link.label}
+        </span>
+      ) : null}
+    </>
+  )
+
+  const className = cn(
+    SECTION_X_PADDING,
+    "bg-brand-bronze font-golos flex flex-col items-center gap-5 py-10 text-center min-[900px]:flex-row min-[900px]:justify-between min-[900px]:py-11 min-[900px]:text-left"
+  )
+
+  return link ? (
+    <StrapiLink component={link} unstyled className={className}>
+      {body}
+    </StrapiLink>
+  ) : (
+    <section className={className}>{body}</section>
   )
 }
 

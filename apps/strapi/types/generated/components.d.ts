@@ -33,6 +33,8 @@ export interface ElementsProductCard extends Struct.ComponentSchema {
   }
   attributes: {
     badge: Schema.Attribute.String
+    badgeColor: Schema.Attribute.Enumeration<["bronze", "sale", "stock"]> &
+      Schema.Attribute.DefaultTo<"bronze">
     category: Schema.Attribute.String
     image: Schema.Attribute.Component<"utilities.basic-image", false>
     link: Schema.Attribute.Component<"utilities.link", false>
@@ -278,6 +280,7 @@ export interface SectionsHomeProgram extends Struct.ComponentSchema {
     link: Schema.Attribute.Component<"utilities.link", false>
     text: Schema.Attribute.Text
     title: Schema.Attribute.String
+    titleAccent: Schema.Attribute.String
   }
 }
 
@@ -288,6 +291,7 @@ export interface SectionsHomeProducts extends Struct.ComponentSchema {
     displayName: "HomeProducts"
   }
   attributes: {
+    link: Schema.Attribute.Component<"utilities.link", false>
     products: Schema.Attribute.Component<"elements.product-card", true>
     title: Schema.Attribute.String
   }
