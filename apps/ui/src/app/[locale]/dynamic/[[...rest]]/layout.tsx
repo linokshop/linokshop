@@ -10,5 +10,6 @@ export default function Layout({
 
   setRequestLocale(locale)
 
-  return <div className="flex items-center pb-8">{children}</div>
+  // Full-bleed sections own their spacing — see the sibling `[[...rest]]` layout.
+  return <div className="flex flex-1 flex-col">{children}</div>
 }

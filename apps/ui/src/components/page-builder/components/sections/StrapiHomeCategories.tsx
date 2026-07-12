@@ -4,7 +4,8 @@ import type { Data } from "@repo/strapi-types"
 
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
 import StrapiLink from "@/components/page-builder/components/utilities/StrapiLink"
-import Typography from "@/components/typography"
+import { SECTION_X_PADDING } from "@/lib/layout"
+import { cn } from "@/lib/styles"
 import type { PageBuilderComponentProps } from "@/types/general"
 
 export function StrapiHomeCategories({
@@ -12,46 +13,60 @@ export function StrapiHomeCategories({
 }: PageBuilderComponentProps & {
   readonly component: Data.Component<"sections.home-categories">
 }) {
-  const { title, categories } = component
+  const { title, link, categories } = component
 
   return (
-    <section className="bg-brand-green font-golos">
-      <div className="px-4 py-12 sm:px-6 lg:px-10">
-        {title ? (
-          <Typography
-            tag="h2"
-            className="font-oswald text-brand-cream mb-8 text-3xl font-bold uppercase"
-          >
-            {title}
-          </Typography>
-        ) : null}
-
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-          {categories?.map((cat) => (
+    <section
+      className={cn(SECTION_X_PADDING, "bg-brand-green font-golos py-8")}
+    >
+      {/* Heading + "all catalog" link */}
+      {title || link ? (
+        <div className="mb-6.5 flex items-end justify-between gap-4">
+          {title ? (
+            <h2 className="font-oswald text-brand-cream mb-0 text-[30px] leading-tight font-semibold tracking-[0.02em] uppercase min-[600px]:text-[40px]">
+              {title}
+            </h2>
+          ) : null}
+          {link ? (
             <StrapiLink
-              key={cat.id}
-              component={cat.link}
-              className="border-brand-border bg-brand-surface hover:border-brand-orange flex flex-col items-center gap-3 rounded-sm border p-5 no-underline transition-colors"
-            >
-              <span className="bg-brand-navy flex size-26 items-center justify-center overflow-hidden rounded-sm">
-                {cat.image ? (
-                  <StrapiBasicImage
-                    component={cat.image}
-                    width={104}
-                    height={104}
-                    className="size-full object-cover"
-                  />
-                ) : null}
-              </span>
-              <span className="font-oswald text-brand-cream text-center text-sm tracking-wide uppercase">
+              component={link}
+              unstyled
+              className="font-oswald text-brand-gold hover:text-brand-cream shrink-0 text-[15px] tracking-[0.04em] whitespace-nowrap uppercase transition-colors"
+            />
+          ) : null}
+        </div>
+      ) : null}
+
+      <div className="grid grid-cols-2 gap-4.5 min-[600px]:grid-cols-3 min-[1024px]:grid-cols-6">
+        {categories?.map((cat) => (
+          <StrapiLink
+            key={cat.id}
+            component={cat.link}
+            unstyled
+            className="border-brand-border bg-brand-green hover:border-brand-orange group/tile block overflow-hidden rounded-xl border transition-colors"
+          >
+            <span className="bg-brand-surface relative block h-26 w-full overflow-hidden">
+              {cat.image?.media ? (
+                <StrapiBasicImage
+                  component={cat.image}
+                  fill
+                  sizes="(min-width: 1024px) 16vw, (min-width: 600px) 33vw, 50vw"
+                  className="object-cover transition-transform duration-500 ease-out group-hover/tile:scale-105"
+                />
+              ) : null}
+            </span>
+            <span className="block p-3.5 text-center">
+              <span className="font-oswald text-brand-cream block text-base tracking-[0.04em] uppercase">
                 {cat.label}
               </span>
               {cat.count ? (
-                <span className="text-brand-muted text-xs">{cat.count}</span>
+                <span className="text-brand-muted mt-1 block text-[12.5px]">
+                  {cat.count}
+                </span>
               ) : null}
-            </StrapiLink>
-          ))}
-        </div>
+            </span>
+          </StrapiLink>
+        ))}
       </div>
     </section>
   )

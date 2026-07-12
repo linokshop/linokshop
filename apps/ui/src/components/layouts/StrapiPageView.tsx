@@ -68,7 +68,7 @@ export default function StrapiPageView({ params, searchParams }: Props) {
           without its own background never exposes the white body. */}
       <main
         className={cn(
-          "bg-brand-surface relative flex w-full flex-col overflow-hidden"
+          "bg-brand-surface relative flex w-full flex-1 flex-col overflow-hidden"
         )}
       >
         {/* Breadcrumbs float transparently over the first section instead of

@@ -9,6 +9,11 @@
     "title": {
       "type": "string"
     },
+    "link": {
+      "type": "component",
+      "component": "utilities.link",
+      "repeatable": false
+    },
     "categories": {
       "type": "component",
       "component": "elements.category-card",

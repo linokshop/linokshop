@@ -33,7 +33,8 @@ export const mockHomePage = {
     {
       __component: "sections.home-categories",
       id: 2,
-      title: "Категорії",
+      title: "Категорії товарів",
+      link: link(20, "Увесь каталог →", "/catalog"),
       categories: [
         {
           id: 21,

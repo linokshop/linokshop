@@ -12,7 +12,7 @@ const require = createRequire(import.meta.url)
 
 const requiredDocuments = [
   { label: "Page", uid: "api::page.page" },
-  { label: "Navbar", uid: "api::navbar.navbar" },
+  { label: "Header", uid: "api::header.header" },
   { label: "Footer", uid: "api::footer.footer" },
 ]
 

@@ -93,7 +93,9 @@ export default async function RootLayout({
       </head>
       <body
         className={cn(
-          "min-h-screen font-sans antialiased",
+          // The page surface is dark; without it the white body shows through
+          // whenever the content is shorter than the viewport.
+          "bg-brand-surface min-h-screen font-sans antialiased",
           fontRoboto.variable,
           fontGolos.variable,
           fontOswald.variable,
@@ -109,8 +111,10 @@ export default async function RootLayout({
                 <StrapiHeader locale={locale} />
               </ErrorBoundary>
 
-              <div className="flex-1">
-                <div>{children}</div>
+              {/* `flex-1` so a short page still fills the viewport, and the
+                  dark surface reaches the footer instead of leaving a white gap. */}
+              <div className="bg-brand-surface flex flex-1 flex-col">
+                {children}
               </div>
 
               <TailwindIndicator />

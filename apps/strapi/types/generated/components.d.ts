@@ -133,6 +133,7 @@ export interface SectionsHomeCategories extends Struct.ComponentSchema {
   }
   attributes: {
     categories: Schema.Attribute.Component<"elements.category-card", true>
+    link: Schema.Attribute.Component<"utilities.link", false>
     title: Schema.Attribute.String
   }
 }

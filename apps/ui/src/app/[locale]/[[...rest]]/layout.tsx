@@ -10,5 +10,8 @@ export default function Layout({
 
   setRequestLocale(locale)
 
-  return <div className="flex items-center pb-8">{children}</div>
+  // Full-bleed sections own their spacing, so no padding here. `flex-1` +
+  // `flex-col` let the page fill the viewport — otherwise a short page leaves
+  // a gap above the footer.
+  return <div className="flex flex-1 flex-col">{children}</div>
 }

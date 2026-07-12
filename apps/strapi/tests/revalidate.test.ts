@@ -256,7 +256,7 @@ describe("auto revalidate document middleware", () => {
 
     await middleware(
       {
-        uid: "api::navbar.navbar",
+        uid: "api::header.header",
         action: "update",
         params: {
           data: {
@@ -271,7 +271,7 @@ describe("auto revalidate document middleware", () => {
     )
 
     expect(runMock).toHaveBeenCalledWith({
-      uid: "api::navbar.navbar",
+      uid: "api::header.header",
       tags: undefined,
     })
   })
