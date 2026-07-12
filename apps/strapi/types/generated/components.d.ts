@@ -12,6 +12,18 @@ export interface ElementsSpecRow extends Struct.ComponentSchema {
   }
 }
 
+export interface ElementsStat extends Struct.ComponentSchema {
+  collectionName: "components_elements_stats"
+  info: {
+    description: 'A single figure: value and its label ("8 років" / "на ринку").'
+    displayName: "Stat"
+  }
+  attributes: {
+    label: Schema.Attribute.String
+    value: Schema.Attribute.String
+  }
+}
+
 export interface ElementsStepCard extends Struct.ComponentSchema {
   collectionName: "components_elements_step_cards"
   info: {
@@ -182,8 +194,29 @@ export interface SectionsCardGrid extends Struct.ComponentSchema {
     displayName: "CardGrid"
   }
   attributes: {
+    align: Schema.Attribute.Enumeration<["left", "center"]> &
+      Schema.Attribute.DefaultTo<"left">
+    banded: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>
     cards: Schema.Attribute.Component<"elements.info-card", true>
     footnote: Schema.Attribute.Text
+    theme: Schema.Attribute.Enumeration<["dark", "light"]> &
+      Schema.Attribute.DefaultTo<"dark">
+    title: Schema.Attribute.String
+  }
+}
+
+export interface SectionsStory extends Struct.ComponentSchema {
+  collectionName: "components_sections_stories"
+  info: {
+    description: "Photo beside a text column, with optional figures underneath."
+    displayName: "Story"
+  }
+  attributes: {
+    image: Schema.Attribute.Component<"utilities.basic-image", false>
+    imageSide: Schema.Attribute.Enumeration<["left", "right"]> &
+      Schema.Attribute.DefaultTo<"left">
+    stats: Schema.Attribute.Component<"elements.stat", true>
+    text: Schema.Attribute.Text
     theme: Schema.Attribute.Enumeration<["dark", "light"]> &
       Schema.Attribute.DefaultTo<"dark">
     title: Schema.Attribute.String
@@ -298,8 +331,12 @@ export interface SectionsHomeProgram extends Struct.ComponentSchema {
     image: Schema.Attribute.Component<"utilities.basic-image", false>
     link: Schema.Attribute.Component<"utilities.link", false>
     text: Schema.Attribute.Text
+    theme: Schema.Attribute.Enumeration<["dark", "light"]> &
+      Schema.Attribute.DefaultTo<"dark">
     title: Schema.Attribute.String
     titleAccent: Schema.Attribute.String
+    variant: Schema.Attribute.Enumeration<["band", "card"]> &
+      Schema.Attribute.DefaultTo<"band">
   }
 }
 
@@ -643,6 +680,7 @@ declare module "@strapi/strapi" {
       "elements.news-card": ElementsNewsCard
       "elements.product-card": ElementsProductCard
       "elements.spec-row": ElementsSpecRow
+      "elements.stat": ElementsStat
       "elements.step-card": ElementsStepCard
       "elements.footer-item": ElementsFooterItem
       "layout.navbar-item": LayoutNavbarItem
@@ -658,6 +696,7 @@ declare module "@strapi/strapi" {
       "sections.news": SectionsNews
       "sections.product": SectionsProduct
       "sections.steps": SectionsSteps
+      "sections.story": SectionsStory
       "sections.text-block": SectionsTextBlock
       "seo-utilities.seo": SeoUtilitiesSeo
       "seo-utilities.seo-og": SeoUtilitiesSeoOg

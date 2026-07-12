@@ -9,6 +9,16 @@
     "badge": {
       "type": "string"
     },
+    "variant": {
+      "type": "enumeration",
+      "enum": ["band", "card"],
+      "default": "band"
+    },
+    "theme": {
+      "type": "enumeration",
+      "enum": ["dark", "light"],
+      "default": "dark"
+    },
     "title": {
       "type": "string"
     },

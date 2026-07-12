@@ -1,0 +1,36 @@
+{
+  "collectionName": "components_sections_stories",
+  "info": {
+    "displayName": "Story",
+    "description": "Photo beside a text column, with optional figures underneath."
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "text": {
+      "type": "text"
+    },
+    "image": {
+      "type": "component",
+      "component": "utilities.basic-image",
+      "repeatable": false
+    },
+    "imageSide": {
+      "type": "enumeration",
+      "enum": ["left", "right"],
+      "default": "left"
+    },
+    "stats": {
+      "type": "component",
+      "component": "elements.stat",
+      "repeatable": true
+    },
+    "theme": {
+      "type": "enumeration",
+      "enum": ["dark", "light"],
+      "default": "dark"
+    }
+  }
+}

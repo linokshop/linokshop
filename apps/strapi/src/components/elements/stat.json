@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_elements_stats",
+  "info": {
+    "displayName": "Stat",
+    "description": "A single figure: value and its label (\"8 років\" / \"на ринку\")."
+  },
+  "options": {},
+  "attributes": {
+    "value": {
+      "type": "string"
+    },
+    "label": {
+      "type": "string"
+    }
+  }
+}

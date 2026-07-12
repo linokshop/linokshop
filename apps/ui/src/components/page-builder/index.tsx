@@ -12,6 +12,7 @@ import StrapiHomePromo from "@/components/page-builder/components/sections/Strap
 import StrapiNews from "@/components/page-builder/components/sections/StrapiNews"
 import StrapiProduct from "@/components/page-builder/components/sections/StrapiProduct"
 import StrapiSteps from "@/components/page-builder/components/sections/StrapiSteps"
+import StrapiStory from "@/components/page-builder/components/sections/StrapiStory"
 import StrapiTextBlock from "@/components/page-builder/components/sections/StrapiTextBlock"
 import StrapiCkEditorContent from "@/components/page-builder/components/utilities/StrapiCkEditorContent"
 import StrapiTipTapEditorContent from "@/components/page-builder/components/utilities/StrapiTipTapEditorContent"
@@ -51,5 +52,6 @@ export const PageContentComponents: Partial<
   "sections.faq": StrapiFaq,
   "sections.news": StrapiNews,
   "sections.steps": StrapiSteps,
+  "sections.story": StrapiStory,
   "sections.text-block": StrapiTextBlock,
 }

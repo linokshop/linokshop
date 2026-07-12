@@ -78,7 +78,8 @@
         "sections.news",
         "sections.steps",
         "sections.text-block",
-        "sections.faq"
+        "sections.faq",
+        "sections.story"
       ]
     },
     "children": {

@@ -19,15 +19,26 @@ export function StrapiCardGrid({
 }: PageBuilderComponentProps & {
   readonly component: Data.Component<"sections.card-grid">
 }) {
-  const { title, theme, cards, footnote } = component
+  const { title, theme, align, banded, cards, footnote } = component
   const isLight = theme === "light"
+  const isCentered = align === "center"
 
   return (
     <section
       className={cn(
         SECTION_X_PADDING,
         "font-golos py-10",
-        isLight ? "bg-brand-sand" : "bg-brand-green"
+        // A banded grid sits on a raised surface, fenced off by hairlines —
+        // used to lift a block ("Чому обирають") out of the page flow.
+        banded && "border-y",
+        isLight
+          ? banded
+            ? "bg-brand-cream border-brand-line"
+            : "bg-brand-sand"
+          : banded
+            ? "bg-brand-surface border-brand-border"
+            : "bg-brand-green",
+        banded && "py-16"
       )}
     >
       <div className="mx-auto max-w-[1320px]">
@@ -35,6 +46,7 @@ export function StrapiCardGrid({
           <h2
             className={cn(
               "mb-7 text-[32px] leading-tight font-bold",
+              isCentered && "mb-10 text-center min-[900px]:text-[34px]",
               isLight
                 ? "font-bitter text-brand-forest"
                 : "font-oswald text-brand-cream uppercase"
