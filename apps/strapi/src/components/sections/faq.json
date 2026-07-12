@@ -1,8 +1,8 @@
 {
-  "collectionName": "components_sections_card_grids",
+  "collectionName": "components_sections_faqs",
   "info": {
-    "displayName": "CardGrid",
-    "description": "A grid of generic info cards (promos, features, etc.)."
+    "displayName": "Faq",
+    "description": "Frequently asked questions — an accordion list."
   },
   "options": {},
   "attributes": {
@@ -14,13 +14,10 @@
       "enum": ["dark", "light"],
       "default": "dark"
     },
-    "cards": {
+    "items": {
       "type": "component",
-      "component": "elements.info-card",
+      "component": "utilities.accordions",
       "repeatable": true
-    },
-    "footnote": {
-      "type": "text"
     }
   }
 }

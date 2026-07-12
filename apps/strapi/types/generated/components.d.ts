@@ -52,8 +52,12 @@ export interface ElementsInfoCard extends Struct.ComponentSchema {
   }
   attributes: {
     badge: Schema.Attribute.String
+    highlight: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>
     image: Schema.Attribute.Component<"utilities.basic-image", false>
     link: Schema.Attribute.Component<"utilities.link", false>
+    note: Schema.Attribute.String
+    noteColor: Schema.Attribute.Enumeration<["bronze", "free"]> &
+      Schema.Attribute.DefaultTo<"bronze">
     text: Schema.Attribute.Text
     title: Schema.Attribute.String
   }
@@ -179,6 +183,21 @@ export interface SectionsCardGrid extends Struct.ComponentSchema {
   }
   attributes: {
     cards: Schema.Attribute.Component<"elements.info-card", true>
+    footnote: Schema.Attribute.Text
+    theme: Schema.Attribute.Enumeration<["dark", "light"]> &
+      Schema.Attribute.DefaultTo<"dark">
+    title: Schema.Attribute.String
+  }
+}
+
+export interface SectionsFaq extends Struct.ComponentSchema {
+  collectionName: "components_sections_faqs"
+  info: {
+    description: "Frequently asked questions — an accordion list."
+    displayName: "Faq"
+  }
+  attributes: {
+    items: Schema.Attribute.Component<"utilities.accordions", true>
     theme: Schema.Attribute.Enumeration<["dark", "light"]> &
       Schema.Attribute.DefaultTo<"dark">
     title: Schema.Attribute.String
@@ -632,6 +651,7 @@ declare module "@strapi/strapi" {
       "sections.home-products": SectionsHomeProducts
       "sections.home-program": SectionsHomeProgram
       "sections.card-grid": SectionsCardGrid
+      "sections.faq": SectionsFaq
       "sections.cart": SectionsCart
       "sections.catalog": SectionsCatalog
       "sections.home-promo": SectionsHomePromo

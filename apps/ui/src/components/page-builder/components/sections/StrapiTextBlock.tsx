@@ -2,10 +2,14 @@ import "server-only"
 
 import type { Data } from "@repo/strapi-types"
 
-import Typography from "@/components/typography"
+import { SECTION_X_PADDING } from "@/lib/layout"
 import { cn } from "@/lib/styles"
 import type { PageBuilderComponentProps } from "@/types/general"
 
+/**
+ * The lead block of a simple page (delivery, about, contacts): eyebrow, page
+ * title and a short intro, centred. It carries the page's <h1>.
+ */
 export function StrapiTextBlock({
   component,
 }: PageBuilderComponentProps & {
@@ -16,34 +20,39 @@ export function StrapiTextBlock({
 
   return (
     <section
-      className={cn("font-golos", isLight ? "bg-brand-sand" : "bg-brand-green")}
+      className={cn(
+        SECTION_X_PADDING,
+        "font-golos py-16 text-center",
+        isLight
+          ? "bg-brand-cream border-brand-line border-b"
+          : "bg-brand-green border-brand-border border-b"
+      )}
     >
-      <div className="mx-auto max-w-3xl px-4 py-12 text-center sm:px-6 lg:px-10">
+      <div className="mx-auto max-w-[1100px]">
         {eyebrow ? (
-          <span className="font-oswald text-brand-orange text-sm font-semibold tracking-widest uppercase">
+          <span className="font-oswald text-brand-bronze block text-[13px] tracking-[0.18em] uppercase">
             {eyebrow}
           </span>
         ) : null}
         {title ? (
-          <Typography
-            tag="h2"
+          <h1
             className={cn(
-              "font-oswald mt-3 text-3xl font-bold uppercase",
-              isLight ? "text-brand-green" : "text-brand-cream"
+              "font-bitter mt-4 mb-4 text-[38px] leading-[1.08] font-extrabold min-[640px]:text-[50px]",
+              isLight ? "text-brand-forest" : "text-brand-cream"
             )}
           >
             {title}
-          </Typography>
+          </h1>
         ) : null}
         {text ? (
-          <Typography
+          <p
             className={cn(
-              "mt-4 text-base/7",
-              isLight ? "text-brand-green/75" : "text-brand-nav"
+              "mx-auto max-w-150 text-[17px] leading-[1.7]",
+              isLight ? "text-brand-sage" : "text-brand-nav"
             )}
           >
             {text}
-          </Typography>
+          </p>
         ) : null}
       </div>
     </section>

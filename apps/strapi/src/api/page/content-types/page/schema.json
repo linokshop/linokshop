@@ -77,7 +77,8 @@
         "sections.card-grid",
         "sections.news",
         "sections.steps",
-        "sections.text-block"
+        "sections.text-block",
+        "sections.faq"
       ]
     },
     "children": {

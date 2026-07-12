@@ -317,6 +317,13 @@
   --color-brand-mist: #c2d2df; /* body text on the blue veteran sections */
   --color-brand-peach: #fbe9d2; /* body text on the bronze promo band */
 
+  /* Light-theme pages (delivery, about, contacts): sand page, paper cards,
+     forest headings, sage body text. Bitter is the serif heading face here. */
+  --color-brand-paper: #fbfaf3; /* card surface on sand */
+  --color-brand-line: #d6d4c0; /* borders on sand */
+  --color-brand-forest: #1c3a27; /* headings / body on sand */
+  --color-brand-sage: #5c6b5a; /* muted body text on sand */
+
   --spacing: 0.25rem;
   --breakpoint-sm: 40rem;
   --breakpoint-md: 48rem;

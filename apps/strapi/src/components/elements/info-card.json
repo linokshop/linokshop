@@ -15,6 +15,18 @@
     "text": {
       "type": "text"
     },
+    "note": {
+      "type": "string"
+    },
+    "noteColor": {
+      "type": "enumeration",
+      "enum": ["bronze", "free"],
+      "default": "bronze"
+    },
+    "highlight": {
+      "type": "boolean",
+      "default": false
+    },
     "link": {
       "type": "component",
       "component": "utilities.link",
