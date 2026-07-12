@@ -112,30 +112,6 @@ export interface ElementsFooterItem extends Struct.ComponentSchema {
   }
 }
 
-export interface FormsContactForm extends Struct.ComponentSchema {
-  collectionName: "components_forms_contact_forms"
-  info: {
-    displayName: "ContactForm"
-  }
-  attributes: {
-    description: Schema.Attribute.Text
-    gdpr: Schema.Attribute.Component<"utilities.link", false>
-    title: Schema.Attribute.String
-  }
-}
-
-export interface FormsNewsletterForm extends Struct.ComponentSchema {
-  collectionName: "components_forms_newsletter_forms"
-  info: {
-    displayName: "Newsletter"
-  }
-  attributes: {
-    description: Schema.Attribute.Text
-    gdpr: Schema.Attribute.Component<"utilities.link", false>
-    title: Schema.Attribute.String
-  }
-}
-
 export interface LayoutNavbarItem extends Struct.ComponentSchema {
   collectionName: "components_layout_navbar_items"
   info: {
@@ -146,120 +122,6 @@ export interface LayoutNavbarItem extends Struct.ComponentSchema {
     isCategoryLink: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>
     label: Schema.Attribute.String
     link: Schema.Attribute.Component<"utilities.link", false>
-  }
-}
-
-export interface SectionsAnimatedLogoRow extends Struct.ComponentSchema {
-  collectionName: "components_sections_animated_logo_rows"
-  info: {
-    description: ""
-    displayName: "AnimatedLogoRow"
-  }
-  attributes: {
-    logos: Schema.Attribute.Component<"utilities.basic-image", true>
-    title: Schema.Attribute.RichText &
-      Schema.Attribute.CustomField<
-        "plugin::ckeditor5.CKEditor",
-        {
-          preset: "defaultCkEditor"
-        }
-      >
-  }
-}
-
-export interface SectionsCarousel extends Struct.ComponentSchema {
-  collectionName: "components_sections_carousels"
-  info: {
-    description: ""
-    displayName: "Carousel"
-  }
-  attributes: {
-    images: Schema.Attribute.Component<"utilities.image-with-link", true>
-    radius: Schema.Attribute.Enumeration<["sm", "md", "lg", "xl", "full"]>
-  }
-}
-
-export interface SectionsCtaBanner extends Struct.ComponentSchema {
-  collectionName: "components_sections_cta_banners"
-  info: {
-    displayName: "CTABanner"
-  }
-  attributes: {
-    description: Schema.Attribute.RichText &
-      Schema.Attribute.CustomField<
-        "plugin::ckeditor5.CKEditor",
-        {
-          preset: "defaultCkEditor"
-        }
-      >
-    features: Schema.Attribute.Component<
-      "shared.image-with-title-and-description",
-      true
-    >
-    links: Schema.Attribute.Component<"utilities.link", true>
-    title: Schema.Attribute.RichText &
-      Schema.Attribute.CustomField<
-        "plugin::ckeditor5.CKEditor",
-        {
-          preset: "defaultCkEditor"
-        }
-      >
-  }
-}
-
-export interface SectionsFaq extends Struct.ComponentSchema {
-  collectionName: "components_sections_faqs"
-  info: {
-    description: ""
-    displayName: "Faq"
-  }
-  attributes: {
-    accordions: Schema.Attribute.Component<"utilities.accordions", true>
-    subTitle: Schema.Attribute.String
-    title: Schema.Attribute.String & Schema.Attribute.Required
-  }
-}
-
-export interface SectionsFeaturesList extends Struct.ComponentSchema {
-  collectionName: "components_sections_features_lists"
-  info: {
-    displayName: "FeaturesList"
-  }
-  attributes: {
-    description: Schema.Attribute.RichText &
-      Schema.Attribute.CustomField<
-        "plugin::ckeditor5.CKEditor",
-        {
-          preset: "defaultCkEditor"
-        }
-      >
-    features: Schema.Attribute.Component<
-      "shared.image-with-title-and-description",
-      true
-    >
-    listStyle: Schema.Attribute.Enumeration<["boxGrid", "grid", "list"]> &
-      Schema.Attribute.DefaultTo<"list">
-    mainImage: Schema.Attribute.Component<"shared.image-with-config", false>
-    title: Schema.Attribute.RichText &
-      Schema.Attribute.CustomField<
-        "plugin::ckeditor5.CKEditor",
-        {
-          preset: "defaultCkEditor"
-        }
-      >
-  }
-}
-
-export interface SectionsHeadingWithCtaButton extends Struct.ComponentSchema {
-  collectionName: "components_sections_heading_with_cta_buttons"
-  info: {
-    description: ""
-    displayName: "HeadingWithCTAButton"
-  }
-  attributes: {
-    cta: Schema.Attribute.Component<"utilities.link", false>
-    subText: Schema.Attribute.String
-    title: Schema.Attribute.String & Schema.Attribute.Required
   }
 }
 
@@ -437,79 +299,19 @@ export interface SectionsHomeHero extends Struct.ComponentSchema {
     displayName: "HomeHero"
   }
   attributes: {
-    image: Schema.Attribute.Component<"utilities.basic-image", false>
+    backgroundImage: Schema.Attribute.Component<"utilities.basic-image", false>
+    eyebrow: Schema.Attribute.String
     primaryLink: Schema.Attribute.Component<"utilities.link", false>
     secondaryLink: Schema.Attribute.Component<"utilities.link", false>
     subtitle: Schema.Attribute.Text
     title: Schema.Attribute.String
     titleAccent: Schema.Attribute.String
     veteranBadge: Schema.Attribute.String
+    veteranImage: Schema.Attribute.Component<"utilities.basic-image", false>
     veteranLink: Schema.Attribute.Component<"utilities.link", false>
     veteranText: Schema.Attribute.Text
     veteranTitle: Schema.Attribute.String
-  }
-}
-
-export interface SectionsHero extends Struct.ComponentSchema {
-  collectionName: "components_sections_heroes"
-  info: {
-    description: ""
-    displayName: "Hero"
-  }
-  attributes: {
-    description: Schema.Attribute.RichText &
-      Schema.Attribute.CustomField<
-        "plugin::ckeditor5.CKEditor",
-        {
-          preset: "defaultCkEditor"
-        }
-      >
-    links: Schema.Attribute.Component<"utilities.link", true>
-    note: Schema.Attribute.RichText &
-      Schema.Attribute.CustomField<
-        "plugin::ckeditor5.CKEditor",
-        {
-          preset: "defaultCkEditor"
-        }
-      >
-    tag: Schema.Attribute.RichText &
-      Schema.Attribute.CustomField<
-        "plugin::ckeditor5.CKEditor",
-        {
-          preset: "defaultCkEditor"
-        }
-      >
-    title: Schema.Attribute.RichText &
-      Schema.Attribute.CustomField<
-        "plugin::ckeditor5.CKEditor",
-        {
-          preset: "defaultCkEditor"
-        }
-      >
-  }
-}
-
-export interface SectionsImageWithCtaButton extends Struct.ComponentSchema {
-  collectionName: "components_sections_image_with_cta_buttons"
-  info: {
-    description: ""
-    displayName: "ImageWithCTAButton"
-  }
-  attributes: {
-    image: Schema.Attribute.Component<"utilities.basic-image", false>
-    link: Schema.Attribute.Component<"utilities.link", false>
-    subText: Schema.Attribute.String
-    title: Schema.Attribute.String & Schema.Attribute.Required
-  }
-}
-
-export interface SectionsStatistics extends Struct.ComponentSchema {
-  collectionName: "components_sections_statistics"
-  info: {
-    displayName: "Statistics"
-  }
-  attributes: {
-    figures: Schema.Attribute.Component<"shared.figure", true>
+    veteranTitleAccent: Schema.Attribute.String
   }
 }
 
@@ -819,16 +621,7 @@ declare module "@strapi/strapi" {
       "elements.spec-row": ElementsSpecRow
       "elements.step-card": ElementsStepCard
       "elements.footer-item": ElementsFooterItem
-      "forms.contact-form": FormsContactForm
-      "forms.newsletter-form": FormsNewsletterForm
       "layout.navbar-item": LayoutNavbarItem
-      "sections.animated-logo-row": SectionsAnimatedLogoRow
-      "sections.carousel": SectionsCarousel
-      "sections.cta-banner": SectionsCtaBanner
-      "sections.faq": SectionsFaq
-      "sections.features-list": SectionsFeaturesList
-      "sections.heading-with-cta-button": SectionsHeadingWithCtaButton
-      "sections.hero": SectionsHero
       "sections.home-categories": SectionsHomeCategories
       "sections.home-hero": SectionsHomeHero
       "sections.home-products": SectionsHomeProducts
@@ -841,8 +634,6 @@ declare module "@strapi/strapi" {
       "sections.product": SectionsProduct
       "sections.steps": SectionsSteps
       "sections.text-block": SectionsTextBlock
-      "sections.image-with-cta-button": SectionsImageWithCtaButton
-      "sections.statistics": SectionsStatistics
       "seo-utilities.seo": SeoUtilitiesSeo
       "seo-utilities.seo-og": SeoUtilitiesSeoOg
       "seo-utilities.seo-twitter": SeoUtilitiesSeoTwitter

@@ -6,7 +6,9 @@ import { use } from "react"
 import { PromoRibbon } from "@/components/page-builder/components/elements/PromoRibbon"
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
 import StrapiLink from "@/components/page-builder/components/utilities/StrapiLink"
+import { SECTION_X_PADDING } from "@/lib/layout"
 import { fetchFooter } from "@/lib/strapi-api/content/server"
+import { cn } from "@/lib/styles"
 
 type MaybeString = string | null | undefined
 
@@ -86,7 +88,12 @@ export function StrapiFooter({ locale }: { readonly locale: Locale }) {
       />
 
       {/* Columns */}
-      <div className="grid grid-cols-1 gap-7 px-6 pt-10 pb-8 min-[600px]:grid-cols-2 min-[600px]:gap-8 min-[900px]:grid-cols-[1.4fr_1fr_1fr_1.2fr] min-[900px]:gap-10 min-[900px]:px-10 min-[900px]:pt-13.5 min-[900px]:pb-10">
+      <div
+        className={cn(
+          SECTION_X_PADDING,
+          "grid grid-cols-1 gap-7 pt-10 pb-8 min-[600px]:grid-cols-2 min-[600px]:gap-8 min-[900px]:grid-cols-[1.4fr_1fr_1fr_1.2fr] min-[900px]:gap-10 min-[900px]:pt-13.5 min-[900px]:pb-10"
+        )}
+      >
         {/* Brand */}
         <div>
           <div className="mb-4 flex items-center gap-3">
@@ -147,7 +154,12 @@ export function StrapiFooter({ locale }: { readonly locale: Locale }) {
       </div>
 
       {/* Bottom bar */}
-      <div className="border-brand-border text-brand-muted flex flex-col items-center justify-between gap-2 border-t px-6 py-4.5 text-center text-[13px] min-[900px]:flex-row min-[900px]:px-10 min-[900px]:py-5 min-[900px]:text-left">
+      <div
+        className={cn(
+          SECTION_X_PADDING,
+          "border-brand-border text-brand-muted flex flex-col items-center justify-between gap-2 border-t py-4.5 text-center text-[13px] min-[900px]:flex-row min-[900px]:py-5 min-[900px]:text-left"
+        )}
+      >
         {copyRight ? (
           <span>{copyRight.split("{YEAR}").join(String(currentYear))}</span>
         ) : null}

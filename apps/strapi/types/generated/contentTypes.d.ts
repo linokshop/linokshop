@@ -786,23 +786,25 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
           localized: true
         }
       }>
+    breadcrumbsTheme: Schema.Attribute.Enumeration<
+      ["auto", "dark", "light"]
+    > &
+      Schema.Attribute.DefaultTo<"auto">
     children: Schema.Attribute.Relation<"oneToMany", "api::page.page">
     content: Schema.Attribute.DynamicZone<
       [
-        "sections.image-with-cta-button",
-        "sections.hero",
-        "sections.heading-with-cta-button",
-        "sections.faq",
-        "sections.carousel",
-        "sections.animated-logo-row",
-        "forms.newsletter-form",
-        "forms.contact-form",
-        "utilities.ck-editor-content",
-        "sections.statistics",
-        "sections.features-list",
-        "sections.cta-banner",
-        "utilities.ck-editor-text",
-        "utilities.tip-tap-rich-text",
+        "sections.home-hero",
+        "sections.home-categories",
+        "sections.home-products",
+        "sections.home-program",
+        "sections.home-promo",
+        "sections.catalog",
+        "sections.product",
+        "sections.cart",
+        "sections.card-grid",
+        "sections.news",
+        "sections.steps",
+        "sections.text-block",
       ]
     > &
       Schema.Attribute.SetPluginOptions<{

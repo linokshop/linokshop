@@ -20,6 +20,13 @@ minimumReleaseAgeExclude:
 overrides:
   "@types/react": 19.2.17
   "@types/react-dom": 19.2.3
+  # Strapi's admin renders `json` fields (e.g. Page > seo > structuredData) with
+  # CodeMirror. The packageExtensions below mark its peers optional, so pnpm
+  # installs two copies and `instanceof` checks fail with
+  # "Unrecognized extension value in extension set". Pin one version of each.
+  "@codemirror/state": 6.6.0
+  "@codemirror/view": 6.43.1
+  "@codemirror/language": 6.12.3
 
 packageExtensions:
   "@hookform/resolvers":

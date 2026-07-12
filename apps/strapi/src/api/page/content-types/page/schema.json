@@ -33,6 +33,11 @@
         }
       }
     },
+    "breadcrumbsTheme": {
+      "type": "enumeration",
+      "enum": ["auto", "dark", "light"],
+      "default": "auto"
+    },
     "slug": {
       "type": "string",
       "pluginOptions": {
@@ -61,32 +66,18 @@
         }
       },
       "components": [
-        "sections.image-with-cta-button",
-        "sections.hero",
         "sections.home-hero",
         "sections.home-categories",
         "sections.home-products",
         "sections.home-program",
         "sections.home-promo",
-        "sections.card-grid",
-        "sections.news",
         "sections.catalog",
         "sections.product",
         "sections.cart",
+        "sections.card-grid",
+        "sections.news",
         "sections.steps",
-        "sections.text-block",
-        "sections.heading-with-cta-button",
-        "sections.faq",
-        "sections.carousel",
-        "sections.animated-logo-row",
-        "forms.newsletter-form",
-        "forms.contact-form",
-        "utilities.ck-editor-content",
-        "sections.statistics",
-        "sections.features-list",
-        "sections.cta-banner",
-        "utilities.ck-editor-text",
-        "utilities.tip-tap-rich-text"
+        "sections.text-block"
       ]
     },
     "children": {

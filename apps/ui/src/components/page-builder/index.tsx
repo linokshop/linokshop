@@ -1,24 +1,13 @@
 import type { UID } from "@repo/strapi-types"
 
-import StrapiContactForm from "@/components/page-builder/components/forms/StrapiContactForm"
-import StrapiNewsletterForm from "@/components/page-builder/components/forms/StrapiNewsletterForm"
-import StrapiAnimatedLogoRow from "@/components/page-builder/components/sections/StrapiAnimatedLogoRow"
 import StrapiCardGrid from "@/components/page-builder/components/sections/StrapiCardGrid"
-import StrapiCarousel from "@/components/page-builder/components/sections/StrapiCarousel"
 import StrapiCart from "@/components/page-builder/components/sections/StrapiCart"
 import StrapiCatalog from "@/components/page-builder/components/sections/StrapiCatalog"
-import StrapiCTABanner from "@/components/page-builder/components/sections/StrapiCTABanner"
-import StrapiFaq from "@/components/page-builder/components/sections/StrapiFaq"
-import { StrapiFeaturesList } from "@/components/page-builder/components/sections/StrapiFeaturesList"
-import { StrapiStatistics } from "@/components/page-builder/components/sections/StrapiFigures"
-import StrapiHeadingWithCTAButton from "@/components/page-builder/components/sections/StrapiHeadingWithCTAButton"
-import StrapiHero from "@/components/page-builder/components/sections/StrapiHero"
 import StrapiHomeCategories from "@/components/page-builder/components/sections/StrapiHomeCategories"
 import StrapiHomeHero from "@/components/page-builder/components/sections/StrapiHomeHero"
 import StrapiHomeProducts from "@/components/page-builder/components/sections/StrapiHomeProducts"
 import StrapiHomeProgram from "@/components/page-builder/components/sections/StrapiHomeProgram"
 import StrapiHomePromo from "@/components/page-builder/components/sections/StrapiHomePromo"
-import StrapiImageWithCTAButton from "@/components/page-builder/components/sections/StrapiImageWithCTAButton"
 import StrapiNews from "@/components/page-builder/components/sections/StrapiNews"
 import StrapiProduct from "@/components/page-builder/components/sections/StrapiProduct"
 import StrapiSteps from "@/components/page-builder/components/sections/StrapiSteps"
@@ -27,7 +16,11 @@ import StrapiCkEditorContent from "@/components/page-builder/components/utilitie
 import StrapiTipTapEditorContent from "@/components/page-builder/components/utilities/StrapiTipTapEditorContent"
 
 /**
- * Mapping of Strapi Component UID to React Component
+ * Mapping of Strapi Component UID to React Component.
+ *
+ * Only the ЛінОк sections live in the Page dynamic zone (see the `content`
+ * attribute of `api::page.page`). The rich-text utilities stay registered so a
+ * section can embed them, even though they are no longer offered on their own.
  *
  * Consider improving dynamic/lazy loading of these components to reduce bundle size.
  */
@@ -35,39 +28,26 @@ export const PageContentComponents: Partial<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- generic component map requires any for varying prop types
   Record<UID.Component, React.ComponentType<any>>
 > = {
-  // elements, seo-utilities, utilities
-  // They are usually rendered or used deep inside other components or handlers
-  // Add them here if they can be used on Page content level
+  // Utilities (rendered inside other components, not offered in the dynamic zone)
   "utilities.ck-editor-content": StrapiCkEditorContent,
   "utilities.ck-editor-text": StrapiCkEditorContent,
   "utilities.tip-tap-rich-text": StrapiTipTapEditorContent,
 
-  // Sections
-  "sections.animated-logo-row": StrapiAnimatedLogoRow,
-  "sections.faq": StrapiFaq,
-  "sections.carousel": StrapiCarousel,
-  "sections.heading-with-cta-button": StrapiHeadingWithCTAButton,
-  "sections.hero": StrapiHero,
-  "sections.home-categories": StrapiHomeCategories,
+  // Sections — home page
   "sections.home-hero": StrapiHomeHero,
+  "sections.home-categories": StrapiHomeCategories,
   "sections.home-products": StrapiHomeProducts,
   "sections.home-program": StrapiHomeProgram,
-  "sections.card-grid": StrapiCardGrid,
-  "sections.cart": StrapiCart,
-  "sections.catalog": StrapiCatalog,
   "sections.home-promo": StrapiHomePromo,
-  "sections.news": StrapiNews,
+
+  // Sections — shop
+  "sections.catalog": StrapiCatalog,
   "sections.product": StrapiProduct,
+  "sections.cart": StrapiCart,
+
+  // Sections — shared / content
+  "sections.card-grid": StrapiCardGrid,
+  "sections.news": StrapiNews,
   "sections.steps": StrapiSteps,
   "sections.text-block": StrapiTextBlock,
-  "sections.image-with-cta-button": StrapiImageWithCTAButton,
-  "sections.statistics": StrapiStatistics,
-  "sections.features-list": StrapiFeaturesList,
-  "sections.cta-banner": StrapiCTABanner,
-
-  // Forms
-  "forms.contact-form": StrapiContactForm,
-  "forms.newsletter-form": StrapiNewsletterForm,
-
-  // Add more components here
 }

@@ -21,70 +21,76 @@
   @apply mb-5;
 }
 
-.ck-editor-rich-text-page h1,
-.ck-editor-rich-text-page .typo-h1,
-.ck-editor__main .ck-content h1,
-.ck-editor__main .ck-content .typo-h1,
-.typo-h1,
-.tip-tap-editor-wrapper h1,
-.tip-tap-editor-wrapper .typo-h1,
-h1 {
-  @apply mb-2 text-4xl md:text-5xl lg:text-6xl;
-}
+/* Heading defaults live in the `base` layer on purpose: Tailwind emits its
+   utilities into the later `utilities` layer, so a component can override a
+   heading's size/leading/margin with plain classes. Unlayered rules would beat
+   every utility and silently ignore them. */
+@layer base {
+  .ck-editor-rich-text-page h1,
+  .ck-editor-rich-text-page .typo-h1,
+  .ck-editor__main .ck-content h1,
+  .ck-editor__main .ck-content .typo-h1,
+  .typo-h1,
+  .tip-tap-editor-wrapper h1,
+  .tip-tap-editor-wrapper .typo-h1,
+  h1 {
+    @apply mb-2 text-4xl md:text-5xl lg:text-6xl;
+  }
 
-.ck-editor-rich-text-page h2,
-.ck-editor-rich-text-page .typo-h2,
-.ck-editor__main .ck-content h2,
-.ck-editor__main .ck-content .typo-h2,
-.typo-h2,
-.tip-tap-editor-wrapper h2,
-.tip-tap-editor-wrapper .typo-h2,
-h2 {
-  @apply mb-1.5 text-3xl md:text-4xl lg:text-5xl;
-}
+  .ck-editor-rich-text-page h2,
+  .ck-editor-rich-text-page .typo-h2,
+  .ck-editor__main .ck-content h2,
+  .ck-editor__main .ck-content .typo-h2,
+  .typo-h2,
+  .tip-tap-editor-wrapper h2,
+  .tip-tap-editor-wrapper .typo-h2,
+  h2 {
+    @apply mb-1.5 text-3xl md:text-4xl lg:text-5xl;
+  }
 
-.ck-editor-rich-text-page h3,
-.ck-editor-rich-text-page .typo-h3,
-.ck-editor__main .ck-content h3,
-.ck-editor__main .ck-content .typo-h3,
-.typo-h3,
-.tip-tap-editor-wrapper h3,
-.tip-tap-editor-wrapper .typo-h3,
-h3 {
-  @apply mb-1 text-2xl md:text-3xl lg:text-4xl;
-}
+  .ck-editor-rich-text-page h3,
+  .ck-editor-rich-text-page .typo-h3,
+  .ck-editor__main .ck-content h3,
+  .ck-editor__main .ck-content .typo-h3,
+  .typo-h3,
+  .tip-tap-editor-wrapper h3,
+  .tip-tap-editor-wrapper .typo-h3,
+  h3 {
+    @apply mb-1 text-2xl md:text-3xl lg:text-4xl;
+  }
 
-.ck-editor-rich-text-page h4,
-.ck-editor-rich-text-page .typo-h4,
-.ck-editor__main .ck-content h4,
-.ck-editor__main .ck-content .typo-h4,
-.typo-h4,
-.tip-tap-editor-wrapper h4,
-.tip-tap-editor-wrapper .typo-h4,
-h4 {
-  @apply mb-1 text-xl md:text-2xl lg:text-3xl;
-}
+  .ck-editor-rich-text-page h4,
+  .ck-editor-rich-text-page .typo-h4,
+  .ck-editor__main .ck-content h4,
+  .ck-editor__main .ck-content .typo-h4,
+  .typo-h4,
+  .tip-tap-editor-wrapper h4,
+  .tip-tap-editor-wrapper .typo-h4,
+  h4 {
+    @apply mb-1 text-xl md:text-2xl lg:text-3xl;
+  }
 
-.ck-editor-rich-text-page h5,
-.ck-editor-rich-text-page .typo-h5,
-.ck-editor__main .ck-content h5,
-.ck-editor__main .ck-content .typo-h5,
-.typo-h5,
-.tip-tap-editor-wrapper h5,
-.tip-tap-editor-wrapper .typo-h5,
-h5 {
-  @apply mb-1 text-lg md:text-xl lg:text-2xl;
-}
+  .ck-editor-rich-text-page h5,
+  .ck-editor-rich-text-page .typo-h5,
+  .ck-editor__main .ck-content h5,
+  .ck-editor__main .ck-content .typo-h5,
+  .typo-h5,
+  .tip-tap-editor-wrapper h5,
+  .tip-tap-editor-wrapper .typo-h5,
+  h5 {
+    @apply mb-1 text-lg md:text-xl lg:text-2xl;
+  }
 
-.ck-editor-rich-text-page h6,
-.ck-editor-rich-text-page .typo-h6,
-.ck-editor__main .ck-content h6,
-.ck-editor__main .ck-content .typo-h6,
-.typo-h6,
-.tip-tap-editor-wrapper h6,
-.tip-tap-editor-wrapper .typo-h6,
-h6 {
-  @apply mb-1 text-base md:text-lg lg:text-xl;
+  .ck-editor-rich-text-page h6,
+  .ck-editor-rich-text-page .typo-h6,
+  .ck-editor__main .ck-content h6,
+  .ck-editor__main .ck-content .typo-h6,
+  .typo-h6,
+  .tip-tap-editor-wrapper h6,
+  .tip-tap-editor-wrapper .typo-h6,
+  h6 {
+    @apply mb-1 text-base md:text-lg lg:text-xl;
+  }
 }
 
 /* Default paragraph style */

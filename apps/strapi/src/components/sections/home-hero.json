@@ -6,6 +6,9 @@
   },
   "options": {},
   "attributes": {
+    "eyebrow": {
+      "type": "string"
+    },
     "title": {
       "type": "string"
     },
@@ -14,6 +17,11 @@
     },
     "subtitle": {
       "type": "text"
+    },
+    "backgroundImage": {
+      "type": "component",
+      "component": "utilities.basic-image",
+      "repeatable": false
     },
     "primaryLink": {
       "type": "component",
@@ -25,7 +33,7 @@
       "component": "utilities.link",
       "repeatable": false
     },
-    "image": {
+    "veteranImage": {
       "type": "component",
       "component": "utilities.basic-image",
       "repeatable": false
@@ -34,6 +42,9 @@
       "type": "string"
     },
     "veteranTitle": {
+      "type": "string"
+    },
+    "veteranTitleAccent": {
       "type": "string"
     },
     "veteranText": {

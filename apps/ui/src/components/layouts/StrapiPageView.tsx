@@ -4,11 +4,14 @@ import type { Locale } from "next-intl"
 import { setRequestLocale } from "next-intl/server"
 import { use } from "react"
 
-import { Breadcrumbs } from "@/components/elementary/Breadcrumbs"
-import { Container } from "@/components/elementary/Container"
+import {
+  type BreadcrumbsTheme,
+  Breadcrumbs,
+} from "@/components/elementary/Breadcrumbs"
 import { ErrorBoundary } from "@/components/elementary/ErrorBoundary"
 import { PageContentComponents } from "@/components/page-builder"
 import StrapiStructuredData from "@/components/page-builder/components/seo-utilities/StrapiStructuredData"
+import { SECTION_X_PADDING } from "@/lib/layout"
 import { logger } from "@/lib/logging"
 import { fetchPage } from "@/lib/strapi-api/content/server"
 import { cn } from "@/lib/styles"
@@ -40,19 +43,53 @@ export default function StrapiPageView({ params, searchParams }: Props) {
   }
 
   const { content, ...restPageData } = data
+  const breadcrumbs = response?.meta?.breadcrumbs
+
+  // Breadcrumbs float over the first section, so by default they follow its
+  // theme (`sections.*` with a `theme` enum); a page can force dark/light.
+  const firstSectionTheme = (content[0] as undefined | { theme?: string })
+    ?.theme
+  const themeSetting = restPageData.breadcrumbsTheme ?? "auto"
+  const breadcrumbsTheme: BreadcrumbsTheme =
+    themeSetting === "auto"
+      ? firstSectionTheme === "light"
+        ? "light"
+        : "dark"
+      : themeSetting
+  // A page with no parent yields a single crumb (itself) — a trail that leads
+  // nowhere, so it's not worth rendering. Show them only from 2 crumbs up.
+  const showBreadcrumbs = (breadcrumbs?.length ?? 0) > 1
 
   return (
     <>
       <StrapiStructuredData structuredData={data?.seo?.structuredData} />
 
-      <main className={cn("flex w-full flex-col overflow-hidden")}>
-        <Container className="mb-10 md:mb-20">
-          <Breadcrumbs
-            breadcrumbs={response?.meta?.breadcrumbs}
-            className="mt-6 mb-6"
-            locale={locale}
-          />
-        </Container>
+      {/* Page surface (#15301f) — matches the design wrapper, so any section
+          without its own background never exposes the white body. */}
+      <main
+        className={cn(
+          "bg-brand-surface relative flex w-full flex-col overflow-hidden"
+        )}
+      >
+        {/* Breadcrumbs float transparently over the first section instead of
+            being a band of their own — sections already carry enough top
+            padding, so nothing gets pushed down. `pointer-events-none` keeps
+            the section underneath clickable; the links opt back in. */}
+        {showBreadcrumbs ? (
+          <div
+            className={cn(
+              SECTION_X_PADDING,
+              "pointer-events-none absolute inset-x-0 top-0 z-10 pt-4"
+            )}
+          >
+            <Breadcrumbs
+              breadcrumbs={breadcrumbs}
+              locale={locale}
+              theme={breadcrumbsTheme}
+              className="pointer-events-auto"
+            />
+          </div>
+        ) : null}
 
         {content
           .filter((comp) => comp != null)
@@ -73,15 +110,15 @@ export default function StrapiPageView({ params, searchParams }: Props) {
             }
 
             return (
+              // Sections are full-bleed and carry their own vertical padding,
+              // so they stack flush — no wrapper margins between them.
               <ErrorBoundary key={key}>
-                <div className={cn("mb-20 md:mb-32 lg:mb-40")}>
-                  <Component
-                    component={comp}
-                    pageParams={params}
-                    page={restPageData}
-                    searchParams={searchParams}
-                  />
-                </div>
+                <Component
+                  component={comp}
+                  pageParams={params}
+                  page={restPageData}
+                  searchParams={searchParams}
+                />
               </ErrorBoundary>
             )
           })}

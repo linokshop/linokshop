@@ -14,15 +14,6 @@ import TableSection from "@/app/[locale]/dev/showcase/components/sections/TableS
 import TabsSection from "@/app/[locale]/dev/showcase/components/sections/TabsSection"
 import TextareaSection from "@/app/[locale]/dev/showcase/components/sections/TextareaSection"
 import TooltipSection from "@/app/[locale]/dev/showcase/components/sections/TooltipSection"
-import MockedStrapiAnimatedLogoRow from "@/app/[locale]/dev/showcase/components/strapiComponents/MockedStrapiAnimatedLogoRow"
-import MockedStrapiCarousel from "@/app/[locale]/dev/showcase/components/strapiComponents/MockedStrapiCarousel"
-import MockedStrapiCTABanner from "@/app/[locale]/dev/showcase/components/strapiComponents/MockedStrapiCTABanner"
-import MockedStrapiFaq from "@/app/[locale]/dev/showcase/components/strapiComponents/MockedStrapiFaq"
-import MockedStrapiFeaturesList from "@/app/[locale]/dev/showcase/components/strapiComponents/MockedStrapiFeaturesList"
-import MockedStrapiFigures from "@/app/[locale]/dev/showcase/components/strapiComponents/MockedStrapiFigures"
-import MockedStrapiHeadingWithCTAButton from "@/app/[locale]/dev/showcase/components/strapiComponents/MockedStrapiHeadingWithCTAButton"
-import MockedStrapiHero from "@/app/[locale]/dev/showcase/components/strapiComponents/MockedStrapiHero"
-import MockedStrapiImageWithCTAButton from "@/app/[locale]/dev/showcase/components/strapiComponents/MockedStrapiImageWithCTAButton"
 
 export const showcaseItems = [
   // Atomic items
@@ -137,74 +128,6 @@ export const showcaseItems = [
     kind: "atomic",
     component: CardSection,
     description: "Card component showcase",
-  },
-
-  // Components (Strapi mocks)
-  {
-    id: "hero",
-    label: "Hero",
-    kind: "component",
-    component: MockedStrapiHero,
-    description:
-      "Hero component with title, description and call-to-action, tag and bottom note demonstrating the Strapi hero block",
-  },
-  {
-    id: "faq",
-    label: "FAQ",
-    kind: "component",
-    component: MockedStrapiFaq,
-    description: "Commonly asked questions about the starter and how to use it",
-  },
-  {
-    id: "animated-logo-row",
-    label: "Animated Logo Row",
-    kind: "component",
-    component: MockedStrapiAnimatedLogoRow,
-    description:
-      "A horizontal list of partner or client logos with subtle animation",
-  },
-  {
-    id: "carousel",
-    label: "Carousel",
-    kind: "component",
-    component: MockedStrapiCarousel,
-    description:
-      "A simple image carousel demonstrating the Strapi carousel block",
-  },
-  {
-    id: "cta-banner",
-    label: "CTA Banner",
-    kind: "component",
-    component: MockedStrapiCTABanner,
-    description: "Short banner with a call-to-action and link",
-  },
-  {
-    id: "features-list",
-    label: "Features List",
-    kind: "component",
-    component: MockedStrapiFeaturesList,
-    description: "A list of product features with optional layouts",
-  },
-  {
-    id: "statistics",
-    label: "Statistics",
-    kind: "component",
-    component: MockedStrapiFigures,
-    description: "Numeric highlights and figures shown in a visual layout",
-  },
-  {
-    id: "heading-with-cta",
-    label: "Heading with CTA",
-    kind: "component",
-    component: MockedStrapiHeadingWithCTAButton,
-    description: "A heading block with a supporting call-to-action button",
-  },
-  {
-    id: "image-with-cta",
-    label: "Image with CTA",
-    kind: "component",
-    component: MockedStrapiImageWithCTAButton,
-    description: "An image block paired with a call-to-action",
   },
 ] as const
 

@@ -19,14 +19,6 @@ function ShowcasePage() {
               <AnchorButton key={id} id={id} label={label} />
             ))}
         </nav>
-        <Typography tag="h2">Components preview </Typography>
-        <nav className="flex flex-wrap gap-2">
-          {showcaseItems
-            .filter((i) => i.kind === "component")
-            .map(({ id, label }) => (
-              <AnchorButton key={id} id={id} label={label} />
-            ))}
-        </nav>
       </div>
       {showcaseItems.map(({ id, component: Component, label, description }) => {
         const Comp = Component as React.ComponentType<Record<string, unknown>>

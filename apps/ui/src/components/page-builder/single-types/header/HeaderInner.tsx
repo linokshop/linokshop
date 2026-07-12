@@ -10,7 +10,9 @@ import StrapiLink from "@/components/page-builder/components/utilities/StrapiLin
 // import HeaderLocaleToggle from "@/components/page-builder/single-types/header/HeaderLocaleToggle"
 import HeaderMobileMenu from "@/components/page-builder/single-types/header/HeaderMobileMenu"
 import HeaderNavLink from "@/components/page-builder/single-types/header/HeaderNavLink"
+import { SECTION_X_PADDING } from "@/lib/layout"
 import { Link } from "@/lib/navigation"
+import { cn } from "@/lib/styles"
 
 export function HeaderInner({
   locale,
@@ -41,7 +43,12 @@ export function HeaderInner({
 
       {/* Tier 2 — main bar (sticky) */}
       <header className="font-golos bg-brand-green border-brand-border sticky top-0 z-50 border-b shadow-[0_16px_40px_-4px_rgba(0,0,0,0.8)]">
-        <div className="flex items-center justify-between px-3 py-3 min-[400px]:px-4.5 min-[900px]:px-10 min-[900px]:py-4">
+        <div
+          className={cn(
+            SECTION_X_PADDING,
+            "flex items-center justify-between py-3 min-[900px]:py-4"
+          )}
+        >
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3.25">
             {logoImage?.image ? (

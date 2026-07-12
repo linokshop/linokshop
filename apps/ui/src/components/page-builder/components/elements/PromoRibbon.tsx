@@ -2,6 +2,7 @@ import type { Data } from "@repo/strapi-types"
 
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
 import StrapiLink from "@/components/page-builder/components/utilities/StrapiLink"
+import { SECTION_X_PADDING } from "@/lib/layout"
 import { cn } from "@/lib/styles"
 
 type LinkComponent = Data.Component<"utilities.link">
@@ -17,7 +18,7 @@ type ImageComponent = Data.Component<"utilities.basic-image">
 const VARIANTS = {
   header: {
     container:
-      "bg-brand-steel px-4 py-2.25 transition-all hover:brightness-110 min-[900px]:px-10 min-[900px]:py-2.5",
+      "bg-brand-steel py-2.25 transition-all hover:brightness-110 min-[900px]:py-2.5",
     lead: "text-brand-cream text-[11px] group-hover:text-white min-[900px]:text-[13.5px]",
     label: "text-brand-orange text-[11px] min-[900px]:text-[13.5px]",
     withDot: true,
@@ -25,7 +26,7 @@ const VARIANTS = {
   },
   footer: {
     container:
-      "bg-brand-steel border-brand-orange border-b-[3px] px-5 py-3.5 min-[900px]:px-10 min-[900px]:py-4",
+      "bg-brand-steel border-brand-orange border-b-[3px] py-3.5 min-[900px]:py-4",
     lead: "text-white text-[13px] min-[900px]:text-[15px]",
     label: "text-brand-orange text-sm",
     withDot: false,
@@ -60,6 +61,7 @@ export function PromoRibbon({
       className={cn(
         // Plain anchor (no button styles) → text wraps by word naturally.
         "block text-center leading-relaxed",
+        SECTION_X_PADDING,
         v.container
       )}
     >
@@ -68,7 +70,7 @@ export function PromoRibbon({
           component={image}
           width={42}
           height={42}
-          className="mr-3.5 inline-block size-10.5 shrink-0 rounded-lg object-cover [object-position:center_22%] align-middle"
+          className="mr-3.5 inline-block size-10.5 shrink-0 rounded-lg object-cover object-[center_22%] align-middle"
         />
       ) : v.withDot ? (
         <span className="bg-brand-orange mr-2.5 inline-block size-2 rounded-full align-middle" />
