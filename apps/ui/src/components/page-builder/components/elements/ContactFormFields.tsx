@@ -11,11 +11,11 @@ export interface ContactFormLabels {
   readonly submitLabel: string
 }
 
+type Status = "idle" | "sending" | "sent" | "error"
+
 /**
- * The form is fully built but does NOT send anywhere yet — the Telegram bot is
- * not wired up. Until then `enabled` is false: fields stay usable, the submit
- * button is disabled and the section shows an honest note instead of pretending
- * the message went through.
+ * Posts to /API/lead, which forwards the message to Telegram. `enabled` is a
+ * CMS kill-switch: turn the form off without a deploy.
  */
 export function ContactFormFields({
   labels,
@@ -29,8 +29,15 @@ export function ContactFormFields({
   const [name, setName] = useState("")
   const [phone, setPhone] = useState("")
   const [message, setMessage] = useState("")
+  const [company, setCompany] = useState("")
+  const [status, setStatus] = useState<Status>("idle")
+  const [error, setError] = useState<string>()
 
-  const canSubmit = enabled && name.trim().length > 1 && phone.trim().length > 5
+  const canSubmit =
+    enabled &&
+    status !== "sending" &&
+    name.trim().length > 1 &&
+    phone.trim().length > 5
 
   const fieldClassName = cn(
     "w-full rounded-lg border px-4 py-3.5 text-[15px] outline-none transition-colors",
@@ -39,13 +46,62 @@ export function ContactFormFields({
       : "bg-brand-surface border-brand-border text-brand-cream placeholder:text-brand-muted focus:border-brand-orange"
   )
 
+  async function submit(event: React.FormEvent) {
+    event.preventDefault()
+    if (!canSubmit) return
+
+    setStatus("sending")
+    setError(undefined)
+
+    try {
+      const response = await fetch("/api/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          kind: "contact",
+          name,
+          phone,
+          message: message || undefined,
+          company,
+        }),
+      })
+
+      if (!response.ok) {
+        const body = await readError(response)
+        throw new Error(body.error ?? "Не вдалося надіслати повідомлення.")
+      }
+
+      setStatus("sent")
+      setName("")
+      setPhone("")
+      setMessage("")
+    } catch (caught) {
+      setStatus("error")
+      setError(
+        caught instanceof Error
+          ? caught.message
+          : "Не вдалося надіслати повідомлення."
+      )
+    }
+  }
+
+  if (status === "sent") {
+    return (
+      <p
+        className={cn(
+          "rounded-lg border px-6 py-5 text-[15px]",
+          isLight
+            ? "bg-brand-paper border-brand-line text-brand-forest"
+            : "bg-brand-surface border-brand-border text-brand-cream"
+        )}
+      >
+        Дякуємо! Ми отримали ваше повідомлення й зателефонуємо найближчим часом.
+      </p>
+    )
+  }
+
   return (
-    <form
-      className="text-left"
-      onSubmit={(event) => {
-        event.preventDefault()
-      }}
-    >
+    <form className="text-left" onSubmit={submit}>
       <div className="mb-3.5 grid gap-3.5 min-[600px]:grid-cols-2">
         <label>
           <span className="sr-only">{labels.nameLabel}</span>
@@ -85,15 +141,40 @@ export function ContactFormFields({
         />
       </label>
 
+      {/* Honeypot — hidden from people, irresistible to bots. */}
+      <input
+        type="text"
+        name="company"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden
+        value={company}
+        onChange={(event) => setCompany(event.target.value)}
+        className="absolute left-[-9999px] size-0 opacity-0"
+      />
+
       <button
         type="submit"
         disabled={!canSubmit}
-        className="bg-brand-bronze font-oswald hover:bg-brand-orange rounded-lg px-9 py-4 text-base font-medium tracking-[0.05em] text-white uppercase transition-colors disabled:cursor-not-allowed disabled:opacity-45"
+        className="bg-brand-bronze font-oswald hover:bg-brand-orange cursor-pointer rounded-lg px-9 py-4 text-base font-medium tracking-[0.05em] text-white uppercase transition-colors disabled:cursor-not-allowed disabled:opacity-45"
       >
-        {labels.submitLabel}
+        {status === "sending" ? "Надсилаємо…" : labels.submitLabel}
       </button>
+
+      {status === "error" && error ? (
+        <p className="text-brand-orange mt-3 text-sm">{error}</p>
+      ) : null}
     </form>
   )
+}
+
+/** The error body may be missing or not JSON at all — never let that throw. */
+async function readError(response: Response): Promise<{ error?: string }> {
+  try {
+    return (await response.json()) as { error?: string }
+  } catch {
+    return {}
+  }
 }
 
 export default ContactFormFields

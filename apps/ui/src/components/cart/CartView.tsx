@@ -16,8 +16,10 @@ const PAYMENT_METHODS = [
 const FIELD =
   "bg-brand-surface text-brand-nav placeholder:text-brand-muted focus:border-brand-bronze w-full rounded-lg border border-[#2f4f3a] px-4 py-3.5 text-[15px] outline-none transition-colors"
 
+type Status = "idle" | "sending" | "sent" | "error"
+
 export function CartView() {
-  const { items, count, total, setQuantity, remove } = useCart()
+  const { items, count, total, setQuantity, remove, clear } = useCart()
 
   const [payment, setPayment] =
     useState<(typeof PAYMENT_METHODS)[number]["id"]>("card")
@@ -27,6 +29,79 @@ export function CartView() {
     city: "",
     office: "",
   })
+  const [status, setStatus] = useState<Status>("idle")
+  const [error, setError] = useState<string>()
+
+  const isFormFilled =
+    form.name.trim().length > 1 && form.phone.trim().length > 5
+  const canSubmit = isFormFilled && status !== "sending" && items.length > 0
+
+  /**
+   * The order goes to Telegram (via /API/lead) and nowhere else — there is no
+   * Order collection yet. On success the cart is cleared, so a refresh cannot
+   * resend it.
+   */
+  async function submitOrder() {
+    if (!canSubmit) return
+
+    setStatus("sending")
+    setError(undefined)
+
+    try {
+      const response = await fetch("/api/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          kind: "order",
+          name: form.name,
+          phone: form.phone,
+          city: form.city || undefined,
+          office: form.office || undefined,
+          payment,
+          items: items.map((item) => ({
+            name: item.name,
+            option: item.option,
+            price: item.price,
+            quantity: item.quantity,
+          })),
+        }),
+      })
+
+      if (!response.ok) {
+        const body = await readError(response)
+        throw new Error(body.error ?? "Не вдалося надіслати замовлення.")
+      }
+
+      clear()
+      setStatus("sent")
+    } catch (caught) {
+      setStatus("error")
+      setError(
+        caught instanceof Error
+          ? caught.message
+          : "Не вдалося надіслати замовлення."
+      )
+    }
+  }
+
+  if (status === "sent") {
+    return (
+      <div className="border-brand-border bg-brand-green rounded-xl border p-12 text-center">
+        <p className="text-brand-cream mb-2 text-xl font-semibold">
+          Замовлення прийнято
+        </p>
+        <p className="text-brand-nav mb-6 text-[15px]">
+          Ми зателефонуємо вам найближчим часом, щоб підтвердити деталі.
+        </p>
+        <Link
+          href="/catalog"
+          className="bg-brand-bronze font-oswald hover:bg-brand-orange inline-flex rounded-lg px-7 py-3.5 text-sm tracking-[0.05em] text-white uppercase transition-colors"
+        >
+          Продовжити покупки
+        </Link>
+      </div>
+    )
+  }
 
   if (!items.length) {
     return (
@@ -232,20 +307,23 @@ export function CartView() {
           </span>
         </div>
 
-        {/* Checkout is not wired to anything yet — the order has nowhere to go
-            until the Telegram bot lands. Better a disabled button with an
-            honest line than a "Дякуємо!" that sends nothing. */}
         <button
           type="button"
-          disabled
-          className="bg-brand-bronze font-oswald mt-5 w-full cursor-not-allowed rounded-lg py-4.5 text-[17px] font-medium tracking-[0.05em] text-white uppercase opacity-45"
+          disabled={!canSubmit}
+          onClick={submitOrder}
+          className="bg-brand-bronze font-oswald hover:bg-brand-orange mt-5 w-full cursor-pointer rounded-lg py-4.5 text-[17px] font-medium tracking-[0.05em] text-white uppercase transition-colors disabled:cursor-not-allowed disabled:opacity-45"
         >
-          Оформити замовлення
+          {status === "sending" ? "Надсилаємо…" : "Оформити замовлення"}
         </button>
-        <p className="text-brand-muted mt-3 text-center text-[13px]">
-          Оформлення підключимо разом із Telegram-ботом. Поки що зателефонуйте
-          нам — товари в кошику збережуться.
-        </p>
+
+        {status === "error" && error ? (
+          <p className="text-brand-orange mt-3 text-center text-sm">{error}</p>
+        ) : null}
+        {!isFormFilled && status !== "error" ? (
+          <p className="text-brand-muted mt-3 text-center text-[13px]">
+            Заповніть ім&apos;я та телефон, щоб оформити замовлення.
+          </p>
+        ) : null}
 
         <Link
           href="/catalog"
@@ -292,6 +370,15 @@ function QuantityButton({
       {children}
     </button>
   )
+}
+
+/** The error body may be missing or not JSON at all — never let that throw. */
+async function readError(response: Response): Promise<{ error?: string }> {
+  try {
+    return (await response.json()) as { error?: string }
+  } catch {
+    return {}
+  }
 }
 
 export default CartView
