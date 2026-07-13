@@ -1,4 +1,3 @@
-import type { Data } from "@repo/strapi-types"
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import type { Locale } from "next-intl"
@@ -11,6 +10,7 @@ import { ProductGallery } from "@/components/product/ProductGallery"
 import { badgeClass } from "@/lib/badges"
 import { formatPrice as formatUah } from "@/lib/format"
 import { CONTENT_MAX_W, SECTION_X_PADDING } from "@/lib/layout"
+import { toCartItem, toProductCard } from "@/lib/product-card"
 import {
   fetchProductBySlug,
   fetchRelatedProducts,
@@ -267,33 +267,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
             {related.map((item) => (
               <ProductCard
                 key={item.documentId}
-                product={
-                  {
-                    id: item.id,
-                    category: item.category?.name,
-                    name: item.name,
-                    price: formatPrice(item.price),
-                    oldPrice: formatPrice(item.oldPrice),
-                    badge: item.badge,
-                    badgeColor: item.badgeColor,
-                    image: item.images?.[0]
-                      ? { media: item.images[0], alt: item.name }
-                      : undefined,
-                    link: {
-                      type: "external",
-                      label: item.name,
-                      href: `/product/${item.slug}`,
-                      newTab: false,
-                    },
-                  } as unknown as Data.Component<"elements.product-card">
-                }
-                cartItem={{
-                  slug: item.slug ?? "",
-                  name: item.name ?? "",
-                  price: item.price ?? 0,
-                  imageUrl:
-                    formatStrapiMediaUrl(item.images?.[0]?.url) ?? undefined,
-                }}
+                product={toProductCard(item)}
+                cartItem={toCartItem(item)}
                 sizes="(min-width: 1024px) 25vw, 50vw"
               />
             ))}

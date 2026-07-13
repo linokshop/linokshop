@@ -8,23 +8,18 @@ import AppLink from "@/components/elementary/AppLink"
 import { CatalogFilters } from "@/components/page-builder/components/elements/CatalogFilters"
 import { CatalogSort } from "@/components/page-builder/components/elements/CatalogSort"
 import { ProductCard } from "@/components/page-builder/components/elements/ProductCard"
-import { formatPrice as formatUah } from "@/lib/format"
-import { SECTION_X_PADDING } from "@/lib/layout"
+import { CONTENT_MAX_W, SECTION_X_PADDING } from "@/lib/layout"
+import { toCartItem, toProductCard } from "@/lib/product-card"
 import {
   type CatalogQuery,
   fetchBrands,
   fetchCatalogProducts,
   fetchCategoryCounts,
 } from "@/lib/strapi-api/content/server"
-import { formatStrapiMediaUrl } from "@/lib/strapi-helpers"
 import { cn } from "@/lib/styles"
 import type { PageBuilderComponentProps } from "@/types/general"
 
 type SearchParams = Record<string, string | string[] | undefined>
-type Product = NonNullable<
-  Awaited<ReturnType<typeof fetchCatalogProducts>>
->["data"][number]
-
 const SORTS = ["popular", "price-asc", "price-desc", "new"] as const
 
 const readOne = (params: SearchParams, key: string) => {
@@ -41,9 +36,6 @@ const readNumber = (params: SearchParams, key: string) => {
 
   return Number.isFinite(value) && value >= 0 ? value : undefined
 }
-
-const formatPrice = (value: number | null | undefined) =>
-  value == null ? undefined : formatUah(value)
 
 /**
  * Products, categories and brands are their own Strapi collections, so this
@@ -91,7 +83,12 @@ export async function StrapiCatalog({
     <section
       className={cn(SECTION_X_PADDING, "bg-brand-surface font-golos pb-17.5")}
     >
-      <div className="mx-auto grid max-w-[1320px] items-start gap-8 min-[900px]:grid-cols-[268px_1fr]">
+      <div
+        className={cn(
+          CONTENT_MAX_W,
+          "grid items-start gap-8 min-[900px]:grid-cols-[268px_1fr]"
+        )}
+      >
         <CatalogFilters
           categories={categoryCounts}
           brands={(brands?.data ?? []).map((brand) => ({
@@ -123,7 +120,7 @@ export async function StrapiCatalog({
               {items.map((product) => (
                 <ProductCard
                   key={product.documentId}
-                  product={toCard(product)}
+                  product={toProductCard(product)}
                   cartItem={toCartItem(product)}
                   sizes="(min-width: 1024px) 30vw, (min-width: 420px) 45vw, 90vw"
                 />
@@ -146,38 +143,6 @@ export async function StrapiCatalog({
       </div>
     </section>
   )
-}
-
-/** The data the tile's "+" button needs to put this product in the cart. */
-function toCartItem(product: Product) {
-  return {
-    slug: product.slug ?? "",
-    name: product.name ?? "",
-    price: product.price ?? 0,
-    imageUrl: formatStrapiMediaUrl(product.images?.[0]?.url) ?? undefined,
-  }
-}
-
-/** Adapts a Product entity to the shape the shared tile renders. */
-function toCard(product: Product) {
-  return {
-    id: product.id,
-    category: product.category?.name,
-    name: product.name,
-    price: formatPrice(product.price),
-    oldPrice: formatPrice(product.oldPrice),
-    badge: product.badge,
-    badgeColor: product.badgeColor,
-    image: product.images?.[0]
-      ? { media: product.images[0], alt: product.name }
-      : undefined,
-    link: {
-      type: "external",
-      label: product.name,
-      href: `/product/${product.slug}`,
-      newTab: false,
-    },
-  } as unknown as Data.Component<"elements.product-card">
 }
 
 function Pagination({

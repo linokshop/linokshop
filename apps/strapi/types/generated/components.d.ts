@@ -380,12 +380,13 @@ export interface SectionsHomeProgram extends Struct.ComponentSchema {
 export interface SectionsHomeProducts extends Struct.ComponentSchema {
   collectionName: "components_sections_home_products"
   info: {
-    description: "ЛінОк homepage top products grid."
+    description: "Homepage product rail. Products are picked from the Product collection — pick them here, or leave empty to show the most popular ones."
     displayName: "HomeProducts"
   }
   attributes: {
+    limit: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<6>
     link: Schema.Attribute.Component<"utilities.link", false>
-    products: Schema.Attribute.Component<"elements.product-card", true>
+    products: Schema.Attribute.Relation<"oneToMany", "api::product.product">
     title: Schema.Attribute.String
   }
 }

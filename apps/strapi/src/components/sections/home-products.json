@@ -2,7 +2,7 @@
   "collectionName": "components_sections_home_products",
   "info": {
     "displayName": "HomeProducts",
-    "description": "ЛінОк homepage top products grid."
+    "description": "Homepage product rail. Products are picked from the Product collection — pick them here, or leave empty to show the most popular ones."
   },
   "options": {},
   "attributes": {
@@ -15,9 +15,13 @@
       "repeatable": false
     },
     "products": {
-      "type": "component",
-      "component": "elements.product-card",
-      "repeatable": true
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product.product"
+    },
+    "limit": {
+      "type": "integer",
+      "default": 6
     }
   }
 }

@@ -17,6 +17,20 @@ const populateOverrides = [
       },
     },
   },
+  {
+    // The home rail links to real products; without this the tiles would render
+    // with no photo and no category label.
+    componentUid: "sections.home-products",
+    mergeWithGeneratedPopulate: true,
+    overridePopulate: {
+      products: {
+        populate: {
+          images: true,
+          category: true,
+        },
+      },
+    },
+  },
 ] satisfies PopulateOverrideEntries<ComponentPopulateMap>
 
 export function smartPopulateConfig() {
