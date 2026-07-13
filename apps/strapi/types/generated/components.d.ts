@@ -80,6 +80,10 @@ export interface ElementsInfoCard extends Struct.ComponentSchema {
   }
   attributes: {
     badge: Schema.Attribute.String
+    badgeColor: Schema.Attribute.Enumeration<
+      ["orange", "sale", "stock", "bronze"]
+    > &
+      Schema.Attribute.DefaultTo<"orange">
     highlight: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>
     image: Schema.Attribute.Component<"utilities.basic-image", false>
     link: Schema.Attribute.Component<"utilities.link", false>
@@ -219,6 +223,8 @@ export interface SectionsCardGrid extends Struct.ComponentSchema {
     columns: Schema.Attribute.Enumeration<["three", "four"]> &
       Schema.Attribute.DefaultTo<"three">
     footnote: Schema.Attribute.Text
+    imageStyle: Schema.Attribute.Enumeration<["icon", "cover"]> &
+      Schema.Attribute.DefaultTo<"icon">
     subtitle: Schema.Attribute.String
     theme: Schema.Attribute.Enumeration<["dark", "light"]> &
       Schema.Attribute.DefaultTo<"dark">
@@ -412,9 +418,13 @@ export interface SectionsHomePromo extends Struct.ComponentSchema {
     displayName: "HomePromo"
   }
   attributes: {
+    eyebrow: Schema.Attribute.String
+    image: Schema.Attribute.Component<"utilities.basic-image", false>
     link: Schema.Attribute.Component<"utilities.link", false>
     text: Schema.Attribute.String
     title: Schema.Attribute.String
+    variant: Schema.Attribute.Enumeration<["band", "featured"]> &
+      Schema.Attribute.DefaultTo<"band">
   }
 }
 

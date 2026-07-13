@@ -4,10 +4,11 @@ import type { Data } from "@repo/strapi-types"
 
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
 import StrapiLink from "@/components/page-builder/components/utilities/StrapiLink"
-import Typography from "@/components/typography"
+import { SECTION_X_PADDING } from "@/lib/layout"
 import { cn } from "@/lib/styles"
 import type { PageBuilderComponentProps } from "@/types/general"
 
+/** Horizontal news items: photo on the left, date + headline + lead on the right. */
 export function StrapiNews({
   component,
 }: PageBuilderComponentProps & {
@@ -18,71 +19,106 @@ export function StrapiNews({
 
   return (
     <section
-      className={cn("font-golos", isLight ? "bg-brand-sand" : "bg-brand-green")}
+      className={cn(
+        SECTION_X_PADDING,
+        "font-golos pt-12 pb-17.5",
+        isLight ? "bg-brand-sand" : "bg-brand-surface"
+      )}
     >
-      <div className="px-4 py-12 sm:px-6 lg:px-10">
+      <div className="mx-auto max-w-[1320px]">
         {title ? (
-          <Typography
-            tag="h2"
+          <h2
             className={cn(
-              "font-oswald mb-8 text-3xl font-bold uppercase",
-              isLight ? "text-brand-green" : "text-brand-cream"
+              "mb-6.5 text-[30px] leading-tight font-semibold min-[600px]:text-[32px]",
+              isLight
+                ? "font-bitter text-brand-forest"
+                : "font-oswald text-brand-cream tracking-[0.02em] uppercase"
             )}
           >
             {title}
-          </Typography>
+          </h2>
         ) : null}
 
-        <div className="flex flex-col gap-4">
-          {items?.map((item) => (
-            <article
-              key={item.id}
-              className={cn(
-                "flex flex-col overflow-hidden rounded-sm border sm:flex-row",
-                isLight
-                  ? "border-brand-green/10 bg-white"
-                  : "border-brand-border bg-brand-surface"
-              )}
-            >
-              <div className="bg-brand-navy relative min-h-48 sm:min-h-full sm:w-60 sm:shrink-0">
-                {item.image ? (
-                  <StrapiBasicImage
-                    component={item.image}
-                    fill
-                    className="object-cover"
-                  />
-                ) : null}
-              </div>
-              <div className="flex flex-1 flex-col gap-2 p-6">
-                {item.date ? (
-                  <span className="font-oswald text-brand-orange text-xs tracking-wide uppercase">
-                    {item.date}
-                  </span>
-                ) : null}
-                {item.title ? (
-                  <StrapiLink
-                    component={item.link}
-                    className={cn(
-                      "font-oswald hover:text-brand-orange text-lg font-semibold uppercase no-underline transition-colors",
-                      isLight ? "text-brand-green" : "text-brand-cream"
-                    )}
-                  >
-                    {item.title}
-                  </StrapiLink>
-                ) : null}
-                {item.text ? (
-                  <Typography
-                    className={cn(
-                      "text-sm/6",
-                      isLight ? "text-brand-green/70" : "text-brand-nav"
-                    )}
-                  >
-                    {item.text}
-                  </Typography>
-                ) : null}
-              </div>
-            </article>
-          ))}
+        <div className="flex flex-col gap-4.5">
+          {items?.map((item) => {
+            const body = (
+              <>
+                <span
+                  className={cn(
+                    "relative block h-45 w-full shrink-0 overflow-hidden min-[700px]:h-auto min-[700px]:w-60",
+                    isLight ? "bg-brand-line" : "bg-brand-green"
+                  )}
+                >
+                  {item.image?.media ? (
+                    <StrapiBasicImage
+                      component={item.image}
+                      fill
+                      sizes="(min-width: 700px) 240px, 100vw"
+                      className="object-cover"
+                    />
+                  ) : null}
+                </span>
+
+                <span className="flex flex-col justify-center p-5.5 min-[700px]:py-6 min-[700px]:pr-6 min-[700px]:pl-0">
+                  {item.date ? (
+                    <span
+                      className={cn(
+                        "font-oswald mb-2 block text-[13px] tracking-[0.05em] uppercase",
+                        isLight ? "text-brand-sage" : "text-brand-muted"
+                      )}
+                    >
+                      {item.date}
+                    </span>
+                  ) : null}
+                  {item.title ? (
+                    <span
+                      className={cn(
+                        "mb-2 block text-xl font-semibold transition-colors",
+                        isLight
+                          ? "text-brand-forest group-hover:text-brand-bronze"
+                          : "text-brand-cream group-hover:text-brand-orange"
+                      )}
+                    >
+                      {item.title}
+                    </span>
+                  ) : null}
+                  {item.text ? (
+                    <span
+                      className={cn(
+                        "block text-[15px] leading-[1.65]",
+                        isLight ? "text-brand-sage" : "text-brand-nav"
+                      )}
+                    >
+                      {item.text}
+                    </span>
+                  ) : null}
+                </span>
+              </>
+            )
+
+            const className = cn(
+              "flex flex-col overflow-hidden rounded-xl border transition-colors min-[700px]:flex-row min-[700px]:gap-6",
+              isLight
+                ? "bg-brand-paper border-brand-line"
+                : "bg-brand-green border-brand-border",
+              item.link && "hover:border-brand-orange"
+            )
+
+            return item.link ? (
+              <StrapiLink
+                key={item.id}
+                component={item.link}
+                unstyled
+                className={className}
+              >
+                {body}
+              </StrapiLink>
+            ) : (
+              <article key={item.id} className={className}>
+                {body}
+              </article>
+            )
+          })}
         </div>
       </div>
     </section>

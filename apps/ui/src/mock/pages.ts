@@ -5,7 +5,6 @@ import { mockCartPage } from "@/mock/cart-page"
 import { mockCatalogPage } from "@/mock/catalog-page"
 import { mockHomePage } from "@/mock/home-page"
 import { mockProductPage } from "@/mock/product-page"
-import { mockPromosPage } from "@/mock/promos-page"
 
 /**
  * Registry of TEMPORARY mock pages, keyed by Strapi `fullPath`. StrapiPageView
@@ -15,9 +14,8 @@ import { mockPromosPage } from "@/mock/promos-page"
  * Delete the whole `apps/ui/src/mock` folder once pages live in Strapi.
  */
 export const mockPages: Record<string, Data.ContentType<"api::page.page">> = {
-  // `/about`, `/delivery`, `/contacts` and `/veteran` now live in Strapi.
+  // Only the shop pages are still mocked — every content page lives in Strapi.
   [ROOT_PAGE_PATH]: mockHomePage,
-  "/promos": mockPromosPage,
   "/catalog": mockCatalogPage,
   "/product": mockProductPage,
   "/cart": mockCartPage,

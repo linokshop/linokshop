@@ -6,8 +6,21 @@
   },
   "options": {},
   "attributes": {
+    "variant": {
+      "type": "enumeration",
+      "enum": ["band", "featured"],
+      "default": "band"
+    },
+    "eyebrow": {
+      "type": "string"
+    },
     "title": {
       "type": "string"
+    },
+    "image": {
+      "type": "component",
+      "component": "utilities.basic-image",
+      "repeatable": false
     },
     "text": {
       "type": "string"

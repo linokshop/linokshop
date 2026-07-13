@@ -22,6 +22,11 @@
       "enum": ["left", "center"],
       "default": "left"
     },
+    "imageStyle": {
+      "type": "enumeration",
+      "enum": ["icon", "cover"],
+      "default": "icon"
+    },
     "theme": {
       "type": "enumeration",
       "enum": ["dark", "light"],
