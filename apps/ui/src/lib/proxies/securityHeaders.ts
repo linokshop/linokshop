@@ -92,7 +92,8 @@ function buildCsp({
     ].join(" "),
     // Example — add framed third parties (e.g. tag manager preview) here:
     // "frame-src 'self' https://www.googletagmanager.com https://bid.g.doubleclick.net https://td.doubleclick.net",
-    "frame-src 'self'",
+    // openstreetmap.org: the contacts page embeds its keyless map iframe.
+    "frame-src 'self' https://www.openstreetmap.org",
     "worker-src 'self' blob:",
     [
       "media-src 'self' blob: https:",

@@ -19,6 +19,11 @@
       "type": "enumeration",
       "enum": ["dark", "light"],
       "default": "dark"
+    },
+    "align": {
+      "type": "enumeration",
+      "enum": ["center", "left"],
+      "default": "center"
     }
   }
 }

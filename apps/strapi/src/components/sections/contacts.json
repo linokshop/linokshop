@@ -1,0 +1,41 @@
+{
+  "collectionName": "components_sections_contacts",
+  "info": {
+    "displayName": "Contacts",
+    "description": "Contact details beside an OpenStreetMap map."
+  },
+  "options": {},
+  "attributes": {
+    "items": {
+      "type": "component",
+      "component": "elements.contact-item",
+      "repeatable": true
+    },
+    "socialsLabel": {
+      "type": "string"
+    },
+    "socials": {
+      "type": "component",
+      "component": "utilities.link",
+      "repeatable": true
+    },
+    "latitude": {
+      "type": "float"
+    },
+    "longitude": {
+      "type": "float"
+    },
+    "zoom": {
+      "type": "integer",
+      "default": 16
+    },
+    "mapTitle": {
+      "type": "string"
+    },
+    "theme": {
+      "type": "enumeration",
+      "enum": ["dark", "light"],
+      "default": "dark"
+    }
+  }
+}

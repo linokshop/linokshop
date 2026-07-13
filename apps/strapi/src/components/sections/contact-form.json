@@ -1,0 +1,44 @@
+{
+  "collectionName": "components_sections_contact_forms",
+  "info": {
+    "displayName": "ContactForm",
+    "description": "\"Write to us\" form. Sending is off until the Telegram bot is wired up — flip `enabled` then."
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "text": {
+      "type": "text"
+    },
+    "nameLabel": {
+      "type": "string",
+      "default": "Ваше ім'я"
+    },
+    "phoneLabel": {
+      "type": "string",
+      "default": "Телефон"
+    },
+    "messageLabel": {
+      "type": "string",
+      "default": "Повідомлення"
+    },
+    "submitLabel": {
+      "type": "string",
+      "default": "Надіслати"
+    },
+    "enabled": {
+      "type": "boolean",
+      "default": false
+    },
+    "disabledNote": {
+      "type": "text"
+    },
+    "theme": {
+      "type": "enumeration",
+      "enum": ["dark", "light"],
+      "default": "dark"
+    }
+  }
+}

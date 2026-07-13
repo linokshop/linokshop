@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_elements_contact_items",
+  "info": {
+    "displayName": "ContactItem",
+    "description": "One contact line: label, value and an optional note (\"Без вихідних\")."
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string"
+    },
+    "value": {
+      "type": "text"
+    },
+    "note": {
+      "type": "string"
+    },
+    "href": {
+      "type": "string"
+    },
+    "emphasis": {
+      "type": "enumeration",
+      "enum": ["normal", "large"],
+      "default": "normal"
+    }
+  }
+}

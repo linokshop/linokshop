@@ -79,7 +79,9 @@
         "sections.steps",
         "sections.text-block",
         "sections.faq",
-        "sections.story"
+        "sections.story",
+        "sections.contacts",
+        "sections.contact-form"
       ]
     },
     "children": {

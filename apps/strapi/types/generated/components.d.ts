@@ -12,6 +12,22 @@ export interface ElementsSpecRow extends Struct.ComponentSchema {
   }
 }
 
+export interface ElementsContactItem extends Struct.ComponentSchema {
+  collectionName: "components_elements_contact_items"
+  info: {
+    description: 'One contact line: label, value and an optional note ("Без вихідних").'
+    displayName: "ContactItem"
+  }
+  attributes: {
+    emphasis: Schema.Attribute.Enumeration<["normal", "large"]> &
+      Schema.Attribute.DefaultTo<"normal">
+    href: Schema.Attribute.String
+    label: Schema.Attribute.String
+    note: Schema.Attribute.String
+    value: Schema.Attribute.Text
+  }
+}
+
 export interface ElementsStat extends Struct.ComponentSchema {
   collectionName: "components_elements_stats"
   info: {
@@ -205,6 +221,48 @@ export interface SectionsCardGrid extends Struct.ComponentSchema {
   }
 }
 
+export interface SectionsContacts extends Struct.ComponentSchema {
+  collectionName: "components_sections_contacts"
+  info: {
+    description: "Contact details beside an OpenStreetMap map."
+    displayName: "Contacts"
+  }
+  attributes: {
+    items: Schema.Attribute.Component<"elements.contact-item", true>
+    latitude: Schema.Attribute.Float
+    longitude: Schema.Attribute.Float
+    mapTitle: Schema.Attribute.String
+    socials: Schema.Attribute.Component<"utilities.link", true>
+    socialsLabel: Schema.Attribute.String
+    theme: Schema.Attribute.Enumeration<["dark", "light"]> &
+      Schema.Attribute.DefaultTo<"dark">
+    zoom: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<16>
+  }
+}
+
+export interface SectionsContactForm extends Struct.ComponentSchema {
+  collectionName: "components_sections_contact_forms"
+  info: {
+    description: "\"Write to us\" form. Sending is off until the Telegram bot is wired up — flip `enabled` then."
+    displayName: "ContactForm"
+  }
+  attributes: {
+    disabledNote: Schema.Attribute.Text
+    enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>
+    messageLabel: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<"Повідомлення">
+    nameLabel: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<"Ваше ім'я">
+    phoneLabel: Schema.Attribute.String & Schema.Attribute.DefaultTo<"Телефон">
+    submitLabel: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<"Надіслати">
+    text: Schema.Attribute.Text
+    theme: Schema.Attribute.Enumeration<["dark", "light"]> &
+      Schema.Attribute.DefaultTo<"dark">
+    title: Schema.Attribute.String
+  }
+}
+
 export interface SectionsStory extends Struct.ComponentSchema {
   collectionName: "components_sections_stories"
   info: {
@@ -298,6 +356,8 @@ export interface SectionsTextBlock extends Struct.ComponentSchema {
     displayName: "TextBlock"
   }
   attributes: {
+    align: Schema.Attribute.Enumeration<["center", "left"]> &
+      Schema.Attribute.DefaultTo<"center">
     eyebrow: Schema.Attribute.String
     text: Schema.Attribute.Text
     theme: Schema.Attribute.Enumeration<["dark", "light"]> &
@@ -679,6 +739,7 @@ declare module "@strapi/strapi" {
       "elements.info-card": ElementsInfoCard
       "elements.news-card": ElementsNewsCard
       "elements.product-card": ElementsProductCard
+      "elements.contact-item": ElementsContactItem
       "elements.spec-row": ElementsSpecRow
       "elements.stat": ElementsStat
       "elements.step-card": ElementsStepCard
@@ -689,6 +750,8 @@ declare module "@strapi/strapi" {
       "sections.home-products": SectionsHomeProducts
       "sections.home-program": SectionsHomeProgram
       "sections.card-grid": SectionsCardGrid
+      "sections.contact-form": SectionsContactForm
+      "sections.contacts": SectionsContacts
       "sections.faq": SectionsFaq
       "sections.cart": SectionsCart
       "sections.catalog": SectionsCatalog

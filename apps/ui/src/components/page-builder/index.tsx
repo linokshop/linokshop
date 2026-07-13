@@ -3,6 +3,8 @@ import type { UID } from "@repo/strapi-types"
 import StrapiCardGrid from "@/components/page-builder/components/sections/StrapiCardGrid"
 import StrapiCart from "@/components/page-builder/components/sections/StrapiCart"
 import StrapiCatalog from "@/components/page-builder/components/sections/StrapiCatalog"
+import StrapiContactForm from "@/components/page-builder/components/sections/StrapiContactForm"
+import StrapiContacts from "@/components/page-builder/components/sections/StrapiContacts"
 import StrapiFaq from "@/components/page-builder/components/sections/StrapiFaq"
 import StrapiHomeCategories from "@/components/page-builder/components/sections/StrapiHomeCategories"
 import StrapiHomeHero from "@/components/page-builder/components/sections/StrapiHomeHero"
@@ -49,6 +51,8 @@ export const PageContentComponents: Partial<
 
   // Sections — shared / content
   "sections.card-grid": StrapiCardGrid,
+  "sections.contacts": StrapiContacts,
+  "sections.contact-form": StrapiContactForm,
   "sections.faq": StrapiFaq,
   "sections.news": StrapiNews,
   "sections.steps": StrapiSteps,

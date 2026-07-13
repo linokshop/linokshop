@@ -15,20 +15,24 @@ export function StrapiTextBlock({
 }: PageBuilderComponentProps & {
   readonly component: Data.Component<"sections.text-block">
 }) {
-  const { eyebrow, title, text, theme } = component
+  const { eyebrow, title, text, theme, align } = component
   const isLight = theme === "light"
+  const isLeft = align === "left"
 
   return (
     <section
       className={cn(
         SECTION_X_PADDING,
-        "font-golos py-16 text-center",
+        "font-golos py-16",
+        isLeft ? "text-left" : "text-center",
         isLight
           ? "bg-brand-cream border-brand-line border-b"
           : "bg-brand-green border-brand-border border-b"
       )}
     >
-      <div className="mx-auto max-w-[1100px]">
+      <div
+        className={cn("mx-auto", isLeft ? "max-w-[1320px]" : "max-w-[1100px]")}
+      >
         {eyebrow ? (
           <span className="font-oswald text-brand-bronze block text-[13px] tracking-[0.18em] uppercase">
             {eyebrow}
@@ -47,7 +51,8 @@ export function StrapiTextBlock({
         {text ? (
           <p
             className={cn(
-              "mx-auto max-w-150 text-[17px] leading-[1.7]",
+              "max-w-150 text-[17px] leading-[1.7]",
+              !isLeft && "mx-auto",
               isLight ? "text-brand-sage" : "text-brand-nav"
             )}
           >
