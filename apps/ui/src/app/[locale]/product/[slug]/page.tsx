@@ -8,20 +8,15 @@ import AppLink from "@/components/elementary/AppLink"
 import { ProductCard } from "@/components/page-builder/components/elements/ProductCard"
 import { AddToCart } from "@/components/product/AddToCart"
 import { ProductGallery } from "@/components/product/ProductGallery"
+import { badgeClass } from "@/lib/badges"
 import { formatPrice as formatUah } from "@/lib/format"
-import { SECTION_X_PADDING } from "@/lib/layout"
+import { CONTENT_MAX_W, SECTION_X_PADDING } from "@/lib/layout"
 import {
   fetchProductBySlug,
   fetchRelatedProducts,
 } from "@/lib/strapi-api/content/server"
 import { formatStrapiMediaUrl } from "@/lib/strapi-helpers"
 import { cn } from "@/lib/styles"
-
-const BADGE_COLORS = {
-  bronze: "bg-brand-bronze text-white",
-  sale: "bg-brand-crimson text-white",
-  stock: "bg-brand-moss text-white",
-} as const
 
 const formatPrice = (value: number | null | undefined) =>
   value == null ? undefined : formatUah(value)
@@ -89,9 +84,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   return (
     <main className="bg-brand-surface font-golos flex w-full flex-1 flex-col">
-      <div
-        className={cn(SECTION_X_PADDING, "mx-auto w-full max-w-[1320px] pt-8")}
-      >
+      <div className={cn(SECTION_X_PADDING, CONTENT_MAX_W, "pt-8")}>
         <nav
           aria-label="Breadcrumb"
           className="font-oswald text-brand-muted text-[13px] tracking-[0.06em] uppercase"
@@ -122,13 +115,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
       <div
         className={cn(
           SECTION_X_PADDING,
-          "mx-auto grid w-full max-w-[1320px] items-start gap-8 py-6 min-[900px]:grid-cols-[1.05fr_1fr] min-[900px]:gap-12 min-[900px]:pb-15"
+          CONTENT_MAX_W,
+          "grid items-start gap-8 py-6 min-[900px]:grid-cols-[1.05fr_1fr] min-[900px]:gap-12 min-[900px]:pb-15"
         )}
       >
         <ProductGallery
           images={images}
           badge={product.badge}
-          badgeClassName={BADGE_COLORS[product.badgeColor ?? "bronze"]}
+          badgeClassName={badgeClass(product.badgeColor)}
         />
 
         <div>
@@ -218,7 +212,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
         <div
           className={cn(
             SECTION_X_PADDING,
-            "mx-auto grid w-full max-w-[1320px] gap-8 pb-15 min-[900px]:grid-cols-2 min-[900px]:gap-12"
+            CONTENT_MAX_W,
+            "grid gap-8 pb-15 min-[900px]:grid-cols-2 min-[900px]:gap-12"
           )}
         >
           {product.description ? (
@@ -226,9 +221,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
               <h2 className="font-oswald text-brand-cream mb-4 text-[26px] font-semibold tracking-[0.02em] uppercase">
                 Опис
               </h2>
-              {product.description.split(/\n{2,}/).map((paragraph) => (
+              {product.description.split(/\n{2,}/).map((paragraph, index) => (
                 <p
-                  key={paragraph}
+                  // Two identical paragraphs are legal copy — index is the only
+                  // stable key here.
+                  // eslint-disable-next-line react/no-array-index-key
+                  key={index}
                   className="text-brand-nav mb-3.5 text-[15.5px] leading-[1.8] last:mb-0"
                 >
                   {paragraph}
@@ -261,12 +259,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
       ) : null}
 
       {related.length ? (
-        <div
-          className={cn(
-            SECTION_X_PADDING,
-            "mx-auto w-full max-w-[1320px] pb-17.5"
-          )}
-        >
+        <div className={cn(SECTION_X_PADDING, CONTENT_MAX_W, "pb-17.5")}>
           <h2 className="font-oswald text-brand-cream mb-6.5 text-[30px] font-semibold tracking-[0.02em] uppercase min-[600px]:text-[32px]">
             Схожі товари
           </h2>
@@ -294,6 +287,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
                     },
                   } as unknown as Data.Component<"elements.product-card">
                 }
+                cartItem={{
+                  slug: item.slug ?? "",
+                  name: item.name ?? "",
+                  price: item.price ?? 0,
+                  imageUrl:
+                    formatStrapiMediaUrl(item.images?.[0]?.url) ?? undefined,
+                }}
                 sizes="(min-width: 1024px) 25vw, 50vw"
               />
             ))}

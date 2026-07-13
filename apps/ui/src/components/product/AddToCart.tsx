@@ -43,7 +43,7 @@ export function AddToCart({
                   "font-oswald cursor-pointer rounded-md border-[1.5px] px-5 py-2.5 text-[15px] transition-colors",
                   value === option
                     ? "border-brand-bronze bg-brand-bronze/12 text-brand-cream"
-                    : "text-brand-nav border-[#2f4f3a] hover:border-[#3f6a4d]"
+                    : "text-brand-nav border-brand-field hover:border-brand-field-hover"
                 )}
               >
                 {value}
@@ -54,7 +54,7 @@ export function AddToCart({
       ) : null}
 
       <div className="mb-5.5 flex flex-wrap items-stretch gap-3.5">
-        <div className="flex items-center overflow-hidden rounded-lg border-[1.5px] border-[#2f4f3a]">
+        <div className="border-brand-field flex items-center overflow-hidden rounded-lg border-[1.5px]">
           <StepperButton
             onClick={() => setQuantity((q) => Math.max(1, q - 1))}
             label="Зменшити кількість"

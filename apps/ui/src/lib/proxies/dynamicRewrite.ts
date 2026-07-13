@@ -7,8 +7,13 @@ const dynamicPrefix = "dynamic"
 
 /**
  * Ignores requests to certain paths, allowing them to be handled by other middleware or routes.
+ *
+ * `/product` and `/cart` are hand-written routes, not page-builder pages. Without
+ * them here, any query string — `?utm_source=…` on an ad click, `?fbclid=…` on a
+ * shared link — rewrites them onto the Strapi page route, which has no such page
+ * and answers 404.
  */
-const ignoredPaths = ["/api", "/dev", "/auth"]
+const ignoredPaths = ["/api", "/dev", "/auth", "/product", "/cart"]
 
 /**
  * Removes the locale prefix from the pathname if present, returning the path without the locale segment.

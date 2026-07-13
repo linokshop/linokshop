@@ -181,7 +181,7 @@ function Checkbox({
   readonly count?: number
 }) {
   return (
-    <label className="flex cursor-pointer items-center gap-2.5 py-1.5 text-[14.5px] text-[#c2c8bb]">
+    <label className="text-brand-nav flex cursor-pointer items-center gap-2.5 py-1.5 text-[14.5px]">
       <input
         type="checkbox"
         checked={checked}
@@ -196,7 +196,7 @@ function Checkbox({
           "flex size-4.5 shrink-0 items-center justify-center rounded-[4px] border-[1.5px] text-xs text-white transition-colors",
           checked
             ? "bg-brand-bronze border-brand-bronze"
-            : "border-[#3a5a44] bg-transparent"
+            : "border-brand-check bg-transparent"
         )}
       >
         {checked ? "✓" : null}
@@ -228,7 +228,7 @@ function PriceInput({
       value={value}
       placeholder={placeholder}
       onChange={(event) => onChange(event.target.value)}
-      className="bg-brand-surface text-brand-nav placeholder:text-brand-muted focus:border-brand-bronze w-full rounded-md border border-[#2f4f3a] px-3 py-2.5 text-sm outline-none"
+      className="bg-brand-surface text-brand-nav placeholder:text-brand-muted focus:border-brand-bronze border-brand-field w-full rounded-md border px-3 py-2.5 text-sm outline-none"
       {...rest}
     />
   )

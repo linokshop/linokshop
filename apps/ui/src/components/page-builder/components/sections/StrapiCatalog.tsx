@@ -2,6 +2,7 @@ import "server-only"
 
 import type { Data } from "@repo/strapi-types"
 import type { Locale } from "next-intl"
+import { Fragment } from "react"
 
 import AppLink from "@/components/elementary/AppLink"
 import { CatalogFilters } from "@/components/page-builder/components/elements/CatalogFilters"
@@ -15,6 +16,7 @@ import {
   fetchCatalogProducts,
   fetchCategoryCounts,
 } from "@/lib/strapi-api/content/server"
+import { formatStrapiMediaUrl } from "@/lib/strapi-helpers"
 import { cn } from "@/lib/styles"
 import type { PageBuilderComponentProps } from "@/types/general"
 
@@ -122,6 +124,7 @@ export async function StrapiCatalog({
                 <ProductCard
                   key={product.documentId}
                   product={toCard(product)}
+                  cartItem={toCartItem(product)}
                   sizes="(min-width: 1024px) 30vw, (min-width: 420px) 45vw, 90vw"
                 />
               ))}
@@ -143,6 +146,16 @@ export async function StrapiCatalog({
       </div>
     </section>
   )
+}
+
+/** The data the tile's "+" button needs to put this product in the cart. */
+function toCartItem(product: Product) {
+  return {
+    slug: product.slug ?? "",
+    name: product.name ?? "",
+    price: product.price ?? 0,
+    imageUrl: formatStrapiMediaUrl(product.images?.[0]?.url) ?? undefined,
+  }
 }
 
 /** Adapts a Product entity to the shape the shared tile renders. */
@@ -188,28 +201,40 @@ function Pagination({
     return params.size ? `?${params.toString()}` : "?"
   }
 
-  const pages = Array.from({ length: pageCount }, (_, i) => i + 1)
+  // A 400-product catalog is 34 pages — rendering every one of them as a link
+  // is a wall of numbers. Show the first, the last, and a window around current.
+  const window = new Set([1, pageCount, page - 1, page, page + 1])
+  const pages = Array.from({ length: pageCount }, (_, i) => i + 1).filter(
+    (target) => window.has(target)
+  )
 
   return (
     <nav
       aria-label="Сторінки каталогу"
       className="font-oswald mt-10 flex items-center justify-center gap-2"
     >
-      {pages.map((target) => (
-        <AppLink
-          key={target}
-          href={hrefFor(target)}
-          unstyled
-          aria-current={target === page ? "page" : undefined}
-          className={cn(
-            "flex size-10.5 items-center justify-center rounded-md border transition-colors",
-            target === page
-              ? "bg-brand-bronze border-brand-bronze text-white"
-              : "bg-brand-green border-brand-border text-brand-nav hover:border-brand-orange"
-          )}
-        >
-          {target}
-        </AppLink>
+      {pages.map((target, index) => (
+        <Fragment key={target}>
+          {/* A gap in the sequence means pages were skipped — say so. */}
+          {index > 0 && target - (pages[index - 1] ?? 0) > 1 ? (
+            <span aria-hidden className="text-brand-muted px-1">
+              …
+            </span>
+          ) : null}
+          <AppLink
+            href={hrefFor(target)}
+            unstyled
+            aria-current={target === page ? "page" : undefined}
+            className={cn(
+              "flex size-10.5 items-center justify-center rounded-md border transition-colors",
+              target === page
+                ? "bg-brand-bronze border-brand-bronze text-white"
+                : "bg-brand-green border-brand-border text-brand-nav hover:border-brand-orange"
+            )}
+          >
+            {target}
+          </AppLink>
+        </Fragment>
       ))}
       {page < pageCount ? (
         <AppLink

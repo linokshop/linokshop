@@ -71,8 +71,7 @@ export function StrapiContactForm({
           isLight={isLight}
         />
 
-        {/* Sending is not wired up yet — say so rather than let people type into
-            a form that silently goes nowhere. */}
+        {/* The `enabled` flag is the CMS kill-switch; when it is off we say why. */}
         {!isEnabled && disabledNote ? (
           <p
             className={cn(

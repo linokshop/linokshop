@@ -5,6 +5,7 @@ import { getEnvVar } from "@/lib/env-vars"
 import { formatPrice as price } from "@/lib/format"
 import { isProduction } from "@/lib/general-helpers"
 import { logError, logger } from "@/lib/logging"
+import { fetchProductBySlug } from "@/lib/strapi-api/content/server"
 
 /**
  * Sends a lead to Telegram: either a "write to us" message from the contacts
@@ -28,10 +29,15 @@ const contactSchema = z.object({
   company: z.string().max(200).optional(),
 })
 
+/**
+ * Only the slug, the chosen option and the quantity come from the browser.
+ * Names and prices are re-read from Strapi below: a client-supplied price is a
+ * price anyone can edit in devtools, and a cart sitting in localStorage for a
+ * month would otherwise re-send a price we no longer charge.
+ */
 const orderItemSchema = z.object({
-  name: z.string().trim().min(1).max(200),
+  slug: z.string().trim().min(1).max(200),
   option: z.string().trim().max(100).optional(),
-  price: z.number().nonnegative(),
   quantity: z.number().int().min(1).max(99),
 })
 
@@ -76,22 +82,61 @@ function testBanner(): string[] {
   ]
 }
 
-function buildMessage(lead: Lead): string {
-  if (lead.kind === "contact") {
-    return [
-      ...testBanner(),
-      "<b>📨 Повідомлення з сайту</b>",
-      "",
-      `<b>Ім'я:</b> ${esc(lead.name)}`,
-      `<b>Телефон:</b> ${esc(lead.phone)}`,
-      ...(lead.message ? ["", esc(lead.message)] : []),
-    ].join("\n")
-  }
+interface PricedItem {
+  readonly name: string
+  readonly option?: string
+  readonly price: number
+  readonly quantity: number
+}
 
-  const total = lead.items.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
+/**
+ * Re-prices the order from Strapi. The browser only says *what* and *how many*;
+ * what it costs is decided here.
+ *
+ * A slug that no longer resolves (unpublished, renamed) fails the whole order
+ * rather than quietly dropping a line — the customer must not be told "accepted"
+ * for a basket we cannot fulfil.
+ */
+async function repriceItems(
+  items: readonly { slug: string; option?: string; quantity: number }[]
+): Promise<PricedItem[]> {
+  const priced = await Promise.all(
+    items.map(async (item) => {
+      const response = await fetchProductBySlug(item.slug, "uk")
+      const product = response?.data
+
+      if (!product?.name || product.price == null) {
+        throw new Error(`Product '${item.slug}' not found or has no price`)
+      }
+
+      return {
+        name: product.name,
+        option: item.option,
+        price: product.price,
+        quantity: item.quantity,
+      }
+    })
   )
+
+  return priced
+}
+
+function buildContactMessage(lead: Extract<Lead, { kind: "contact" }>): string {
+  return [
+    ...testBanner(),
+    "<b>📨 Повідомлення з сайту</b>",
+    "",
+    `<b>Ім'я:</b> ${esc(lead.name)}`,
+    `<b>Телефон:</b> ${esc(lead.phone)}`,
+    ...(lead.message ? ["", esc(lead.message)] : []),
+  ].join("\n")
+}
+
+function buildOrderMessage(
+  lead: Extract<Lead, { kind: "order" }>,
+  items: readonly PricedItem[]
+): string {
+  const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0)
 
   return [
     ...testBanner(),
@@ -104,7 +149,7 @@ function buildMessage(lead: Lead): string {
     `<b>Оплата:</b> ${PAYMENT_LABELS[lead.payment] ?? lead.payment}`,
     "",
     "<b>Товари:</b>",
-    ...lead.items.map(
+    ...items.map(
       (item) =>
         `• ${esc(item.name)}${item.option ? ` (${esc(item.option)})` : ""} — ${item.quantity} × ${price(item.price)}`
     ),
@@ -204,6 +249,21 @@ export async function POST(request: NextRequest) {
     )
   }
 
+  let text: string
+  try {
+    text =
+      parsed.data.kind === "contact"
+        ? buildContactMessage(parsed.data)
+        : buildOrderMessage(parsed.data, await repriceItems(parsed.data.items))
+  } catch (error) {
+    logError(error, "Could not price the order from Strapi")
+
+    return NextResponse.json(
+      { error: "Товар у кошику більше недоступний. Оновіть сторінку." },
+      { status: 409 }
+    )
+  }
+
   try {
     const response = await fetch(
       `https://api.telegram.org/bot${token}/sendMessage`,
@@ -212,7 +272,7 @@ export async function POST(request: NextRequest) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           chat_id: chatId,
-          text: buildMessage(parsed.data),
+          text,
           parse_mode: "HTML",
           disable_web_page_preview: true,
         }),

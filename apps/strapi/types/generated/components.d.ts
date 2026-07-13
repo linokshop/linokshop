@@ -110,20 +110,6 @@ export interface ElementsNewsCard extends Struct.ComponentSchema {
   }
 }
 
-export interface ElementsCartItem extends Struct.ComponentSchema {
-  collectionName: "components_elements_cart_items"
-  info: {
-    description: "A single cart line: image, name, option and price."
-    displayName: "CartItem"
-  }
-  attributes: {
-    image: Schema.Attribute.Component<"utilities.basic-image", false>
-    name: Schema.Attribute.String
-    option: Schema.Attribute.String
-    price: Schema.Attribute.String
-  }
-}
-
 export interface ElementsFooterItem extends Struct.ComponentSchema {
   collectionName: "components_elements_footer_items"
   info: {
@@ -172,22 +158,6 @@ export interface SectionsCatalog extends Struct.ComponentSchema {
     pageSize: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<12>
     subtitle: Schema.Attribute.String
     title: Schema.Attribute.String
-  }
-}
-
-export interface SectionsCart extends Struct.ComponentSchema {
-  collectionName: "components_sections_carts"
-  info: {
-    description: "ЛінОк cart / checkout: items, recipient form, payment, summary (visual)."
-    displayName: "Cart"
-  }
-  attributes: {
-    delivery: Schema.Attribute.String
-    discount: Schema.Attribute.String
-    items: Schema.Attribute.Component<"elements.cart-item", true>
-    itemsTotal: Schema.Attribute.String
-    title: Schema.Attribute.String
-    total: Schema.Attribute.String
   }
 }
 
@@ -333,32 +303,6 @@ export interface SectionsNews extends Struct.ComponentSchema {
     theme: Schema.Attribute.Enumeration<["dark", "light"]> &
       Schema.Attribute.DefaultTo<"dark">
     title: Schema.Attribute.String
-  }
-}
-
-export interface SectionsProduct extends Struct.ComponentSchema {
-  collectionName: "components_sections_products"
-  info: {
-    description: "ЛінОк product detail: gallery, info, specs, related (visual)."
-    displayName: "Product"
-  }
-  attributes: {
-    availability: Schema.Attribute.String
-    badge: Schema.Attribute.String
-    category: Schema.Attribute.String
-    deliveryNotes: Schema.Attribute.Component<"utilities.text", true>
-    description: Schema.Attribute.Text
-    image: Schema.Attribute.Component<"utilities.basic-image", false>
-    name: Schema.Attribute.String
-    oldPrice: Schema.Attribute.String
-    optionLabel: Schema.Attribute.String
-    options: Schema.Attribute.Component<"utilities.text", true>
-    price: Schema.Attribute.String
-    rating: Schema.Attribute.String
-    related: Schema.Attribute.Component<"elements.product-card", true>
-    relatedTitle: Schema.Attribute.String
-    specs: Schema.Attribute.Component<"elements.spec-row", true>
-    veteranNote: Schema.Attribute.Text
   }
 }
 
@@ -767,7 +711,6 @@ export interface UtilitiesTipTapRichText extends Struct.ComponentSchema {
 declare module "@strapi/strapi" {
   export module Public {
     export interface ComponentSchemas {
-      "elements.cart-item": ElementsCartItem
       "elements.info-card": ElementsInfoCard
       "elements.news-card": ElementsNewsCard
       "elements.product-card": ElementsProductCard
@@ -786,11 +729,9 @@ declare module "@strapi/strapi" {
       "sections.contact-form": SectionsContactForm
       "sections.contacts": SectionsContacts
       "sections.faq": SectionsFaq
-      "sections.cart": SectionsCart
       "sections.catalog": SectionsCatalog
       "sections.home-promo": SectionsHomePromo
       "sections.news": SectionsNews
-      "sections.product": SectionsProduct
       "sections.steps": SectionsSteps
       "sections.story": SectionsStory
       "sections.text-block": SectionsTextBlock

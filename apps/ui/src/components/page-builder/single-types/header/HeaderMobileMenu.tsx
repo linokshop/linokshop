@@ -5,8 +5,6 @@ import type { Locale } from "next-intl"
 import { useEffect, useRef, useState } from "react"
 
 import StrapiLink from "@/components/page-builder/components/utilities/StrapiLink"
-// Language switcher temporarily disabled — restore once we decide on English.
-// import HeaderLocaleToggle from "@/components/page-builder/single-types/header/HeaderLocaleToggle"
 import { cn } from "@/lib/styles"
 
 interface HeaderMobileMenuProps {
@@ -153,11 +151,6 @@ export function HeaderMobileMenu({
               className="text-brand-orange font-oswald block px-1 py-3.25 text-base font-semibold tracking-[0.04em] uppercase"
             />
           ) : null}
-          {/* Language switcher — temporarily hidden until English is decided.
-          <div className="px-1 pt-2.5">
-            <HeaderLocaleToggle locale={locale} />
-          </div>
-          */}
         </div>
       ) : null}
     </>

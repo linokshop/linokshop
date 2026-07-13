@@ -841,12 +841,16 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
         "sections.home-program",
         "sections.home-promo",
         "sections.catalog",
-        "sections.product",
-        "sections.cart",
         "sections.card-grid",
         "sections.news",
         "sections.steps",
         "sections.text-block",
+        "sections.faq",
+        "sections.story",
+        "sections.contacts",
+        "sections.contact-form",
+        "sections.vet-hero",
+        "sections.callout",
       ]
     > &
       Schema.Attribute.SetPluginOptions<{

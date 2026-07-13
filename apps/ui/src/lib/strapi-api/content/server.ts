@@ -214,34 +214,6 @@ export async function fetchRedirects() {
 
 // ------ Product / Category fetching functions
 
-export async function fetchProducts(locale: Locale, pageSize = 100) {
-  try {
-    return await PublicStrapiClient.fetchMany(
-      "api::product.product",
-      {
-        locale,
-        status: "published",
-        populate: { images: true, category: true },
-        pagination: { page: 1, pageSize },
-      },
-      {
-        next: {
-          revalidate: 300,
-          tags: [strapiCacheTag("api::product.product")],
-        },
-      }
-    )
-  } catch (e: unknown) {
-    logNonBlockingError({
-      message: `Error fetching products for locale '${locale}'`,
-      error: {
-        error: e instanceof Error ? e.message : String(e),
-        stack: e instanceof Error ? e.stack : undefined,
-      },
-    })
-  }
-}
-
 export async function fetchProductBySlug(slug: string, locale: Locale) {
   try {
     return await PublicStrapiClient.fetchOneBySlug(

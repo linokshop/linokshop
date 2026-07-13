@@ -58,9 +58,10 @@ export function StrapiStory({
             </h2>
           ) : null}
 
-          {paragraphs.map((paragraph) => (
+          {paragraphs.map((paragraph, index) => (
             <p
-              key={paragraph}
+              // eslint-disable-next-line react/no-array-index-key
+              key={index}
               className={cn(
                 "mb-4 text-[16.5px] leading-[1.8] last:mb-0",
                 isLight ? "text-brand-sage" : "text-brand-nav"

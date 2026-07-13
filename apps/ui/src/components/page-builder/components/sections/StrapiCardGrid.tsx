@@ -4,18 +4,12 @@ import type { Data } from "@repo/strapi-types"
 
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
 import StrapiLink from "@/components/page-builder/components/utilities/StrapiLink"
-import { SECTION_X_PADDING } from "@/lib/layout"
+import { badgeClass } from "@/lib/badges"
+import { CONTENT_MAX_W, SECTION_X_PADDING } from "@/lib/layout"
 import { cn } from "@/lib/styles"
 import type { PageBuilderComponentProps } from "@/types/general"
 
 type Card = NonNullable<Data.Component<"sections.card-grid">["cards"]>[number]
-
-const BADGE_COLORS = {
-  orange: "bg-brand-orange text-brand-navy",
-  sale: "bg-brand-crimson text-white",
-  stock: "bg-brand-moss text-white",
-  bronze: "bg-brand-bronze text-white",
-} as const
 
 /**
  * A row of info cards — delivery methods, payment methods, promo tiles.
@@ -60,7 +54,7 @@ export function StrapiCardGrid({
         banded && "py-16"
       )}
     >
-      <div className="mx-auto max-w-[1320px]">
+      <div className={CONTENT_MAX_W}>
         {title ? (
           <h2
             className={cn(
@@ -140,7 +134,7 @@ function InfoCard({
     <span
       className={cn(
         "font-oswald rounded px-3 py-1.5 text-[11.5px] font-semibold tracking-[0.06em] uppercase",
-        BADGE_COLORS[card.badgeColor ?? "orange"],
+        badgeClass(card.badgeColor ?? "orange"),
         cover ? "absolute top-3 left-3" : "mb-3 block w-fit"
       )}
     >

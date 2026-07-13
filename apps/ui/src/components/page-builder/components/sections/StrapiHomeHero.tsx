@@ -55,7 +55,7 @@ function HeroHeadline({ component }: { readonly component: HeroComponent }) {
           ) : null}
         </h1>
         {subtitle ? (
-          <p className="mt-4.5 max-w-110 text-[17px] leading-[1.6] text-[#d6d7c4]">
+          <p className="text-brand-nav mt-4.5 max-w-110 text-[17px] leading-[1.6]">
             {subtitle}
           </p>
         ) : null}

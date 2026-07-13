@@ -20,3 +20,10 @@
  *   <section className={cn(SECTION_X_PADDING, "py-12")}>
  */
 export const SECTION_X_PADDING = "px-4 min-[400px]:px-6 min-[900px]:px-10"
+
+/**
+ * The content column every section centres its inner block in (1320px in the
+ * design). Was copy-pasted as `mx-auto max-w-[1320px]` in a dozen files; one
+ * stray value there and a section quietly stops lining up with its neighbours.
+ */
+export const CONTENT_MAX_W = "mx-auto w-full max-w-[1320px]"

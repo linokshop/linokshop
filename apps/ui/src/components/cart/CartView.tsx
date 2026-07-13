@@ -4,8 +4,9 @@ import Image from "next/image"
 import Link from "next/link"
 import { useState } from "react"
 
-import { useCart } from "@/lib/cart"
+import { lineId, useCart } from "@/lib/cart"
 import { formatPrice } from "@/lib/format"
+import { readError } from "@/lib/http"
 import { cn } from "@/lib/styles"
 
 const PAYMENT_METHODS = [
@@ -14,7 +15,7 @@ const PAYMENT_METHODS = [
 ] as const
 
 const FIELD =
-  "bg-brand-surface text-brand-nav placeholder:text-brand-muted focus:border-brand-bronze w-full rounded-lg border border-[#2f4f3a] px-4 py-3.5 text-[15px] outline-none transition-colors"
+  "bg-brand-surface text-brand-nav placeholder:text-brand-muted focus:border-brand-bronze w-full rounded-lg border border-brand-field px-4 py-3.5 text-[15px] outline-none transition-colors"
 
 type Status = "idle" | "sending" | "sent" | "error"
 
@@ -58,10 +59,10 @@ export function CartView() {
           city: form.city || undefined,
           office: form.office || undefined,
           payment,
+          // Only what and how many — the price is decided server-side.
           items: items.map((item) => ({
-            name: item.name,
+            slug: item.slug,
             option: item.option,
-            price: item.price,
             quantity: item.quantity,
           })),
         }),
@@ -128,7 +129,7 @@ export function CartView() {
         <ul className="border-brand-border bg-brand-green mb-7 list-none overflow-hidden rounded-xl border">
           {items.map((item) => (
             <li
-              key={item.slug}
+              key={lineId(item)}
               className="border-brand-border flex flex-wrap items-center gap-5 border-b p-5 last:border-b-0"
             >
               <span className="bg-brand-surface relative block size-24 shrink-0 overflow-hidden rounded-lg">
@@ -158,10 +159,10 @@ export function CartView() {
                 ) : null}
               </span>
 
-              <span className="flex items-center overflow-hidden rounded-lg border-[1.5px] border-[#2f4f3a]">
+              <span className="border-brand-field flex items-center overflow-hidden rounded-lg border-[1.5px]">
                 <QuantityButton
                   label={`Зменшити кількість: ${item.name}`}
-                  onClick={() => setQuantity(item.slug, item.quantity - 1)}
+                  onClick={() => setQuantity(lineId(item), item.quantity - 1)}
                 >
                   −
                 </QuantityButton>
@@ -170,7 +171,7 @@ export function CartView() {
                 </span>
                 <QuantityButton
                   label={`Збільшити кількість: ${item.name}`}
-                  onClick={() => setQuantity(item.slug, item.quantity + 1)}
+                  onClick={() => setQuantity(lineId(item), item.quantity + 1)}
                 >
                   +
                 </QuantityButton>
@@ -182,7 +183,7 @@ export function CartView() {
 
               <button
                 type="button"
-                onClick={() => remove(item.slug)}
+                onClick={() => remove(lineId(item))}
                 aria-label={`Прибрати з кошика: ${item.name}`}
                 className="text-brand-faded hover:text-brand-orange cursor-pointer text-xl transition-colors"
               >
@@ -237,7 +238,7 @@ export function CartView() {
                 "bg-brand-green flex cursor-pointer items-center gap-3.5 rounded-[10px] border-[1.5px] p-4 transition-colors",
                 payment === method.id
                   ? "border-brand-bronze"
-                  : "border-brand-border hover:border-[#3f6a4d]"
+                  : "border-brand-border hover:border-brand-field-hover"
               )}
             >
               <input
@@ -253,7 +254,7 @@ export function CartView() {
                   "flex size-5 shrink-0 items-center justify-center rounded-full border-2",
                   payment === method.id
                     ? "border-brand-bronze"
-                    : "border-[#3a5a44]"
+                    : "border-brand-check"
                 )}
               >
                 {payment === method.id ? (
@@ -370,15 +371,6 @@ function QuantityButton({
       {children}
     </button>
   )
-}
-
-/** The error body may be missing or not JSON at all — never let that throw. */
-async function readError(response: Response): Promise<{ error?: string }> {
-  try {
-    return (await response.json()) as { error?: string }
-  } catch {
-    return {}
-  }
 }
 
 export default CartView

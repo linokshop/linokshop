@@ -2,7 +2,6 @@ import type { UID } from "@repo/strapi-types"
 
 import StrapiCallout from "@/components/page-builder/components/sections/StrapiCallout"
 import StrapiCardGrid from "@/components/page-builder/components/sections/StrapiCardGrid"
-import StrapiCart from "@/components/page-builder/components/sections/StrapiCart"
 import StrapiCatalog from "@/components/page-builder/components/sections/StrapiCatalog"
 import StrapiContactForm from "@/components/page-builder/components/sections/StrapiContactForm"
 import StrapiContacts from "@/components/page-builder/components/sections/StrapiContacts"
@@ -13,7 +12,6 @@ import StrapiHomeProducts from "@/components/page-builder/components/sections/St
 import StrapiHomeProgram from "@/components/page-builder/components/sections/StrapiHomeProgram"
 import StrapiHomePromo from "@/components/page-builder/components/sections/StrapiHomePromo"
 import StrapiNews from "@/components/page-builder/components/sections/StrapiNews"
-import StrapiProduct from "@/components/page-builder/components/sections/StrapiProduct"
 import StrapiSteps from "@/components/page-builder/components/sections/StrapiSteps"
 import StrapiStory from "@/components/page-builder/components/sections/StrapiStory"
 import StrapiTextBlock from "@/components/page-builder/components/sections/StrapiTextBlock"
@@ -48,8 +46,6 @@ export const PageContentComponents: Partial<
 
   // Sections — shop
   "sections.catalog": StrapiCatalog,
-  "sections.product": StrapiProduct,
-  "sections.cart": StrapiCart,
 
   // Sections — shared / content
   "sections.callout": StrapiCallout,

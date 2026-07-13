@@ -26,7 +26,7 @@ export function CatalogSort({ current }: { readonly current: string }) {
           params.delete("page")
           router.push(`?${params.toString()}`, { scroll: false })
         }}
-        className="bg-brand-surface text-brand-cream font-oswald focus:border-brand-bronze cursor-pointer rounded-md border border-[#2f4f3a] px-3.5 py-2.5 text-sm tracking-[0.03em] uppercase outline-none"
+        className="bg-brand-surface text-brand-cream font-oswald focus:border-brand-bronze border-brand-field cursor-pointer rounded-md border px-3.5 py-2.5 text-sm tracking-[0.03em] uppercase outline-none"
       >
         {SORT_OPTIONS.map((option) => (
           <option key={option.value} value={option.value}>

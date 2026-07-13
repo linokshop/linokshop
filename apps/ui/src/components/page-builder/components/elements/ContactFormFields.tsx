@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 
+import { readError } from "@/lib/http"
 import { cn } from "@/lib/styles"
 
 export interface ContactFormLabels {
@@ -166,15 +167,6 @@ export function ContactFormFields({
       ) : null}
     </form>
   )
-}
-
-/** The error body may be missing or not JSON at all — never let that throw. */
-async function readError(response: Response): Promise<{ error?: string }> {
-  try {
-    return (await response.json()) as { error?: string }
-  } catch {
-    return {}
-  }
 }
 
 export default ContactFormFields

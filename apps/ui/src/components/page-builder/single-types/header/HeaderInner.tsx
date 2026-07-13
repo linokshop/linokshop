@@ -6,8 +6,6 @@ import type { Locale } from "next-intl"
 import { PromoRibbon } from "@/components/page-builder/components/elements/PromoRibbon"
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
 import StrapiLink from "@/components/page-builder/components/utilities/StrapiLink"
-// Language switcher temporarily disabled — restore once we decide on English.
-// import HeaderLocaleToggle from "@/components/page-builder/single-types/header/HeaderLocaleToggle"
 import HeaderCartButton from "@/components/page-builder/single-types/header/HeaderCartButton"
 import HeaderMobileMenu from "@/components/page-builder/single-types/header/HeaderMobileMenu"
 import HeaderNavLink from "@/components/page-builder/single-types/header/HeaderNavLink"
@@ -90,13 +88,9 @@ export function HeaderInner({
             ) : null}
           </nav>
 
-          {/* Right side — language, cart, burger */}
+          {/* Right side — cart, burger. There is no language switcher: the shop
+              is Ukrainian-only. */}
           <div className="flex items-center gap-2.5 min-[600px]:gap-4">
-            {/* Language switcher — temporarily hidden until English is decided.
-            <div className="hidden min-[600px]:block">
-              <HeaderLocaleToggle locale={locale} />
-            </div>
-            */}
             {primaryButtons?.map((button) => (
               <HeaderCartButton key={button.id} component={button} />
             ))}

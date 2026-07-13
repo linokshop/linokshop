@@ -63,31 +63,40 @@ function subscribe(listener: () => void) {
 const getSnapshot = () => items
 const getServerSnapshot = () => EMPTY
 
+/**
+ * A cart line is identified by product + chosen option, not by product alone —
+ * two sizes of the same rod are two lines. Keying by slug alone silently folded
+ * the second variant into the first.
+ */
+export const lineId = (item: { slug: string; option?: string }) =>
+  `${item.slug}::${item.option ?? ""}`
+
 export function addToCart(
   item: Omit<CartItem, "quantity">,
   quantity = 1
 ): void {
-  const existing = items.some((i) => i.slug === item.slug)
+  const id = lineId(item)
+  const existing = items.some((i) => lineId(i) === id)
 
   write(
     existing
       ? items.map((i) =>
-          i.slug === item.slug ? { ...i, quantity: i.quantity + quantity } : i
+          lineId(i) === id ? { ...i, quantity: i.quantity + quantity } : i
         )
       : [...items, { ...item, quantity }]
   )
 }
 
-export function setCartQuantity(slug: string, quantity: number): void {
+export function setCartQuantity(id: string, quantity: number): void {
   write(
     quantity < 1
-      ? items.filter((i) => i.slug !== slug)
-      : items.map((i) => (i.slug === slug ? { ...i, quantity } : i))
+      ? items.filter((i) => lineId(i) !== id)
+      : items.map((i) => (lineId(i) === id ? { ...i, quantity } : i))
   )
 }
 
-export function removeFromCart(slug: string): void {
-  write(items.filter((i) => i.slug !== slug))
+export function removeFromCart(id: string): void {
+  write(items.filter((i) => lineId(i) !== id))
 }
 
 export function clearCart(): void {

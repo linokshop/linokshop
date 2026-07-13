@@ -2,24 +2,28 @@ import "server-only"
 
 import type { Data } from "@repo/strapi-types"
 
+import { AddToCartIconButton } from "@/components/page-builder/components/elements/AddToCartIconButton"
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
 import StrapiLink from "@/components/page-builder/components/utilities/StrapiLink"
+import { badgeClass } from "@/lib/badges"
+import type { CartItem } from "@/lib/cart"
 import { cn } from "@/lib/styles"
-
-const BADGE_COLORS = {
-  bronze: "bg-brand-bronze",
-  sale: "bg-brand-crimson",
-  stock: "bg-brand-moss",
-} as const
 
 /** Shared product tile used by the products grid and the catalog. */
 export function ProductCard({
   product,
   sizes,
+  cartItem,
 }: {
   readonly product: Data.Component<"elements.product-card">
   /** Forwarded to next/image — only the grid knows how wide a tile ends up. */
   readonly sizes?: string
+  /**
+   * Present only where the tile is backed by a real Product (catalog, related).
+   * Without it there is no "+" button at all — a button that cannot add to the
+   * cart should not be drawn.
+   */
+  readonly cartItem?: Omit<CartItem, "quantity" | "option">
 }) {
   return (
     <StrapiLink
@@ -40,7 +44,7 @@ export function ProductCard({
           <span
             className={cn(
               "font-oswald absolute top-3 left-3 rounded-[3px] px-2.5 py-1 text-[11px] leading-normal font-bold text-white uppercase",
-              BADGE_COLORS[product.badgeColor ?? "bronze"]
+              badgeClass(product.badgeColor)
             )}
           >
             {product.badge}
@@ -75,14 +79,7 @@ export function ProductCard({
               </span>
             ) : null}
           </span>
-          {/* Decorative until the cart is wired up — a real button cannot be
-              nested inside the card's anchor anyway. */}
-          <span
-            aria-hidden
-            className="bg-brand-bronze group-hover:bg-brand-orange flex size-9 shrink-0 items-center justify-center rounded-md text-xl leading-none text-white transition-colors min-[600px]:size-10"
-          >
-            +
-          </span>
+          {cartItem ? <AddToCartIconButton item={cartItem} /> : null}
         </span>
       </span>
     </StrapiLink>
