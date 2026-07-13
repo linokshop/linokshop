@@ -8,7 +8,7 @@ import AppLink from "@/components/elementary/AppLink"
 import { ProductCard } from "@/components/page-builder/components/elements/ProductCard"
 import { AddToCart } from "@/components/product/AddToCart"
 import { ProductGallery } from "@/components/product/ProductGallery"
-import { formatPrice as formatUah } from "@/lib/cart"
+import { formatPrice as formatUah } from "@/lib/format"
 import { SECTION_X_PADDING } from "@/lib/layout"
 import {
   fetchProductBySlug,

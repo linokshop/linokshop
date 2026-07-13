@@ -7,7 +7,7 @@ import AppLink from "@/components/elementary/AppLink"
 import { CatalogFilters } from "@/components/page-builder/components/elements/CatalogFilters"
 import { CatalogSort } from "@/components/page-builder/components/elements/CatalogSort"
 import { ProductCard } from "@/components/page-builder/components/elements/ProductCard"
-import { formatPrice as formatUah } from "@/lib/cart"
+import { formatPrice as formatUah } from "@/lib/format"
 import { SECTION_X_PADDING } from "@/lib/layout"
 import {
   type CatalogQuery,

@@ -126,9 +126,3 @@ export function useCart() {
     clear: clearCart,
   }
 }
-
-const PRICE_FORMAT = new Intl.NumberFormat("uk-UA")
-
-/** 1290 → "1 290 ₴" — the price format used across the site. */
-export const formatPrice = (value: number) =>
-  `${PRICE_FORMAT.format(Math.round(value))} ₴`
