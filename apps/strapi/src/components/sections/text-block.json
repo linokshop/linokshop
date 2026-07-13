@@ -24,6 +24,11 @@
       "type": "enumeration",
       "enum": ["center", "left"],
       "default": "center"
+    },
+    "headingLevel": {
+      "type": "enumeration",
+      "enum": ["h1", "h2"],
+      "default": "h1"
     }
   }
 }

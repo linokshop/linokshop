@@ -213,10 +213,47 @@ export interface SectionsCardGrid extends Struct.ComponentSchema {
     align: Schema.Attribute.Enumeration<["left", "center"]> &
       Schema.Attribute.DefaultTo<"left">
     banded: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>
+    cardAlign: Schema.Attribute.Enumeration<["left", "center"]> &
+      Schema.Attribute.DefaultTo<"left">
     cards: Schema.Attribute.Component<"elements.info-card", true>
+    columns: Schema.Attribute.Enumeration<["three", "four"]> &
+      Schema.Attribute.DefaultTo<"three">
     footnote: Schema.Attribute.Text
+    subtitle: Schema.Attribute.String
     theme: Schema.Attribute.Enumeration<["dark", "light"]> &
       Schema.Attribute.DefaultTo<"dark">
+    title: Schema.Attribute.String
+  }
+}
+
+export interface SectionsVetHero extends Struct.ComponentSchema {
+  collectionName: "components_sections_vet_heroes"
+  info: {
+    description: "Veteran-programme page hero: badge, headline, CTA and a photo panel."
+    displayName: "VetHero"
+  }
+  attributes: {
+    badge: Schema.Attribute.String
+    badgeImage: Schema.Attribute.Component<"utilities.basic-image", false>
+    image: Schema.Attribute.Component<"utilities.basic-image", false>
+    link: Schema.Attribute.Component<"utilities.link", false>
+    text: Schema.Attribute.Text
+    title: Schema.Attribute.String
+    titleAccent: Schema.Attribute.String
+  }
+}
+
+export interface SectionsCallout extends Struct.ComponentSchema {
+  collectionName: "components_sections_callouts"
+  info: {
+    description: "A loud full-width band — a thank-you or a slogan. Three centred lines."
+    displayName: "Callout"
+  }
+  attributes: {
+    color: Schema.Attribute.Enumeration<["orange", "bronze", "steel"]> &
+      Schema.Attribute.DefaultTo<"orange">
+    note: Schema.Attribute.String
+    subtitle: Schema.Attribute.String
     title: Schema.Attribute.String
   }
 }
@@ -343,7 +380,7 @@ export interface SectionsSteps extends Struct.ComponentSchema {
   }
   attributes: {
     steps: Schema.Attribute.Component<"elements.step-card", true>
-    theme: Schema.Attribute.Enumeration<["dark", "light"]> &
+    theme: Schema.Attribute.Enumeration<["dark", "light", "navy"]> &
       Schema.Attribute.DefaultTo<"dark">
     title: Schema.Attribute.String
   }
@@ -359,6 +396,8 @@ export interface SectionsTextBlock extends Struct.ComponentSchema {
     align: Schema.Attribute.Enumeration<["center", "left"]> &
       Schema.Attribute.DefaultTo<"center">
     eyebrow: Schema.Attribute.String
+    headingLevel: Schema.Attribute.Enumeration<["h1", "h2"]> &
+      Schema.Attribute.DefaultTo<"h1">
     text: Schema.Attribute.Text
     theme: Schema.Attribute.Enumeration<["dark", "light"]> &
       Schema.Attribute.DefaultTo<"dark">
@@ -749,6 +788,7 @@ declare module "@strapi/strapi" {
       "sections.home-hero": SectionsHomeHero
       "sections.home-products": SectionsHomeProducts
       "sections.home-program": SectionsHomeProgram
+      "sections.callout": SectionsCallout
       "sections.card-grid": SectionsCardGrid
       "sections.contact-form": SectionsContactForm
       "sections.contacts": SectionsContacts
@@ -761,6 +801,7 @@ declare module "@strapi/strapi" {
       "sections.steps": SectionsSteps
       "sections.story": SectionsStory
       "sections.text-block": SectionsTextBlock
+      "sections.vet-hero": SectionsVetHero
       "seo-utilities.seo": SeoUtilitiesSeo
       "seo-utilities.seo-og": SeoUtilitiesSeoOg
       "seo-utilities.seo-twitter": SeoUtilitiesSeoTwitter

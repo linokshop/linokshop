@@ -9,6 +9,19 @@
     "title": {
       "type": "string"
     },
+    "subtitle": {
+      "type": "string"
+    },
+    "columns": {
+      "type": "enumeration",
+      "enum": ["three", "four"],
+      "default": "three"
+    },
+    "cardAlign": {
+      "type": "enumeration",
+      "enum": ["left", "center"],
+      "default": "left"
+    },
     "theme": {
       "type": "enumeration",
       "enum": ["dark", "light"],

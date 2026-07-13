@@ -7,17 +7,19 @@ import { cn } from "@/lib/styles"
 import type { PageBuilderComponentProps } from "@/types/general"
 
 /**
- * The lead block of a simple page (delivery, about, contacts): eyebrow, page
- * title and a short intro, centred. It carries the page's <h1>.
+ * Eyebrow + heading + intro. Used as the lead block of a simple page (delivery,
+ * about, contacts) — hence `h1` by default — and as a plain intro band further
+ * down a page, where `headingLevel: h2` keeps the outline honest.
  */
 export function StrapiTextBlock({
   component,
 }: PageBuilderComponentProps & {
   readonly component: Data.Component<"sections.text-block">
 }) {
-  const { eyebrow, title, text, theme, align } = component
+  const { eyebrow, title, text, theme, align, headingLevel } = component
   const isLight = theme === "light"
   const isLeft = align === "left"
+  const Heading = headingLevel === "h2" ? "h2" : "h1"
 
   return (
     <section
@@ -27,7 +29,7 @@ export function StrapiTextBlock({
         isLeft ? "text-left" : "text-center",
         isLight
           ? "bg-brand-cream border-brand-line border-b"
-          : "bg-brand-green border-brand-border border-b"
+          : "bg-brand-surface"
       )}
     >
       <div
@@ -39,20 +41,22 @@ export function StrapiTextBlock({
           </span>
         ) : null}
         {title ? (
-          <h1
+          <Heading
             className={cn(
-              "font-bitter mt-4 mb-4 text-[38px] leading-[1.08] font-extrabold min-[640px]:text-[50px]",
-              isLight ? "text-brand-forest" : "text-brand-cream"
+              "mt-4 mb-4 leading-[1.08]",
+              isLight
+                ? "font-bitter text-brand-forest text-[38px] font-extrabold min-[640px]:text-[50px]"
+                : "font-oswald text-brand-cream text-[30px] font-semibold tracking-[0.02em] uppercase min-[640px]:text-[38px]"
             )}
           >
             {title}
-          </h1>
+          </Heading>
         ) : null}
         {text ? (
           <p
             className={cn(
-              "max-w-150 text-[17px] leading-[1.7]",
-              !isLeft && "mx-auto",
+              "text-[17px] leading-[1.7]",
+              isLeft ? "max-w-150" : "mx-auto max-w-195 text-[18px]",
               isLight ? "text-brand-sage" : "text-brand-nav"
             )}
           >

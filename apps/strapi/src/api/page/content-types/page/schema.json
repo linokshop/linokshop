@@ -81,7 +81,9 @@
         "sections.faq",
         "sections.story",
         "sections.contacts",
-        "sections.contact-form"
+        "sections.contact-form",
+        "sections.vet-hero",
+        "sections.callout"
       ]
     },
     "children": {

@@ -2,9 +2,33 @@ import "server-only"
 
 import type { Data } from "@repo/strapi-types"
 
-import Typography from "@/components/typography"
+import { SECTION_X_PADDING } from "@/lib/layout"
 import { cn } from "@/lib/styles"
 import type { PageBuilderComponentProps } from "@/types/general"
+
+const THEMES = {
+  dark: {
+    section: "bg-brand-green",
+    heading: "font-oswald text-brand-cream uppercase",
+    card: "bg-brand-surface border-brand-border",
+    title: "text-brand-cream",
+    text: "text-brand-nav",
+  },
+  navy: {
+    section: "bg-brand-navy",
+    heading: "font-oswald text-white uppercase",
+    card: "bg-brand-steel border-brand-steel-line",
+    title: "text-white",
+    text: "text-brand-mist",
+  },
+  light: {
+    section: "bg-brand-sand",
+    heading: "font-bitter text-brand-forest",
+    card: "bg-brand-paper border-brand-line",
+    title: "text-brand-forest",
+    text: "text-brand-sage",
+  },
+} as const
 
 export function StrapiSteps({
   component,
@@ -12,61 +36,47 @@ export function StrapiSteps({
   readonly component: Data.Component<"sections.steps">
 }) {
   const { title, steps, theme } = component
-  const isLight = theme === "light"
+  const t = THEMES[theme ?? "dark"]
 
   return (
-    <section
-      className={cn("font-golos", isLight ? "bg-brand-sand" : "bg-brand-green")}
-    >
-      <div className="px-4 py-12 sm:px-6 lg:px-10">
+    <section className={cn(SECTION_X_PADDING, "font-golos py-18", t.section)}>
+      <div className="mx-auto max-w-[1320px]">
         {title ? (
-          <Typography
-            tag="h2"
+          <h2
             className={cn(
-              "font-oswald mb-8 text-center text-3xl font-bold uppercase",
-              isLight ? "text-brand-green" : "text-brand-cream"
+              "mb-10 text-center text-[30px] leading-tight font-semibold tracking-[0.02em] min-[600px]:text-[38px]",
+              t.heading
             )}
           >
             {title}
-          </Typography>
+          </h2>
         ) : null}
 
-        <div className="grid gap-6 lg:grid-cols-3">
+        <div className="grid gap-6 min-[1024px]:grid-cols-3">
           {steps?.map((step) => (
             <div
               key={step.id}
-              className={cn(
-                "rounded-sm border p-8",
-                isLight
-                  ? "border-brand-green/10 bg-white"
-                  : "border-brand-border bg-brand-surface"
-              )}
+              className={cn("rounded-xl border p-8.5", t.card)}
             >
               {step.number ? (
-                <span className="font-oswald text-brand-orange text-5xl font-bold">
+                <div className="font-oswald text-brand-orange mb-4 text-[54px] leading-none font-bold">
                   {step.number}
-                </span>
+                </div>
               ) : null}
               {step.title ? (
-                <Typography
-                  tag="h3"
+                <h3
                   className={cn(
-                    "font-oswald mt-4 text-xl font-semibold uppercase",
-                    isLight ? "text-brand-green" : "text-brand-cream"
+                    "font-oswald mb-2.5 text-[21px] tracking-[0.02em] uppercase",
+                    t.title
                   )}
                 >
                   {step.title}
-                </Typography>
+                </h3>
               ) : null}
               {step.text ? (
-                <Typography
-                  className={cn(
-                    "mt-2 text-sm/6",
-                    isLight ? "text-brand-green/70" : "text-brand-nav"
-                  )}
-                >
+                <p className={cn("text-[15px] leading-[1.65]", t.text)}>
                   {step.text}
-                </Typography>
+                </p>
               ) : null}
             </div>
           ))}

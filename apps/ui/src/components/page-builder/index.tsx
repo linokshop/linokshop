@@ -1,5 +1,6 @@
 import type { UID } from "@repo/strapi-types"
 
+import StrapiCallout from "@/components/page-builder/components/sections/StrapiCallout"
 import StrapiCardGrid from "@/components/page-builder/components/sections/StrapiCardGrid"
 import StrapiCart from "@/components/page-builder/components/sections/StrapiCart"
 import StrapiCatalog from "@/components/page-builder/components/sections/StrapiCatalog"
@@ -16,6 +17,7 @@ import StrapiProduct from "@/components/page-builder/components/sections/StrapiP
 import StrapiSteps from "@/components/page-builder/components/sections/StrapiSteps"
 import StrapiStory from "@/components/page-builder/components/sections/StrapiStory"
 import StrapiTextBlock from "@/components/page-builder/components/sections/StrapiTextBlock"
+import StrapiVetHero from "@/components/page-builder/components/sections/StrapiVetHero"
 import StrapiCkEditorContent from "@/components/page-builder/components/utilities/StrapiCkEditorContent"
 import StrapiTipTapEditorContent from "@/components/page-builder/components/utilities/StrapiTipTapEditorContent"
 
@@ -50,6 +52,7 @@ export const PageContentComponents: Partial<
   "sections.cart": StrapiCart,
 
   // Sections — shared / content
+  "sections.callout": StrapiCallout,
   "sections.card-grid": StrapiCardGrid,
   "sections.contacts": StrapiContacts,
   "sections.contact-form": StrapiContactForm,
@@ -58,4 +61,5 @@ export const PageContentComponents: Partial<
   "sections.steps": StrapiSteps,
   "sections.story": StrapiStory,
   "sections.text-block": StrapiTextBlock,
+  "sections.vet-hero": StrapiVetHero,
 }

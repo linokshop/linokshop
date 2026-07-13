@@ -1,0 +1,24 @@
+{
+  "collectionName": "components_sections_callouts",
+  "info": {
+    "displayName": "Callout",
+    "description": "A loud full-width band — a thank-you or a slogan. Three centred lines."
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "subtitle": {
+      "type": "string"
+    },
+    "note": {
+      "type": "string"
+    },
+    "color": {
+      "type": "enumeration",
+      "enum": ["orange", "bronze", "steel"],
+      "default": "orange"
+    }
+  }
+}

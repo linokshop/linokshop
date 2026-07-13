@@ -19,9 +19,20 @@ export function StrapiCardGrid({
 }: PageBuilderComponentProps & {
   readonly component: Data.Component<"sections.card-grid">
 }) {
-  const { title, theme, align, banded, cards, footnote } = component
+  const {
+    title,
+    subtitle,
+    theme,
+    align,
+    banded,
+    columns,
+    cardAlign,
+    cards,
+    footnote,
+  } = component
   const isLight = theme === "light"
   const isCentered = align === "center"
+  const centeredCards = cardAlign === "center"
 
   return (
     <section
@@ -36,8 +47,8 @@ export function StrapiCardGrid({
             ? "bg-brand-cream border-brand-line"
             : "bg-brand-sand"
           : banded
-            ? "bg-brand-surface border-brand-border"
-            : "bg-brand-green",
+            ? "bg-brand-green border-brand-border"
+            : "bg-brand-surface",
         banded && "py-16"
       )}
     >
@@ -45,20 +56,43 @@ export function StrapiCardGrid({
         {title ? (
           <h2
             className={cn(
-              "mb-7 text-[32px] leading-tight font-bold",
-              isCentered && "mb-10 text-center min-[900px]:text-[34px]",
+              "mb-7 text-[30px] leading-tight font-bold min-[600px]:text-[34px]",
+              isCentered && (subtitle ? "mb-3" : "mb-10") + " text-center",
               isLight
                 ? "font-bitter text-brand-forest"
-                : "font-oswald text-brand-cream uppercase"
+                : "font-oswald text-brand-cream tracking-[0.02em] uppercase min-[600px]:text-[38px]"
             )}
           >
             {title}
           </h2>
         ) : null}
+        {subtitle ? (
+          <p
+            className={cn(
+              "mb-10 text-base",
+              isCentered && "text-center",
+              isLight ? "text-brand-sage" : "text-brand-muted"
+            )}
+          >
+            {subtitle}
+          </p>
+        ) : null}
 
-        <div className="grid gap-5.5 min-[640px]:grid-cols-2 min-[1024px]:grid-cols-3">
+        <div
+          className={cn(
+            "grid gap-5.5 min-[640px]:grid-cols-2",
+            columns === "four"
+              ? "min-[1024px]:grid-cols-4"
+              : "min-[1024px]:grid-cols-3"
+          )}
+        >
           {cards?.map((card) => (
-            <InfoCard key={card.id} card={card} isLight={isLight} />
+            <InfoCard
+              key={card.id}
+              card={card}
+              isLight={isLight}
+              centered={centeredCards}
+            />
           ))}
         </div>
 
@@ -82,20 +116,27 @@ export function StrapiCardGrid({
 function InfoCard({
   card,
   isLight,
+  centered,
 }: {
   readonly card: Card
   readonly isLight: boolean
+  readonly centered: boolean
 }) {
   const highlight = card.highlight === true
 
   const body = (
     <>
       {card.image?.media ? (
-        <span className="relative mb-4.5 block size-13 overflow-hidden rounded-[10px]">
+        <span
+          className={cn(
+            "relative mb-4 block overflow-hidden rounded-xl",
+            centered ? "mx-auto size-15" : "mb-4.5 size-13"
+          )}
+        >
           <StrapiBasicImage
             component={card.image}
             fill
-            sizes="52px"
+            sizes="60px"
             className="object-cover"
           />
         </span>
@@ -110,7 +151,10 @@ function InfoCard({
       {card.title ? (
         <span
           className={cn(
-            "mb-2 block text-[19px] font-semibold",
+            "mb-2 block font-semibold",
+            centered
+              ? "font-oswald mb-0 text-[18px] tracking-[0.03em] uppercase"
+              : "text-[19px]",
             highlight
               ? "text-white"
               : isLight
@@ -153,7 +197,8 @@ function InfoCard({
         </span>
       ) : null}
 
-      {!highlight && card.link ? (
+      {/* A centred tile is the link itself, so it needs no CTA line. */}
+      {!highlight && !centered && card.link ? (
         <StrapiLink
           component={card.link}
           unstyled
@@ -165,14 +210,19 @@ function InfoCard({
 
   const className = cn(
     "flex flex-col rounded-xl border p-7.5 transition-colors",
+    centered && "text-center",
     highlight
       ? "bg-brand-steel border-brand-steel hover:border-brand-orange"
       : isLight
         ? "bg-brand-paper border-brand-line"
-        : "bg-brand-surface border-brand-border"
+        : "bg-brand-green border-brand-border",
+    // Whole-tile links get a hover affordance.
+    (highlight || centered) && card.link && "hover:border-brand-orange"
   )
 
-  return highlight && card.link ? (
+  const isWholeTileLink = (highlight || centered) && card.link != null
+
+  return isWholeTileLink ? (
     <StrapiLink component={card.link} unstyled className={className}>
       {body}
     </StrapiLink>
