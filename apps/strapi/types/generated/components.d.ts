@@ -183,10 +183,8 @@ export interface SectionsCatalog extends Struct.ComponentSchema {
     displayName: "Catalog"
   }
   attributes: {
-    brands: Schema.Attribute.Component<"utilities.text", true>
-    categories: Schema.Attribute.Component<"utilities.text", true>
-    products: Schema.Attribute.Component<"elements.product-card", true>
-    resultsLabel: Schema.Attribute.String
+    pageSize: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<12>
+    subtitle: Schema.Attribute.String
     title: Schema.Attribute.String
   }
 }

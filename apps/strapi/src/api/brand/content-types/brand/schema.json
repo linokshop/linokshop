@@ -1,11 +1,11 @@
 {
   "kind": "collectionType",
-  "collectionName": "categories",
+  "collectionName": "brands",
   "info": {
-    "singularName": "category",
-    "pluralName": "categories",
-    "displayName": "Category",
-    "description": "Product category for the ЛінОк catalog."
+    "singularName": "brand",
+    "pluralName": "brands",
+    "displayName": "Brand",
+    "description": "A product brand. A collection, not a free-text field, so the catalog filter never shows the same brand twice under different spellings."
   },
   "options": {
     "draftAndPublish": true
@@ -29,20 +29,11 @@
       "type": "uid",
       "targetField": "name"
     },
-    "image": {
-      "type": "media",
-      "allowedTypes": ["images"],
-      "multiple": false
-    },
-    "order": {
-      "type": "integer",
-      "default": 0
-    },
     "products": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::product.product",
-      "mappedBy": "category"
+      "mappedBy": "brand"
     }
   }
 }

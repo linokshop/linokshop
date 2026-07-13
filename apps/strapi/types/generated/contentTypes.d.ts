@@ -688,6 +688,45 @@ export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
           localized: true
         }
       }>
+    order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>
+    products: Schema.Attribute.Relation<"oneToMany", "api::product.product">
+    publishedAt: Schema.Attribute.DateTime
+    slug: Schema.Attribute.UID<"name">
+    updatedAt: Schema.Attribute.DateTime
+    updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
+      Schema.Attribute.Private
+  }
+}
+
+export interface ApiBrandBrand extends Struct.CollectionTypeSchema {
+  collectionName: "brands"
+  info: {
+    description: "A product brand. A collection, not a free-text field, so the catalog filter never shows the same brand twice under different spellings."
+    displayName: "Brand"
+    pluralName: "brands"
+    singularName: "brand"
+  }
+  options: {
+    draftAndPublish: true
+  }
+  pluginOptions: {
+    i18n: {
+      localized: true
+    }
+  }
+  attributes: {
+    createdAt: Schema.Attribute.DateTime
+    createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
+      Schema.Attribute.Private
+    locale: Schema.Attribute.String
+    localizations: Schema.Attribute.Relation<"oneToMany", "api::brand.brand">
+    name: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true
+        }
+      }>
     products: Schema.Attribute.Relation<"oneToMany", "api::product.product">
     publishedAt: Schema.Attribute.DateTime
     slug: Schema.Attribute.UID<"name">
@@ -720,7 +759,9 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
           localized: true
         }
       }>
-    brand: Schema.Attribute.String
+    badgeColor: Schema.Attribute.Enumeration<["bronze", "sale", "stock"]> &
+      Schema.Attribute.DefaultTo<"bronze">
+    brand: Schema.Attribute.Relation<"manyToOne", "api::brand.brand">
     category: Schema.Attribute.Relation<"manyToOne", "api::category.category">
     createdAt: Schema.Attribute.DateTime
     createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
@@ -747,6 +788,7 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
       }>
     oldPrice: Schema.Attribute.Decimal
     options: Schema.Attribute.Component<"utilities.text", true>
+    popularity: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>
     price: Schema.Attribute.Decimal & Schema.Attribute.Required
     publishedAt: Schema.Attribute.DateTime
     rating: Schema.Attribute.Decimal
@@ -1424,6 +1466,7 @@ declare module "@strapi/strapi" {
       "admin::transfer-token": AdminTransferToken
       "admin::transfer-token-permission": AdminTransferTokenPermission
       "admin::user": AdminUser
+      "api::brand.brand": ApiBrandBrand
       "api::category.category": ApiCategoryCategory
       "api::footer.footer": ApiFooterFooter
       "api::hierarchy.hierarchy": ApiHierarchyHierarchy

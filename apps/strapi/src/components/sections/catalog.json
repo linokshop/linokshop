@@ -2,30 +2,19 @@
   "collectionName": "components_sections_catalogs",
   "info": {
     "displayName": "Catalog",
-    "description": "ЛінОк catalog: filter sidebar + product grid (visual)."
+    "description": "The catalog: filter sidebar + product grid. Products, categories and brands are read from their collections — this component only carries the copy and the page size."
   },
   "options": {},
   "attributes": {
     "title": {
       "type": "string"
     },
-    "resultsLabel": {
+    "subtitle": {
       "type": "string"
     },
-    "categories": {
-      "type": "component",
-      "component": "utilities.text",
-      "repeatable": true
-    },
-    "brands": {
-      "type": "component",
-      "component": "utilities.text",
-      "repeatable": true
-    },
-    "products": {
-      "type": "component",
-      "component": "elements.product-card",
-      "repeatable": true
+    "pageSize": {
+      "type": "integer",
+      "default": 12
     }
   }
 }

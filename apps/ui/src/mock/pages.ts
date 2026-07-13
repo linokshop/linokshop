@@ -2,7 +2,6 @@ import { ROOT_PAGE_PATH } from "@repo/shared-data"
 import type { Data } from "@repo/strapi-types"
 
 import { mockCartPage } from "@/mock/cart-page"
-import { mockCatalogPage } from "@/mock/catalog-page"
 import { mockHomePage } from "@/mock/home-page"
 import { mockProductPage } from "@/mock/product-page"
 
@@ -14,9 +13,8 @@ import { mockProductPage } from "@/mock/product-page"
  * Delete the whole `apps/ui/src/mock` folder once pages live in Strapi.
  */
 export const mockPages: Record<string, Data.ContentType<"api::page.page">> = {
-  // Only the shop pages are still mocked — every content page lives in Strapi.
+  // Only the product page and the cart are still mocked.
   [ROOT_PAGE_PATH]: mockHomePage,
-  "/catalog": mockCatalogPage,
   "/product": mockProductPage,
   "/cart": mockCartPage,
 }

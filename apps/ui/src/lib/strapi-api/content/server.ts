@@ -275,6 +275,150 @@ export async function fetchProductBySlug(slug: string, locale: Locale) {
   }
 }
 
+export interface CatalogQuery {
+  readonly categories: string[]
+  readonly brands: string[]
+  readonly priceMin?: number
+  readonly priceMax?: number
+  readonly inStock: boolean
+  readonly sort: "popular" | "price-asc" | "price-desc" | "new"
+  readonly page: number
+  readonly pageSize: number
+}
+
+// `as const` on purpose: Strapi's `sort` param is typed against the field names,
+// so widening these to string[] makes them unassignable.
+const CATALOG_SORT = {
+  popular: ["popularity:desc", "name:asc"],
+  "price-asc": ["price:asc"],
+  "price-desc": ["price:desc"],
+  new: ["createdAt:desc"],
+} as const
+
+/** The catalog grid: filtered, sorted and paginated by Strapi, not in the UI. */
+export async function fetchCatalogProducts(
+  locale: Locale,
+  query: CatalogQuery
+) {
+  const filters: Record<string, unknown> = {}
+
+  if (query.categories.length) {
+    filters.category = { slug: { $in: query.categories } }
+  }
+  if (query.brands.length) {
+    filters.brand = { slug: { $in: query.brands } }
+  }
+  if (query.inStock) {
+    filters.inStock = { $eq: true }
+  }
+  if (query.priceMin != null || query.priceMax != null) {
+    filters.price = {
+      ...(query.priceMin != null && { $gte: query.priceMin }),
+      ...(query.priceMax != null && { $lte: query.priceMax }),
+    }
+  }
+
+  try {
+    return await PublicStrapiClient.fetchMany(
+      "api::product.product",
+      {
+        locale,
+        status: "published",
+        filters,
+        sort: [...CATALOG_SORT[query.sort]],
+        populate: { images: true, category: true, brand: true },
+        pagination: { page: query.page, pageSize: query.pageSize },
+      },
+      {
+        next: {
+          revalidate: 300,
+          tags: [strapiCacheTag("api::product.product")],
+        },
+      }
+    )
+  } catch (e: unknown) {
+    logNonBlockingError({
+      message: `Error fetching catalog products for locale '${locale}'`,
+      error: {
+        error: e instanceof Error ? e.message : String(e),
+        stack: e instanceof Error ? e.stack : undefined,
+      },
+    })
+  }
+}
+
+export async function fetchBrands(locale: Locale) {
+  try {
+    return await PublicStrapiClient.fetchMany(
+      "api::brand.brand",
+      {
+        locale,
+        status: "published",
+        sort: ["name:asc"],
+        pagination: { page: 1, pageSize: 100 },
+      },
+      {
+        next: {
+          revalidate: 600,
+          tags: [strapiCacheTag("api::brand.brand")],
+        },
+      }
+    )
+  } catch (e: unknown) {
+    logNonBlockingError({
+      message: `Error fetching brands for locale '${locale}'`,
+      error: {
+        error: e instanceof Error ? e.message : String(e),
+        stack: e instanceof Error ? e.stack : undefined,
+      },
+    })
+  }
+}
+
+export interface CategoryCount {
+  readonly documentId: string
+  readonly name: string
+  readonly slug: string
+  readonly count: number
+}
+
+/**
+ * Product counts per category, for the filter sidebar. A custom Strapi endpoint
+ * answers all of them in one query — the standard API has no facet counts, and
+ * one request per category would be a request per row.
+ */
+export async function fetchCategoryCounts(
+  locale: Locale
+): Promise<CategoryCount[]> {
+  try {
+    const response = await PublicStrapiClient.fetchAPI(
+      "/categories/counts",
+      { locale },
+      {
+        next: {
+          revalidate: 300,
+          tags: [
+            strapiCacheTag("api::category.category"),
+            strapiCacheTag("api::product.product"),
+          ],
+        },
+      }
+    )
+
+    return (response?.data ?? []) as CategoryCount[]
+  } catch (e: unknown) {
+    logNonBlockingError({
+      message: `Error fetching category counts for locale '${locale}'`,
+      error: {
+        error: e instanceof Error ? e.message : String(e),
+        stack: e instanceof Error ? e.stack : undefined,
+      },
+    })
+
+    return []
+  }
+}
+
 export async function fetchCategories(locale: Locale) {
   try {
     return await PublicStrapiClient.fetchMany(

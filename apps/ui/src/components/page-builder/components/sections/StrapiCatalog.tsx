@@ -1,140 +1,231 @@
 import "server-only"
 
 import type { Data } from "@repo/strapi-types"
+import type { Locale } from "next-intl"
 
+import AppLink from "@/components/elementary/AppLink"
+import { CatalogFilters } from "@/components/page-builder/components/elements/CatalogFilters"
+import { CatalogSort } from "@/components/page-builder/components/elements/CatalogSort"
 import { ProductCard } from "@/components/page-builder/components/elements/ProductCard"
-import Typography from "@/components/typography"
+import { SECTION_X_PADDING } from "@/lib/layout"
+import {
+  type CatalogQuery,
+  fetchBrands,
+  fetchCatalogProducts,
+  fetchCategoryCounts,
+} from "@/lib/strapi-api/content/server"
 import { cn } from "@/lib/styles"
 import type { PageBuilderComponentProps } from "@/types/general"
 
-function CheckboxRow({ label }: { readonly label?: string | null }) {
-  return (
-    <li className="text-brand-nav flex items-center gap-2 text-sm">
-      <span className="border-brand-border size-4 rounded-xs border" />
-      {label}
-    </li>
-  )
+type SearchParams = Record<string, string | string[] | undefined>
+type Product = NonNullable<
+  Awaited<ReturnType<typeof fetchCatalogProducts>>
+>["data"][number]
+
+const SORTS = ["popular", "price-asc", "price-desc", "new"] as const
+
+const readOne = (params: SearchParams, key: string) => {
+  const value = params[key]
+
+  return Array.isArray(value) ? value[0] : value
 }
 
+const readList = (params: SearchParams, key: string) =>
+  (readOne(params, key) ?? "").split(",").filter(Boolean)
+
+const readNumber = (params: SearchParams, key: string) => {
+  const value = Number(readOne(params, key))
+
+  return Number.isFinite(value) && value >= 0 ? value : undefined
+}
+
+/** "1290" → "1 290 ₴" — thin spaces, the way prices read on the rest of the site. */
+const formatPrice = (value: number | null | undefined) =>
+  value == null
+    ? undefined
+    : `${Math.round(value)
+        .toString()
+        .replaceAll(/\B(?=(\d{3})+(?!\d))/g, " ")} ₴`
+
 /**
- * Catalog page section. The filter controls are visual placeholders for now —
- * real filtering/sorting/pagination will be wired to Strapi later.
+ * Products, categories and brands are their own Strapi collections, so this
+ * section holds no product data. The filter/sort/page state lives in the URL and
+ * is turned into a Strapi query here, on the server.
  */
-export function StrapiCatalog({
+export async function StrapiCatalog({
   component,
+  pageParams,
+  searchParams = {},
 }: PageBuilderComponentProps & {
   readonly component: Data.Component<"sections.catalog">
 }) {
-  const { title, resultsLabel, categories, brands, products } = component
+  const locale = (pageParams?.locale ?? "uk") as Locale
+  const pageSize = component.pageSize ?? 12
+
+  const sortParam = readOne(searchParams, "sort")
+  const query: CatalogQuery = {
+    categories: readList(searchParams, "category"),
+    brands: readList(searchParams, "brand"),
+    priceMin: readNumber(searchParams, "priceMin"),
+    priceMax: readNumber(searchParams, "priceMax"),
+    inStock: readOne(searchParams, "inStock") === "true",
+    sort: (SORTS as readonly string[]).includes(sortParam ?? "")
+      ? (sortParam as CatalogQuery["sort"])
+      : "popular",
+    page: Math.max(1, readNumber(searchParams, "page") ?? 1),
+    pageSize,
+  }
+
+  const [products, categoryCounts, brands] = await Promise.all([
+    fetchCatalogProducts(locale, query),
+    fetchCategoryCounts(locale),
+    fetchBrands(locale),
+  ])
+
+  const items = products?.data ?? []
+  const pagination = products?.meta?.pagination
+  const total = pagination?.total ?? 0
+  const pageCount = pagination?.pageCount ?? 1
+  const firstShown = total === 0 ? 0 : (query.page - 1) * pageSize + 1
+  const lastShown = Math.min(query.page * pageSize, total)
 
   return (
-    <section className="bg-brand-green font-golos">
-      <div className="px-4 py-10 sm:px-6 lg:px-10">
-        {title ? (
-          <Typography
-            tag="h1"
-            className="font-oswald text-brand-cream text-3xl font-bold uppercase lg:text-4xl"
-          >
-            {title}
-          </Typography>
-        ) : null}
-        {resultsLabel ? (
-          <p className="text-brand-muted mt-2 text-sm">{resultsLabel}</p>
-        ) : null}
+    <section
+      className={cn(SECTION_X_PADDING, "bg-brand-surface font-golos pb-17.5")}
+    >
+      <div className="mx-auto grid max-w-[1320px] items-start gap-8 min-[900px]:grid-cols-[268px_1fr]">
+        <CatalogFilters
+          categories={categoryCounts}
+          brands={(brands?.data ?? []).map((brand) => ({
+            slug: brand.slug ?? "",
+            name: brand.name ?? "",
+          }))}
+          labels={{
+            categories: "Категорії",
+            price: "Ціна, ₴",
+            brand: "Бренд",
+            inStock: "Тільки в наявності",
+            apply: "Застосувати",
+            reset: "Скинути",
+          }}
+        />
 
-        <div className="mt-8 grid gap-8 lg:grid-cols-[268px_1fr]">
-          {/* Filter sidebar (visual) */}
-          <aside className="border-brand-border bg-brand-surface h-fit space-y-6 rounded-sm border p-6">
-            {categories?.length ? (
-              <div>
-                <h3 className="font-oswald text-brand-cream mb-3 text-sm tracking-wide uppercase">
-                  Категорії
-                </h3>
-                <ul className="list-none space-y-2">
-                  {categories.map((c) => (
-                    <CheckboxRow key={c.id} label={c.text} />
-                  ))}
-                </ul>
-              </div>
-            ) : null}
-
-            <div>
-              <h3 className="font-oswald text-brand-cream mb-3 text-sm tracking-wide uppercase">
-                Ціна, ₴
-              </h3>
-              <div className="bg-brand-border relative h-1 rounded-full">
-                <span className="bg-brand-orange absolute inset-y-0 right-1/4 left-1/5 rounded-full" />
-                <span className="bg-brand-orange border-brand-surface absolute top-1/2 left-1/5 size-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-2" />
-                <span className="bg-brand-orange border-brand-surface absolute top-1/2 right-1/4 size-4 translate-x-1/2 -translate-y-1/2 rounded-full border-2" />
-              </div>
-              <div className="text-brand-muted mt-2 flex justify-between text-xs">
-                <span>200</span>
-                <span>5 000</span>
-              </div>
-            </div>
-
-            {brands?.length ? (
-              <div>
-                <h3 className="font-oswald text-brand-cream mb-3 text-sm tracking-wide uppercase">
-                  Бренди
-                </h3>
-                <ul className="list-none space-y-2">
-                  {brands.map((b) => (
-                    <CheckboxRow key={b.id} label={b.text} />
-                  ))}
-                </ul>
-              </div>
-            ) : null}
-
-            <div className="text-brand-nav flex items-center gap-2 text-sm">
-              <span className="border-brand-border size-4 rounded-xs border" />
-              Тільки в наявності
-            </div>
-
-            <div className="flex gap-2 pt-2">
-              <span className="bg-brand-bronze font-oswald flex-1 rounded-sm px-4 py-2.5 text-center text-xs font-semibold text-white uppercase">
-                Застосувати
-              </span>
-              <span className="border-brand-border text-brand-nav font-oswald flex-1 rounded-sm border px-4 py-2.5 text-center text-xs font-semibold uppercase">
-                Скинути
-              </span>
-            </div>
-          </aside>
-
-          {/* Products */}
-          <div>
-            <div className="border-brand-border mb-6 flex items-center justify-between border-b pb-4">
-              <span className="text-brand-muted text-sm">{resultsLabel}</span>
-              <span className="border-brand-border text-brand-nav font-oswald rounded-sm border px-4 py-2 text-xs uppercase">
-                Сортування: за популярністю ▾
-              </span>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4 lg:grid-cols-3">
-              {products?.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
-
-            <div className="mt-8 flex justify-center gap-2">
-              {["1", "2", "3", "→"].map((page, index) => (
-                <span
-                  key={page}
-                  className={cn(
-                    "font-oswald flex size-9 items-center justify-center rounded-sm text-sm",
-                    index === 0
-                      ? "bg-brand-orange text-brand-navy"
-                      : "border-brand-border text-brand-nav border"
-                  )}
-                >
-                  {page}
-                </span>
-              ))}
-            </div>
+        <div>
+          <div className="border-brand-border bg-brand-green mb-5.5 flex flex-col gap-3 rounded-[10px] border px-5 py-3.5 min-[600px]:flex-row min-[600px]:items-center min-[600px]:justify-between">
+            <span className="text-brand-muted text-sm">
+              {total === 0
+                ? "Нічого не знайдено"
+                : `Показано ${firstShown}–${lastShown} з ${total}`}
+            </span>
+            <CatalogSort current={query.sort} />
           </div>
+
+          {items.length ? (
+            <div className="grid grid-cols-1 gap-3.5 min-[420px]:grid-cols-2 min-[600px]:gap-5.5 min-[1024px]:grid-cols-3">
+              {items.map((product) => (
+                <ProductCard
+                  key={product.documentId}
+                  product={toCard(product)}
+                  sizes="(min-width: 1024px) 30vw, (min-width: 420px) 45vw, 90vw"
+                />
+              ))}
+            </div>
+          ) : (
+            <p className="border-brand-border bg-brand-green text-brand-nav rounded-xl border p-10 text-center">
+              За цими фільтрами товарів немає. Спробуйте зняти частину умов.
+            </p>
+          )}
+
+          {pageCount > 1 ? (
+            <Pagination
+              page={query.page}
+              pageCount={pageCount}
+              searchParams={searchParams}
+            />
+          ) : null}
         </div>
       </div>
     </section>
+  )
+}
+
+/** Adapts a Product entity to the shape the shared tile renders. */
+function toCard(product: Product) {
+  return {
+    id: product.id,
+    category: product.category?.name,
+    name: product.name,
+    price: formatPrice(product.price),
+    oldPrice: formatPrice(product.oldPrice),
+    badge: product.badge,
+    badgeColor: product.badgeColor,
+    image: product.images?.[0]
+      ? { media: product.images[0], alt: product.name }
+      : undefined,
+    link: {
+      type: "external",
+      label: product.name,
+      href: `/product/${product.slug}`,
+      newTab: false,
+    },
+  } as unknown as Data.Component<"elements.product-card">
+}
+
+function Pagination({
+  page,
+  pageCount,
+  searchParams,
+}: {
+  readonly page: number
+  readonly pageCount: number
+  readonly searchParams: SearchParams
+}) {
+  const hrefFor = (target: number) => {
+    const params = new URLSearchParams()
+    for (const [key, value] of Object.entries(searchParams)) {
+      const single = Array.isArray(value) ? value[0] : value
+      if (key === "page" || single == null) continue
+      params.set(key, single)
+    }
+    if (target > 1) params.set("page", String(target))
+
+    return params.size ? `?${params.toString()}` : "?"
+  }
+
+  const pages = Array.from({ length: pageCount }, (_, i) => i + 1)
+
+  return (
+    <nav
+      aria-label="Сторінки каталогу"
+      className="font-oswald mt-10 flex items-center justify-center gap-2"
+    >
+      {pages.map((target) => (
+        <AppLink
+          key={target}
+          href={hrefFor(target)}
+          unstyled
+          aria-current={target === page ? "page" : undefined}
+          className={cn(
+            "flex size-10.5 items-center justify-center rounded-md border transition-colors",
+            target === page
+              ? "bg-brand-bronze border-brand-bronze text-white"
+              : "bg-brand-green border-brand-border text-brand-nav hover:border-brand-orange"
+          )}
+        >
+          {target}
+        </AppLink>
+      ))}
+      {page < pageCount ? (
+        <AppLink
+          href={hrefFor(page + 1)}
+          unstyled
+          aria-label="Наступна сторінка"
+          className="bg-brand-green border-brand-border text-brand-nav hover:border-brand-orange flex size-10.5 items-center justify-center rounded-md border transition-colors"
+        >
+          →
+        </AppLink>
+      ) : null}
+    </nav>
   )
 }
 

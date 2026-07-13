@@ -36,7 +36,10 @@
       "inversedBy": "products"
     },
     "brand": {
-      "type": "string"
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::brand.brand",
+      "inversedBy": "products"
     },
     "price": {
       "type": "decimal",
@@ -53,8 +56,17 @@
         }
       }
     },
+    "badgeColor": {
+      "type": "enumeration",
+      "enum": ["bronze", "sale", "stock"],
+      "default": "bronze"
+    },
     "rating": {
       "type": "decimal"
+    },
+    "popularity": {
+      "type": "integer",
+      "default": 0
     },
     "inStock": {
       "type": "boolean",

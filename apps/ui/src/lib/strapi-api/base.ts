@@ -20,6 +20,7 @@ export const API_ENDPOINTS: Partial<Record<UID.ContentType, string>> = {
   "api::header.header": "/header",
   "api::product.product": "/products",
   "api::category.category": "/categories",
+  "api::brand.brand": "/brands",
   "api::subscriber.subscriber": "/subscribers",
   "api::redirect.redirect": "/redirects",
 } as const
