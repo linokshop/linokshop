@@ -124,20 +124,6 @@ export interface ElementsCartItem extends Struct.ComponentSchema {
   }
 }
 
-export interface ElementsCategoryCard extends Struct.ComponentSchema {
-  collectionName: "components_elements_category_cards"
-  info: {
-    description: "A single category tile: image, label and item count."
-    displayName: "CategoryCard"
-  }
-  attributes: {
-    count: Schema.Attribute.String
-    image: Schema.Attribute.Component<"utilities.basic-image", false>
-    label: Schema.Attribute.String
-    link: Schema.Attribute.Component<"utilities.link", false>
-  }
-}
-
 export interface ElementsFooterItem extends Struct.ComponentSchema {
   collectionName: "components_elements_footer_items"
   info: {
@@ -170,7 +156,7 @@ export interface SectionsHomeCategories extends Struct.ComponentSchema {
     displayName: "HomeCategories"
   }
   attributes: {
-    categories: Schema.Attribute.Component<"elements.category-card", true>
+    limit: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<6>
     link: Schema.Attribute.Component<"utilities.link", false>
     title: Schema.Attribute.String
   }
@@ -782,7 +768,6 @@ declare module "@strapi/strapi" {
   export module Public {
     export interface ComponentSchemas {
       "elements.cart-item": ElementsCartItem
-      "elements.category-card": ElementsCategoryCard
       "elements.info-card": ElementsInfoCard
       "elements.news-card": ElementsNewsCard
       "elements.product-card": ElementsProductCard

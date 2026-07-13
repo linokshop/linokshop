@@ -2,7 +2,7 @@
   "collectionName": "components_sections_home_categories",
   "info": {
     "displayName": "HomeCategories",
-    "description": "ЛінОк homepage category grid."
+    "description": "Homepage category grid. Tiles are read from the Category collection — item counts are computed, not typed in."
   },
   "options": {},
   "attributes": {
@@ -14,10 +14,9 @@
       "component": "utilities.link",
       "repeatable": false
     },
-    "categories": {
-      "type": "component",
-      "component": "elements.category-card",
-      "repeatable": true
+    "limit": {
+      "type": "integer",
+      "default": 6
     }
   }
 }

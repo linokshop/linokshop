@@ -1,25 +1,62 @@
 import "server-only"
 
 import type { Data } from "@repo/strapi-types"
+import type { Locale } from "next-intl"
 
+import AppLink from "@/components/elementary/AppLink"
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
 import StrapiLink from "@/components/page-builder/components/utilities/StrapiLink"
 import { SECTION_X_PADDING } from "@/lib/layout"
+import {
+  fetchCategories,
+  fetchCategoryCounts,
+} from "@/lib/strapi-api/content/server"
 import { cn } from "@/lib/styles"
 import type { PageBuilderComponentProps } from "@/types/general"
 
-export function StrapiHomeCategories({
+/** "1 товар" / "3 товари" / "12 товарів" — Ukrainian plural rules. */
+const PLURAL = new Intl.PluralRules("uk-UA")
+const ITEM_WORD: Record<string, string> = {
+  one: "товар",
+  few: "товари",
+  many: "товарів",
+  other: "товару",
+}
+const itemCount = (count: number) =>
+  `${count} ${ITEM_WORD[PLURAL.select(count)] ?? "товарів"}`
+
+/**
+ * Tiles come from the Category collection and the counts are computed from the
+ * products themselves — nothing here is typed in by hand, so the grid cannot
+ * drift out of sync with the catalog the way the old manual cards did.
+ */
+export async function StrapiHomeCategories({
   component,
+  pageParams,
 }: PageBuilderComponentProps & {
   readonly component: Data.Component<"sections.home-categories">
 }) {
-  const { title, link, categories } = component
+  const locale = (pageParams?.locale ?? "uk") as Locale
+  const { title, link, limit } = component
+
+  const [categoriesResponse, counts] = await Promise.all([
+    fetchCategories(locale),
+    fetchCategoryCounts(locale),
+  ])
+
+  const countBySlug = new Map(counts.map((c) => [c.slug, c.count]))
+  const categories = [...(categoriesResponse?.data ?? [])]
+    .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+    .slice(0, limit ?? 6)
+
+  if (!categories.length) {
+    return null
+  }
 
   return (
     <section
       className={cn(SECTION_X_PADDING, "bg-brand-green font-golos py-8")}
     >
-      {/* Heading + "all catalog" link */}
       {title || link ? (
         <div className="mb-6.5 flex items-end justify-between gap-4">
           {title ? (
@@ -38,17 +75,23 @@ export function StrapiHomeCategories({
       ) : null}
 
       <div className="grid grid-cols-2 gap-4.5 min-[600px]:grid-cols-3 min-[1024px]:grid-cols-6">
-        {categories?.map((cat) => (
-          <StrapiLink
-            key={cat.id}
-            component={cat.link}
+        {categories.map((category) => (
+          <AppLink
+            key={category.documentId}
+            // A tile filters the catalog rather than opening a page of its own.
+            href={`/catalog?category=${category.slug}`}
             unstyled
             className="border-brand-border bg-brand-green hover:border-brand-orange group/tile block overflow-hidden rounded-xl border transition-colors"
           >
             <span className="bg-brand-surface relative block h-26 w-full overflow-hidden">
-              {cat.image?.media ? (
+              {category.image ? (
                 <StrapiBasicImage
-                  component={cat.image}
+                  component={
+                    {
+                      media: category.image,
+                      alt: category.name,
+                    } as unknown as Data.Component<"utilities.basic-image">
+                  }
                   fill
                   sizes="(min-width: 1024px) 16vw, (min-width: 600px) 33vw, 50vw"
                   className="object-cover transition-transform duration-500 ease-out group-hover/tile:scale-105"
@@ -57,15 +100,13 @@ export function StrapiHomeCategories({
             </span>
             <span className="block p-3.5 text-center">
               <span className="font-oswald text-brand-cream block text-base tracking-[0.04em] uppercase">
-                {cat.label}
+                {category.name}
               </span>
-              {cat.count ? (
-                <span className="text-brand-muted mt-1 block text-[12.5px]">
-                  {cat.count}
-                </span>
-              ) : null}
+              <span className="text-brand-muted mt-1 block text-[12.5px]">
+                {itemCount(countBySlug.get(category.slug ?? "") ?? 0)}
+              </span>
             </span>
-          </StrapiLink>
+          </AppLink>
         ))}
       </div>
     </section>
