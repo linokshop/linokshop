@@ -253,6 +253,7 @@ export async function fetchProductBySlug(slug: string, locale: Locale) {
         populate: {
           images: true,
           category: true,
+          brand: true,
           specs: true,
           options: true,
         },
@@ -344,6 +345,51 @@ export async function fetchCatalogProducts(
         stack: e instanceof Error ? e.stack : undefined,
       },
     })
+  }
+}
+
+/** Other products from the same category — the "related" rail on a product page. */
+export async function fetchRelatedProducts(
+  locale: Locale,
+  categorySlug: string | undefined,
+  excludeSlug: string,
+  limit = 4
+) {
+  if (!categorySlug) return []
+
+  try {
+    const response = await PublicStrapiClient.fetchMany(
+      "api::product.product",
+      {
+        locale,
+        status: "published",
+        filters: {
+          category: { slug: { $eq: categorySlug } },
+          slug: { $ne: excludeSlug },
+        },
+        sort: ["popularity:desc"],
+        populate: { images: true, category: true },
+        pagination: { page: 1, pageSize: limit },
+      },
+      {
+        next: {
+          revalidate: 300,
+          tags: [strapiCacheTag("api::product.product")],
+        },
+      }
+    )
+
+    return response.data
+  } catch (e: unknown) {
+    logNonBlockingError({
+      message: `Error fetching related products for '${excludeSlug}'`,
+      error: {
+        error: e instanceof Error ? e.message : String(e),
+        stack: e instanceof Error ? e.stack : undefined,
+      },
+    })
+
+    return []
   }
 }
 

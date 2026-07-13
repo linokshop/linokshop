@@ -7,6 +7,7 @@ import AppLink from "@/components/elementary/AppLink"
 import { CatalogFilters } from "@/components/page-builder/components/elements/CatalogFilters"
 import { CatalogSort } from "@/components/page-builder/components/elements/CatalogSort"
 import { ProductCard } from "@/components/page-builder/components/elements/ProductCard"
+import { formatPrice as formatUah } from "@/lib/cart"
 import { SECTION_X_PADDING } from "@/lib/layout"
 import {
   type CatalogQuery,
@@ -39,13 +40,8 @@ const readNumber = (params: SearchParams, key: string) => {
   return Number.isFinite(value) && value >= 0 ? value : undefined
 }
 
-/** "1290" → "1 290 ₴" — thin spaces, the way prices read on the rest of the site. */
 const formatPrice = (value: number | null | undefined) =>
-  value == null
-    ? undefined
-    : `${Math.round(value)
-        .toString()
-        .replaceAll(/\B(?=(\d{3})+(?!\d))/g, " ")} ₴`
+  value == null ? undefined : formatUah(value)
 
 /**
  * Products, categories and brands are their own Strapi collections, so this

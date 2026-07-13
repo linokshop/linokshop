@@ -8,6 +8,7 @@ import { StrapiBasicImage } from "@/components/page-builder/components/utilities
 import StrapiLink from "@/components/page-builder/components/utilities/StrapiLink"
 // Language switcher temporarily disabled — restore once we decide on English.
 // import HeaderLocaleToggle from "@/components/page-builder/single-types/header/HeaderLocaleToggle"
+import HeaderCartButton from "@/components/page-builder/single-types/header/HeaderCartButton"
 import HeaderMobileMenu from "@/components/page-builder/single-types/header/HeaderMobileMenu"
 import HeaderNavLink from "@/components/page-builder/single-types/header/HeaderNavLink"
 import { SECTION_X_PADDING } from "@/lib/layout"
@@ -97,12 +98,7 @@ export function HeaderInner({
             </div>
             */}
             {primaryButtons?.map((button) => (
-              <StrapiLink
-                key={button.id}
-                component={button}
-                unstyled
-                className="bg-brand-bronze font-oswald inline-flex shrink-0 items-center rounded-sm px-3 py-2.5 text-sm font-medium tracking-[0.04em] text-white uppercase transition-all hover:brightness-110 min-[600px]:px-4.5"
-              />
+              <HeaderCartButton key={button.id} component={button} />
             ))}
             <HeaderMobileMenu
               navbarItems={navbarItems}
