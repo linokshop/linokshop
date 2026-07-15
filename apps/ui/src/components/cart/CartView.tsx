@@ -2,6 +2,7 @@
 
 import Image from "next/image"
 import Link from "next/link"
+import { useTranslations } from "next-intl"
 import { useState } from "react"
 
 import { lineId, useCart } from "@/lib/cart"
@@ -9,10 +10,7 @@ import { formatPrice } from "@/lib/format"
 import { readError } from "@/lib/http"
 import { cn } from "@/lib/styles"
 
-const PAYMENT_METHODS = [
-  { id: "card", label: "Картка онлайн" },
-  { id: "cod", label: "Готівкою / карткою при отриманні" },
-] as const
+const PAYMENT_METHODS = [{ id: "card" }, { id: "cod" }] as const
 
 const FIELD =
   "bg-brand-surface text-brand-nav placeholder:text-brand-muted focus:border-brand-bronze w-full rounded-lg border border-brand-field px-4 py-3.5 text-[15px] outline-none transition-colors"
@@ -21,6 +19,14 @@ type Status = "idle" | "sending" | "sent" | "error"
 
 export function CartView() {
   const { items, count, total, setQuantity, remove, clear } = useCart()
+  const t = useTranslations("shop.cart")
+  const tc = useTranslations("shop.common")
+
+  const paymentLabels: Record<(typeof PAYMENT_METHODS)[number]["id"], string> =
+    {
+      card: t("paymentCard"),
+      cod: t("paymentCod"),
+    }
 
   const [payment, setPayment] =
     useState<(typeof PAYMENT_METHODS)[number]["id"]>("card")
@@ -70,18 +76,14 @@ export function CartView() {
 
       if (!response.ok) {
         const body = await readError(response)
-        throw new Error(body.error ?? "Не вдалося надіслати замовлення.")
+        throw new Error(body.error ?? t("sendFailed"))
       }
 
       clear()
       setStatus("sent")
     } catch (caught) {
       setStatus("error")
-      setError(
-        caught instanceof Error
-          ? caught.message
-          : "Не вдалося надіслати замовлення."
-      )
+      setError(caught instanceof Error ? caught.message : t("sendFailed"))
     }
   }
 
@@ -89,16 +91,16 @@ export function CartView() {
     return (
       <div className="border-brand-border bg-brand-green rounded-xl border p-12 text-center">
         <p className="text-brand-cream mb-2 text-xl font-semibold">
-          Замовлення прийнято
+          {t("orderAcceptedTitle")}
         </p>
         <p className="text-brand-nav mb-6 text-[15px]">
-          Ми зателефонуємо вам найближчим часом, щоб підтвердити деталі.
+          {t("orderAcceptedNote")}
         </p>
         <Link
           href="/catalog"
           className="bg-brand-bronze font-oswald hover:bg-brand-orange inline-flex rounded-lg px-7 py-3.5 text-sm tracking-[0.05em] text-white uppercase transition-colors"
         >
-          Продовжити покупки
+          {tc("continueShopping")}
         </Link>
       </div>
     )
@@ -108,16 +110,14 @@ export function CartView() {
     return (
       <div className="border-brand-border bg-brand-green rounded-xl border p-12 text-center">
         <p className="text-brand-cream mb-2 text-xl font-semibold">
-          Кошик порожній
+          {t("emptyTitle")}
         </p>
-        <p className="text-brand-nav mb-6 text-[15px]">
-          Оберіть спорядження в каталозі — воно з&apos;явиться тут.
-        </p>
+        <p className="text-brand-nav mb-6 text-[15px]">{t("emptyNote")}</p>
         <Link
           href="/catalog"
           className="bg-brand-bronze font-oswald hover:bg-brand-orange inline-flex rounded-lg px-7 py-3.5 text-sm tracking-[0.05em] text-white uppercase transition-colors"
         >
-          Перейти в каталог
+          {tc("toCatalog")}
         </Link>
       </div>
     )
@@ -161,7 +161,7 @@ export function CartView() {
 
               <span className="border-brand-field flex items-center overflow-hidden rounded-lg border-[1.5px]">
                 <QuantityButton
-                  label={`Зменшити кількість: ${item.name}`}
+                  label={t("decreaseQtyFor", { name: item.name })}
                   onClick={() => setQuantity(lineId(item), item.quantity - 1)}
                 >
                   −
@@ -170,7 +170,7 @@ export function CartView() {
                   {item.quantity}
                 </span>
                 <QuantityButton
-                  label={`Збільшити кількість: ${item.name}`}
+                  label={t("increaseQtyFor", { name: item.name })}
                   onClick={() => setQuantity(lineId(item), item.quantity + 1)}
                 >
                   +
@@ -184,7 +184,7 @@ export function CartView() {
               <button
                 type="button"
                 onClick={() => remove(lineId(item))}
-                aria-label={`Прибрати з кошика: ${item.name}`}
+                aria-label={t("removeFor", { name: item.name })}
                 className="text-brand-faded hover:text-brand-orange cursor-pointer text-xl transition-colors"
               >
                 ✕
@@ -194,19 +194,19 @@ export function CartView() {
         </ul>
 
         <h2 className="font-oswald text-brand-cream mb-4.5 text-2xl font-semibold tracking-[0.02em] uppercase">
-          Дані отримувача
+          {t("recipient")}
         </h2>
         <div className="mb-3.5 grid gap-3.5 min-[600px]:grid-cols-2">
           <input
             className={FIELD}
-            placeholder="Ім'я та прізвище"
+            placeholder={t("namePlaceholder")}
             autoComplete="name"
             value={form.name}
             onChange={(e) => setForm({ ...form, name: e.target.value })}
           />
           <input
             className={FIELD}
-            placeholder="Телефон"
+            placeholder={t("phonePlaceholder")}
             type="tel"
             autoComplete="tel"
             value={form.phone}
@@ -215,20 +215,20 @@ export function CartView() {
         </div>
         <input
           className={cn(FIELD, "mb-3.5")}
-          placeholder="Місто"
+          placeholder={t("cityPlaceholder")}
           autoComplete="address-level2"
           value={form.city}
           onChange={(e) => setForm({ ...form, city: e.target.value })}
         />
         <input
           className={cn(FIELD, "mb-7")}
-          placeholder="Відділення Нової Пошти"
+          placeholder={t("officePlaceholder")}
           value={form.office}
           onChange={(e) => setForm({ ...form, office: e.target.value })}
         />
 
         <h2 className="font-oswald text-brand-cream mb-4.5 text-2xl font-semibold tracking-[0.02em] uppercase">
-          Оплата
+          {t("payment")}
         </h2>
         <div className="flex flex-col gap-3">
           {PAYMENT_METHODS.map((method) => (
@@ -267,7 +267,7 @@ export function CartView() {
                   payment === method.id ? "text-brand-cream" : "text-brand-nav"
                 )}
               >
-                {method.label}
+                {paymentLabels[method.id]}
               </span>
             </label>
           ))}
@@ -278,10 +278,10 @@ export function CartView() {
           >
             <span className="flex-1">
               <span className="block text-[15.5px] font-semibold text-white">
-                Програма «Ветеранський спорт» через «Дія»
+                {t("veteranTitle")}
               </span>
               <span className="text-brand-mist mt-0.5 block text-[13px]">
-                Для ветеранів та ветеранок — державна підтримка
+                {t("veteranNote")}
               </span>
             </span>
             <span aria-hidden className="text-brand-orange text-lg">
@@ -293,15 +293,18 @@ export function CartView() {
 
       <aside className="border-brand-border bg-brand-green rounded-xl border p-6.5">
         <div className="font-oswald text-brand-sand mb-5 text-lg tracking-[0.06em] uppercase">
-          Разом
+          {t("summary")}
         </div>
 
-        <SummaryRow label={`Товари (${count})`} value={formatPrice(total)} />
-        <SummaryRow label="Доставка" value="за тарифами НП" />
+        <SummaryRow
+          label={t("itemsCount", { count })}
+          value={formatPrice(total)}
+        />
+        <SummaryRow label={t("delivery")} value={t("deliveryValue")} />
 
         <div className="border-brand-border mt-3.5 flex items-baseline justify-between border-t pt-4.5">
           <span className="font-oswald text-brand-cream text-lg uppercase">
-            До сплати
+            {t("toPay")}
           </span>
           <span className="font-oswald text-brand-gold text-[32px] font-bold">
             {formatPrice(total)}
@@ -314,7 +317,7 @@ export function CartView() {
           onClick={submitOrder}
           className="bg-brand-bronze font-oswald hover:bg-brand-orange mt-5 w-full cursor-pointer rounded-lg py-4.5 text-[17px] font-medium tracking-[0.05em] text-white uppercase transition-colors disabled:cursor-not-allowed disabled:opacity-45"
         >
-          {status === "sending" ? "Надсилаємо…" : "Оформити замовлення"}
+          {t(status === "sending" ? "sending" : "placeOrder")}
         </button>
 
         {status === "error" && error ? (
@@ -322,7 +325,7 @@ export function CartView() {
         ) : null}
         {!isFormFilled && status !== "error" ? (
           <p className="text-brand-muted mt-3 text-center text-[13px]">
-            Заповніть ім&apos;я та телефон, щоб оформити замовлення.
+            {t("fillNamePhone")}
           </p>
         ) : null}
 
@@ -330,7 +333,7 @@ export function CartView() {
           href="/catalog"
           className="text-brand-muted hover:text-brand-cream mt-3.5 block text-center text-sm transition-colors"
         >
-          ← Продовжити покупки
+          {t("continueShoppingBack")}
         </Link>
       </aside>
     </div>

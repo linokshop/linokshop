@@ -23,7 +23,6 @@
       "imageUrl": "SEO-TWITTER-IMAGE-URL"
     }
   },
-
   "general": {
     "noOptionsAvailable": "Немає доступних варіантів",
     "search": "Пошук",
@@ -34,7 +33,6 @@
     "saveChanges": "Зберегти зміни",
     "back": "Назад"
   },
-
   "tables": {
     "previousPage": "Попередня сторінка",
     "nextPage": "Наступна сторінка",
@@ -46,7 +44,6 @@
     "descending": "За спаданням",
     "noData": "Немає даних"
   },
-
   "navbar": {
     "account": "Обліковий запис",
     "actions": {
@@ -56,7 +53,6 @@
       "signIn": "Увійти"
     }
   },
-
   "comps": {
     "fileInput": {
       "label": "Виберіть файл",
@@ -79,7 +75,6 @@
       "confirmClose": "Бажаєте закрити діалог? Усі незбережені зміни буде втрачено."
     }
   },
-
   "errors": {
     "global": {
       "title": "Сталася невідома помилка",
@@ -87,25 +82,21 @@
       "invalidContent": "Не вдалося відобразити цей вміст",
       "somethingWentWrong": "Щось пішло не так 🥺"
     },
-
     "notFound": {
       "title": "Сторінку не знайдено",
       "description": "Сторінку, яку ви шукаєте, не знайдено.",
       "solution": "Перевірте, чи правильно введено URL, або поверніться на головну сторінку.",
       "redirect": "На головну сторінку"
     },
-
     "forms": {
       "errorsInForm": "Форма містить помилки",
       "checkFormForErrors": "Перевірте, чи не пропущено якісь значення"
     },
-
     "zodValidation": {
       "invalid_type": "Очікуваний тип {expected}, але отримано {received}",
       "invalid_type_received_undefined": "Поле обовʼязкове",
       "invalid_literal": "Некоректне значення, очікується {expected}",
       "invalid_union": "Некоректне значення",
-
       "invalid_string": {
         "regex": "Некоректний формат"
       },
@@ -140,7 +131,6 @@
       }
     }
   },
-
   "contactForm": {
     "name": "Імʼя та прізвище",
     "namePlaceholder": "Іван Іваненко",
@@ -153,7 +143,6 @@
     "error": "Не вдалося надіслати форму. Спробуйте пізніше.",
     "gdprLink": "Докладніше про обробку персональних даних"
   },
-
   "auth": {
     "signIn": {
       "status": {
@@ -174,7 +163,6 @@
       "forgotPassword": "Забули пароль",
       "createAccount": "Створити обліковий запис"
     },
-
     "register": {
       "status": {
         "fail": "Не вдалося зареєструватися",
@@ -197,7 +185,6 @@
       "signInLinkLinkDescription": "Вже маєте обліковий запис?",
       "signInLink": "Увійти"
     },
-
     "changePassword": {
       "errors": {
         "invalidCurrentPassword": "Поточний пароль не збігається",
@@ -212,7 +199,6 @@
       "confirmPassword": "Підтвердіть новий пароль",
       "submit": "Змінити пароль"
     },
-
     "accountActivation": {
       "successfullySet": "Обліковий запис успішно активовано. Тепер ви можете увійти.",
       "errors": {
@@ -228,7 +214,6 @@
       "password": "Новий пароль",
       "confirmPassword": "Підтвердіть пароль"
     },
-
     "resetPassword": {
       "successfullySet": "Пароль успішно змінено.",
       "header": "Скидання пароля",
@@ -240,7 +225,6 @@
         "incorrectCodeProvided": "Недійсний або прострочений код. Запросіть скидання пароля ще раз."
       }
     },
-
     "forgotPassword": {
       "passwordChangeEmailSent": "Лист з інструкціями для скидання пароля надіслано вам.",
       "header": "Забули пароль",
@@ -251,7 +235,6 @@
         "failedToSendPasswordResetEmail": "Не вдалося надіслати лист для скидання пароля"
       }
     },
-
     "oauth": {
       "orContinueWith": "Або продовжити з",
       "signingIn": "Виконуємо вхід...",
@@ -261,6 +244,100 @@
         "signInFailed": "Не вдалося увійти через OAuth"
       },
       "withGithub": "Увійти через GitHub"
+    }
+  },
+  "shop": {
+    "common": {
+      "addToCart": "Додати в кошик",
+      "outOfStock": "Немає в наявності",
+      "inStock": "В наявності",
+      "continueShopping": "Продовжити покупки",
+      "toCatalog": "Перейти в каталог",
+      "home": "Головна",
+      "catalog": "Каталог",
+      "cart": "Кошик",
+      "addToCartFor": "Додати в кошик: {name}",
+      "mapTitle": "Мапа",
+      "menu": "Меню"
+    },
+    "catalog": {
+      "categories": "Категорії",
+      "price": "Ціна, ₴",
+      "brand": "Бренд",
+      "inStockOnly": "Тільки в наявності",
+      "apply": "Застосувати",
+      "reset": "Скинути",
+      "priceFromPlaceholder": "від 0",
+      "priceToPlaceholder": "до 10000",
+      "priceFromAria": "від",
+      "priceToAria": "до",
+      "nothingFound": "Нічого не знайдено",
+      "shown": "Показано {from}–{to} з {total}",
+      "emptyFiltered": "За цими фільтрами товарів немає. Спробуйте зняти частину умов.",
+      "pagesAria": "Сторінки каталогу",
+      "nextPageAria": "Наступна сторінка",
+      "sortBy": "Сортувати:",
+      "sortPopular": "За популярністю",
+      "sortPriceAsc": "Спочатку дешевші",
+      "sortPriceDesc": "Спочатку дорожчі",
+      "sortNew": "Новинки"
+    },
+    "product": {
+      "metaFallback": "Товар",
+      "variant": "Варіант",
+      "decreaseQty": "Зменшити кількість",
+      "increaseQty": "Збільшити кількість",
+      "added": "Додано в кошик.",
+      "goToCart": "Перейти до кошика →",
+      "veteranTitle": "Доступно за програмою «Ветеранський спорт»",
+      "veteranNote": "Оплата державною підтримкою через «Дія» для ветеранів та ветеранок",
+      "description": "Опис",
+      "specs": "Характеристики",
+      "related": "Схожі товари",
+      "deliveryNote1": "Доставка Новою Поштою — 1–2 дні, від 60 ₴",
+      "deliveryNote2": "Оплата карткою онлайн або при отриманні",
+      "deliveryNote3": "Гарантія 12 місяців · обмін 14 днів"
+    },
+    "cart": {
+      "paymentCard": "Картка онлайн",
+      "paymentCod": "Готівкою / карткою при отриманні",
+      "orderAcceptedTitle": "Замовлення прийнято",
+      "orderAcceptedNote": "Ми зателефонуємо вам найближчим часом, щоб підтвердити деталі.",
+      "emptyTitle": "Кошик порожній",
+      "emptyNote": "Оберіть спорядження в каталозі — воно з’явиться тут.",
+      "decreaseQtyFor": "Зменшити кількість: {name}",
+      "increaseQtyFor": "Збільшити кількість: {name}",
+      "removeFor": "Прибрати з кошика: {name}",
+      "recipient": "Дані отримувача",
+      "namePlaceholder": "Ім’я та прізвище",
+      "phonePlaceholder": "Телефон",
+      "cityPlaceholder": "Місто",
+      "officePlaceholder": "Відділення Нової Пошти",
+      "payment": "Оплата",
+      "veteranTitle": "Програма «Ветеранський спорт» через «Дія»",
+      "veteranNote": "Для ветеранів та ветеранок — державна підтримка",
+      "summary": "Разом",
+      "itemsCount": "Товари ({count})",
+      "delivery": "Доставка",
+      "deliveryValue": "за тарифами НП",
+      "toPay": "До сплати",
+      "sending": "Надсилаємо…",
+      "placeOrder": "Оформити замовлення",
+      "fillNamePhone": "Заповніть ім’я та телефон, щоб оформити замовлення.",
+      "continueShoppingBack": "← Продовжити покупки",
+      "sendFailed": "Не вдалося надіслати замовлення."
+    },
+    "categories": {
+      "items": "{count, plural, one {# товар} few {# товари} many {# товарів} other {# товару}}"
+    },
+    "contact": {
+      "sending": "Надсилаємо…",
+      "sendFailed": "Не вдалося надіслати повідомлення.",
+      "thankYou": "Дякуємо! Ми отримали ваше повідомлення й зателефонуємо найближчим часом.",
+      "nameFallback": "Ваше ім’я",
+      "phoneFallback": "Телефон",
+      "messageFallback": "Повідомлення",
+      "submitFallback": "Надіслати"
     }
   }
 }

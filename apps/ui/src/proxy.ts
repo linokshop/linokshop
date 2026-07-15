@@ -51,7 +51,7 @@ export const config = {
     "/sitemap.xml",
     // Set a cookie to remember the previous locale for
     // all requests that have a locale prefix
-    `/(cs|en)/:path*`,
+    `/(ru|uk)/:path*`,
 
     // Skip all paths that should not be internationalized
 

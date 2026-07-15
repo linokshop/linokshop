@@ -2,6 +2,7 @@ import "server-only"
 
 import type { Data } from "@repo/strapi-types"
 import type { Locale } from "next-intl"
+import { getTranslations } from "next-intl/server"
 
 import AppLink from "@/components/elementary/AppLink"
 import { StrapiBasicImage } from "@/components/page-builder/components/utilities/StrapiBasicImage"
@@ -13,17 +14,6 @@ import {
 } from "@/lib/strapi-api/content/server"
 import { cn } from "@/lib/styles"
 import type { PageBuilderComponentProps } from "@/types/general"
-
-/** "1 товар" / "3 товари" / "12 товарів" — Ukrainian plural rules. */
-const PLURAL = new Intl.PluralRules("uk-UA")
-const ITEM_WORD: Record<string, string> = {
-  one: "товар",
-  few: "товари",
-  many: "товарів",
-  other: "товару",
-}
-const itemCount = (count: number) =>
-  `${count} ${ITEM_WORD[PLURAL.select(count)] ?? "товарів"}`
 
 /**
  * Tiles come from the Category collection and the counts are computed from the
@@ -37,6 +27,7 @@ export async function StrapiHomeCategories({
   readonly component: Data.Component<"sections.home-categories">
 }) {
   const locale = (pageParams?.locale ?? "uk") as Locale
+  const t = await getTranslations({ locale, namespace: "shop.categories" })
   const { title, link, limit } = component
 
   const [categoriesResponse, counts] = await Promise.all([
@@ -103,7 +94,9 @@ export async function StrapiHomeCategories({
                 {category.name}
               </span>
               <span className="text-brand-muted mt-1 block text-[12.5px]">
-                {itemCount(countBySlug.get(category.slug ?? "") ?? 0)}
+                {t("items", {
+                  count: countBySlug.get(category.slug ?? "") ?? 0,
+                })}
               </span>
             </span>
           </AppLink>

@@ -7,15 +7,16 @@ import { getEnvVar } from "@/lib/env-vars"
 
 export const routing = defineRouting({
   // A list of all locales that are supported
-  locales: ["en", "uk"],
+  locales: ["ru", "uk"],
 
   // Used when no locale matches
   defaultLocale: "uk",
 
   localePrefix: "as-needed",
 
-  // Don't auto-redirect "/" to a browser/cookie-detected locale (e.g. "/en").
-  // The site is Ukrainian-first; "/" always serves the default (uk).
+  // Don't auto-redirect "/" to a browser/cookie-detected locale (e.g. "/ru").
+  // The site is Ukrainian-first; "/" always serves the default (uk), and
+  // Russian lives under "/ru".
   localeDetection: false,
 })
 

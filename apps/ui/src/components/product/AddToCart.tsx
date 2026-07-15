@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import { useTranslations } from "next-intl"
 import { useState } from "react"
 
 import { type CartItem, useCart } from "@/lib/cart"
@@ -21,6 +22,8 @@ export function AddToCart({
   readonly disabled?: boolean
 }) {
   const { add } = useCart()
+  const t = useTranslations("shop.product")
+  const tc = useTranslations("shop.common")
 
   const [quantity, setQuantity] = useState(1)
   const [option, setOption] = useState(options?.[0])
@@ -31,7 +34,7 @@ export function AddToCart({
       {options?.length ? (
         <div className="mb-6">
           <div className="font-oswald text-brand-muted mb-3 text-[13px] tracking-[0.06em] uppercase">
-            Варіант
+            {t("variant")}
           </div>
           <div className="flex flex-wrap gap-2.5">
             {options.map((value) => (
@@ -57,7 +60,7 @@ export function AddToCart({
         <div className="border-brand-field flex items-center overflow-hidden rounded-lg border-[1.5px]">
           <StepperButton
             onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-            label="Зменшити кількість"
+            label={t("decreaseQty")}
           >
             −
           </StepperButton>
@@ -69,7 +72,7 @@ export function AddToCart({
           </span>
           <StepperButton
             onClick={() => setQuantity((q) => q + 1)}
-            label="Збільшити кількість"
+            label={t("increaseQty")}
           >
             +
           </StepperButton>
@@ -84,18 +87,18 @@ export function AddToCart({
           }}
           className="bg-brand-bronze font-oswald hover:bg-brand-orange h-13.5 flex-1 cursor-pointer rounded-lg px-6 text-[17px] font-medium tracking-[0.05em] text-white uppercase transition-colors disabled:cursor-not-allowed disabled:opacity-45"
         >
-          {disabled ? "Немає в наявності" : "Додати в кошик"}
+          {tc(disabled ? "outOfStock" : "addToCart")}
         </button>
       </div>
 
       {added ? (
         <p className="text-brand-nav mb-5.5 flex flex-wrap items-center gap-2 text-sm">
-          Додано в кошик.
+          {t("added")}
           <Link
             href="/cart"
             className="text-brand-gold hover:text-brand-orange underline underline-offset-4 transition-colors"
           >
-            Перейти до кошика →
+            {t("goToCart")}
           </Link>
         </p>
       ) : null}

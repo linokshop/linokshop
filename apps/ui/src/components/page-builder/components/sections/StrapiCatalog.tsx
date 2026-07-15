@@ -2,6 +2,7 @@ import "server-only"
 
 import type { Data } from "@repo/strapi-types"
 import type { Locale } from "next-intl"
+import { getTranslations } from "next-intl/server"
 import { Fragment } from "react"
 
 import AppLink from "@/components/elementary/AppLink"
@@ -50,6 +51,7 @@ export async function StrapiCatalog({
   readonly component: Data.Component<"sections.catalog">
 }) {
   const locale = (pageParams?.locale ?? "uk") as Locale
+  const t = await getTranslations({ locale, namespace: "shop.catalog" })
   const pageSize = component.pageSize ?? 12
 
   const sortParam = readOne(searchParams, "sort")
@@ -96,12 +98,16 @@ export async function StrapiCatalog({
             name: brand.name ?? "",
           }))}
           labels={{
-            categories: "Категорії",
-            price: "Ціна, ₴",
-            brand: "Бренд",
-            inStock: "Тільки в наявності",
-            apply: "Застосувати",
-            reset: "Скинути",
+            categories: t("categories"),
+            price: t("price"),
+            brand: t("brand"),
+            inStock: t("inStockOnly"),
+            apply: t("apply"),
+            reset: t("reset"),
+            priceFromPlaceholder: t("priceFromPlaceholder"),
+            priceToPlaceholder: t("priceToPlaceholder"),
+            priceFromAria: t("priceFromAria"),
+            priceToAria: t("priceToAria"),
           }}
         />
 
@@ -109,8 +115,12 @@ export async function StrapiCatalog({
           <div className="border-brand-border bg-brand-green mb-5.5 flex flex-col gap-3 rounded-[10px] border px-5 py-3.5 min-[600px]:flex-row min-[600px]:items-center min-[600px]:justify-between">
             <span className="text-brand-muted text-sm">
               {total === 0
-                ? "Нічого не знайдено"
-                : `Показано ${firstShown}–${lastShown} з ${total}`}
+                ? t("nothingFound")
+                : t("shown", {
+                    from: firstShown,
+                    to: lastShown,
+                    total,
+                  })}
             </span>
             <CatalogSort current={query.sort} />
           </div>
@@ -128,7 +138,7 @@ export async function StrapiCatalog({
             </div>
           ) : (
             <p className="border-brand-border bg-brand-green text-brand-nav rounded-xl border p-10 text-center">
-              За цими фільтрами товарів немає. Спробуйте зняти частину умов.
+              {t("emptyFiltered")}
             </p>
           )}
 
@@ -137,6 +147,8 @@ export async function StrapiCatalog({
               page={query.page}
               pageCount={pageCount}
               searchParams={searchParams}
+              navLabel={t("pagesAria")}
+              nextLabel={t("nextPageAria")}
             />
           ) : null}
         </div>
@@ -149,10 +161,14 @@ function Pagination({
   page,
   pageCount,
   searchParams,
+  navLabel,
+  nextLabel,
 }: {
   readonly page: number
   readonly pageCount: number
   readonly searchParams: SearchParams
+  readonly navLabel: string
+  readonly nextLabel: string
 }) {
   const hrefFor = (target: number) => {
     const params = new URLSearchParams()
@@ -175,7 +191,7 @@ function Pagination({
 
   return (
     <nav
-      aria-label="Сторінки каталогу"
+      aria-label={navLabel}
       className="font-oswald mt-10 flex items-center justify-center gap-2"
     >
       {pages.map((target, index) => (
@@ -205,7 +221,7 @@ function Pagination({
         <AppLink
           href={hrefFor(page + 1)}
           unstyled
-          aria-label="Наступна сторінка"
+          aria-label={nextLabel}
           className="bg-brand-green border-brand-border text-brand-nav hover:border-brand-orange flex size-10.5 items-center justify-center rounded-md border transition-colors"
         >
           →

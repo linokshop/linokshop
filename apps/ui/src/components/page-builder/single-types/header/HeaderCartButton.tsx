@@ -2,6 +2,7 @@
 
 import type { Data } from "@repo/strapi-types"
 import Link from "next/link"
+import { useTranslations } from "next-intl"
 
 import { useCart } from "@/lib/cart"
 
@@ -12,10 +13,12 @@ export function HeaderCartButton({
   readonly component: Data.Component<"utilities.link">
 }) {
   const { count } = useCart()
+  const tc = useTranslations("shop.common")
 
   // The CMS label may still carry a hardcoded count from the mock era
   // («Кошик · 2») — drop everything after the separator.
-  const label = (component.label ?? "Кошик").split("·", 1)[0]?.trim() ?? "Кошик"
+  const label =
+    (component.label ?? tc("cart")).split("·", 1)[0]?.trim() ?? tc("cart")
   const href =
     component.type === "external"
       ? (component.href ?? "/cart")

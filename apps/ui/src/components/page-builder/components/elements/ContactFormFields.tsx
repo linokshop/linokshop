@@ -1,5 +1,6 @@
 "use client"
 
+import { useTranslations } from "next-intl"
 import { useState } from "react"
 
 import { readError } from "@/lib/http"
@@ -27,6 +28,7 @@ export function ContactFormFields({
   readonly enabled: boolean
   readonly isLight: boolean
 }) {
+  const t = useTranslations("shop.contact")
   const [name, setName] = useState("")
   const [phone, setPhone] = useState("")
   const [message, setMessage] = useState("")
@@ -69,7 +71,7 @@ export function ContactFormFields({
 
       if (!response.ok) {
         const body = await readError(response)
-        throw new Error(body.error ?? "Не вдалося надіслати повідомлення.")
+        throw new Error(body.error ?? t("sendFailed"))
       }
 
       setStatus("sent")
@@ -78,11 +80,7 @@ export function ContactFormFields({
       setMessage("")
     } catch (caught) {
       setStatus("error")
-      setError(
-        caught instanceof Error
-          ? caught.message
-          : "Не вдалося надіслати повідомлення."
-      )
+      setError(caught instanceof Error ? caught.message : t("sendFailed"))
     }
   }
 
@@ -96,7 +94,7 @@ export function ContactFormFields({
             : "bg-brand-surface border-brand-border text-brand-cream"
         )}
       >
-        Дякуємо! Ми отримали ваше повідомлення й зателефонуємо найближчим часом.
+        {t("thankYou")}
       </p>
     )
   }
@@ -159,7 +157,7 @@ export function ContactFormFields({
         disabled={!canSubmit}
         className="bg-brand-bronze font-oswald hover:bg-brand-orange cursor-pointer rounded-lg px-9 py-4 text-base font-medium tracking-[0.05em] text-white uppercase transition-colors disabled:cursor-not-allowed disabled:opacity-45"
       >
-        {status === "sending" ? "Надсилаємо…" : labels.submitLabel}
+        {status === "sending" ? t("sending") : labels.submitLabel}
       </button>
 
       {status === "error" && error ? (

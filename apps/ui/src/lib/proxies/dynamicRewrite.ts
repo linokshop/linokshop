@@ -71,8 +71,12 @@ export const dynamicRewrite = (
     return null
   }
 
+  // The path must be absolute (leading slash). A relative path resolves against
+  // req.url and, on a locale-prefixed URL like `/ru/catalog`, would double the
+  // prefix into `/ru/ru/dynamic/...` → 404. This only surfaced once a non-default
+  // locale (ru) started carrying a URL prefix.
   const rewriteUrl = new URL(
-    [locale, dynamicPrefix, rest].filter(Boolean).join("/"),
+    `/${[locale, dynamicPrefix, rest].filter(Boolean).join("/")}`,
     req.url
   )
 

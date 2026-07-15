@@ -1,17 +1,22 @@
 import "server-only"
 
 import type { Data } from "@repo/strapi-types"
+import type { Locale } from "next-intl"
+import { getTranslations } from "next-intl/server"
 
 import { ContactFormFields } from "@/components/page-builder/components/elements/ContactFormFields"
 import { SECTION_X_PADDING } from "@/lib/layout"
 import { cn } from "@/lib/styles"
 import type { PageBuilderComponentProps } from "@/types/general"
 
-export function StrapiContactForm({
+export async function StrapiContactForm({
   component,
+  pageParams,
 }: PageBuilderComponentProps & {
   readonly component: Data.Component<"sections.contact-form">
 }) {
+  const locale = (pageParams?.locale ?? "uk") as Locale
+  const t = await getTranslations({ locale, namespace: "shop.contact" })
   const {
     title,
     text,
@@ -62,10 +67,10 @@ export function StrapiContactForm({
 
         <ContactFormFields
           labels={{
-            nameLabel: nameLabel ?? "Ваше ім'я",
-            phoneLabel: phoneLabel ?? "Телефон",
-            messageLabel: messageLabel ?? "Повідомлення",
-            submitLabel: submitLabel ?? "Надіслати",
+            nameLabel: nameLabel ?? t("nameFallback"),
+            phoneLabel: phoneLabel ?? t("phoneFallback"),
+            messageLabel: messageLabel ?? t("messageFallback"),
+            submitLabel: submitLabel ?? t("submitFallback"),
           }}
           enabled={isEnabled}
           isLight={isLight}

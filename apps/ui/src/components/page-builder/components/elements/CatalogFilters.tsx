@@ -30,6 +30,10 @@ export function CatalogFilters({
     readonly inStock: string
     readonly apply: string
     readonly reset: string
+    readonly priceFromPlaceholder: string
+    readonly priceToPlaceholder: string
+    readonly priceFromAria: string
+    readonly priceToAria: string
   }
 }) {
   const router = useRouter()
@@ -104,14 +108,14 @@ export function CatalogFilters({
         <PriceInput
           value={priceMin}
           onChange={setPriceMin}
-          placeholder="від 0"
-          aria-label={`${labels.price} — від`}
+          placeholder={labels.priceFromPlaceholder}
+          aria-label={`${labels.price} — ${labels.priceFromAria}`}
         />
         <PriceInput
           value={priceMax}
           onChange={setPriceMax}
-          placeholder="до 10000"
-          aria-label={`${labels.price} — до`}
+          placeholder={labels.priceToPlaceholder}
+          aria-label={`${labels.price} — ${labels.priceToAria}`}
         />
       </div>
 

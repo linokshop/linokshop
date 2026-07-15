@@ -1,10 +1,11 @@
 "use client"
 
 import type { Data } from "@repo/strapi-types"
-import type { Locale } from "next-intl"
+import { type Locale, useTranslations } from "next-intl"
 import { useEffect, useRef, useState } from "react"
 
 import StrapiLink from "@/components/page-builder/components/utilities/StrapiLink"
+import HeaderLocaleToggle from "@/components/page-builder/single-types/header/HeaderLocaleToggle"
 import { cn } from "@/lib/styles"
 
 interface HeaderMobileMenuProps {
@@ -16,7 +17,9 @@ interface HeaderMobileMenuProps {
 export function HeaderMobileMenu({
   navbarItems,
   veteranLink,
+  locale,
 }: HeaderMobileMenuProps) {
+  const t = useTranslations("shop.common")
   const [open, setOpen] = useState(false)
   const [maxHeight, setMaxHeight] = useState<number>()
   const buttonRef = useRef<HTMLButtonElement>(null)
@@ -78,7 +81,7 @@ export function HeaderMobileMenu({
         ref={buttonRef}
         type="button"
         onClick={() => setOpen((prev) => !prev)}
-        aria-label="Меню"
+        aria-label={t("menu")}
         aria-expanded={open}
         aria-controls="header-mobile-menu"
         className="border-brand-border bg-brand-surface flex size-11 items-center justify-center rounded-lg border min-[1200px]:hidden"
@@ -151,6 +154,11 @@ export function HeaderMobileMenu({
               className="text-brand-orange font-oswald block px-1 py-3.25 text-base font-semibold tracking-[0.04em] uppercase"
             />
           ) : null}
+
+          {/* The desktop bar shows the toggle from ≥600px; here it covers phones. */}
+          <div className="mt-1 px-1 pt-3.25 min-[600px]:hidden">
+            <HeaderLocaleToggle locale={locale} />
+          </div>
         </div>
       ) : null}
     </>

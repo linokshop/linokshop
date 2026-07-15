@@ -1,5 +1,6 @@
 "use client"
 
+import { useTranslations } from "next-intl"
 import { useState } from "react"
 
 import { type CartItem, useCart } from "@/lib/cart"
@@ -15,12 +16,13 @@ export function AddToCartIconButton({
   readonly item: Omit<CartItem, "quantity" | "option">
 }) {
   const { add } = useCart()
+  const tc = useTranslations("shop.common")
   const [added, setAdded] = useState(false)
 
   return (
     <button
       type="button"
-      aria-label={`Додати в кошик: ${item.name}`}
+      aria-label={tc("addToCartFor", { name: item.name })}
       onClick={(event) => {
         // The whole tile is a link to the product — adding must not navigate.
         event.preventDefault()

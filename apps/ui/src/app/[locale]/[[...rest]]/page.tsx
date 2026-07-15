@@ -43,7 +43,7 @@ export async function generateStaticParams({
     debugStaticParams([], "[[...rest]]", { isDevelopment: true })
 
     // do not prefetch all locales when developing
-    return [{ locale: "en" }]
+    return [{ locale: "uk" }]
   }
 
   const results = await fetchAllPages("api::page.page", locale as Locale)

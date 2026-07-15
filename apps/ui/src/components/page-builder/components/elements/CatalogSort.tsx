@@ -1,21 +1,30 @@
 "use client"
 
 import { useRouter, useSearchParams } from "next/navigation"
+import { useTranslations } from "next-intl"
 
-export const SORT_OPTIONS = [
-  { value: "popular", label: "За популярністю" },
-  { value: "price-asc", label: "Спочатку дешевші" },
-  { value: "price-desc", label: "Спочатку дорожчі" },
-  { value: "new", label: "Новинки" },
+export const SORT_VALUES = [
+  "popular",
+  "price-asc",
+  "price-desc",
+  "new",
 ] as const
 
 export function CatalogSort({ current }: { readonly current: string }) {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const t = useTranslations("shop.catalog")
+
+  const options = [
+    { value: "popular", label: t("sortPopular") },
+    { value: "price-asc", label: t("sortPriceAsc") },
+    { value: "price-desc", label: t("sortPriceDesc") },
+    { value: "new", label: t("sortNew") },
+  ] as const
 
   return (
     <label className="flex items-center gap-2.5">
-      <span className="text-brand-muted text-sm">Сортувати:</span>
+      <span className="text-brand-muted text-sm">{t("sortBy")}</span>
       <select
         value={current}
         onChange={(event) => {
@@ -28,7 +37,7 @@ export function CatalogSort({ current }: { readonly current: string }) {
         }}
         className="bg-brand-surface text-brand-cream font-oswald focus:border-brand-bronze border-brand-field cursor-pointer rounded-md border px-3.5 py-2.5 text-sm tracking-[0.03em] uppercase outline-none"
       >
-        {SORT_OPTIONS.map((option) => (
+        {options.map((option) => (
           <option key={option.value} value={option.value}>
             {option.label}
           </option>

@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import type { Locale } from "next-intl"
-import { setRequestLocale } from "next-intl/server"
+import { getTranslations, setRequestLocale } from "next-intl/server"
 
 import AppLink from "@/components/elementary/AppLink"
 import { ProductCard } from "@/components/page-builder/components/elements/ProductCard"
@@ -21,12 +21,6 @@ import { cn } from "@/lib/styles"
 const formatPrice = (value: number | null | undefined) =>
   value == null ? undefined : formatUah(value)
 
-const DELIVERY_NOTES = [
-  "Доставка Новою Поштою — 1–2 дні, від 60 ₴",
-  "Оплата карткою онлайн або при отриманні",
-  "Гарантія 12 місяців · обмін 14 днів",
-]
-
 interface ProductPageProps {
   readonly params: Promise<{ locale: string; slug: string }>
 }
@@ -42,9 +36,13 @@ export async function generateMetadata({
 }: ProductPageProps): Promise<Metadata> {
   const { locale, slug } = await params
   const product = await getProduct(slug, locale as Locale)
+  const t = await getTranslations({
+    locale: locale as Locale,
+    namespace: "shop.product",
+  })
 
   return {
-    title: product?.name ?? "Товар",
+    title: product?.name ?? t("metaFallback"),
     description: product?.description ?? undefined,
   }
 }
@@ -52,11 +50,25 @@ export async function generateMetadata({
 export default async function ProductPage({ params }: ProductPageProps) {
   const { locale, slug } = await params
   setRequestLocale(locale as Locale)
+  const t = await getTranslations({
+    locale: locale as Locale,
+    namespace: "shop.product",
+  })
+  const tc = await getTranslations({
+    locale: locale as Locale,
+    namespace: "shop.common",
+  })
 
   const product = await getProduct(slug, locale as Locale)
   if (!product) {
     notFound()
   }
+
+  const deliveryNotes = [
+    t("deliveryNote1"),
+    t("deliveryNote2"),
+    t("deliveryNote3"),
+  ]
 
   const related = await fetchRelatedProducts(
     locale as Locale,
@@ -90,11 +102,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
           className="font-oswald text-brand-muted text-[13px] tracking-[0.06em] uppercase"
         >
           <AppLink href="/" unstyled className="hover:text-brand-cream">
-            Головна
+            {tc("home")}
           </AppLink>
           {" · "}
           <AppLink href="/catalog" unstyled className="hover:text-brand-cream">
-            Каталог
+            {tc("catalog")}
           </AppLink>
           {product.category ? (
             <>
@@ -145,7 +157,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 product.inStock ? "text-brand-moss" : "text-brand-faded"
               }
             >
-              ● {product.inStock ? "В наявності" : "Немає в наявності"}
+              ● {tc(product.inStock ? "inStock" : "outOfStock")}
             </span>
           </div>
 
@@ -183,11 +195,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
           >
             <span className="flex-1">
               <span className="font-oswald block text-sm tracking-[0.04em] text-white uppercase">
-                Доступно за програмою «Ветеранський спорт»
+                {t("veteranTitle")}
               </span>
               <span className="text-brand-mist mt-1 block text-[13px]">
-                Оплата державною підтримкою через «Дія» для ветеранів та
-                ветеранок
+                {t("veteranNote")}
               </span>
             </span>
             <span aria-hidden className="text-brand-orange text-xl">
@@ -196,7 +207,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
           </AppLink>
 
           <ul className="border-brand-border text-brand-nav flex list-none flex-col gap-3 border-t pt-5 text-[14.5px]">
-            {DELIVERY_NOTES.map((note) => (
+            {deliveryNotes.map((note) => (
               <li key={note} className="flex gap-3">
                 <span aria-hidden className="text-brand-gold">
                   ●
@@ -219,7 +230,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
           {product.description ? (
             <section>
               <h2 className="font-oswald text-brand-cream mb-4 text-[26px] font-semibold tracking-[0.02em] uppercase">
-                Опис
+                {t("description")}
               </h2>
               {product.description.split(/\n{2,}/).map((paragraph, index) => (
                 <p
@@ -238,7 +249,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
           {product.specs?.length ? (
             <section>
               <h2 className="font-oswald text-brand-cream mb-4 text-[26px] font-semibold tracking-[0.02em] uppercase">
-                Характеристики
+                {t("specs")}
               </h2>
               <dl className="flex flex-col">
                 {product.specs.map((spec) => (
@@ -261,7 +272,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
       {related.length ? (
         <div className={cn(SECTION_X_PADDING, CONTENT_MAX_W, "pb-17.5")}>
           <h2 className="font-oswald text-brand-cream mb-6.5 text-[30px] font-semibold tracking-[0.02em] uppercase min-[600px]:text-[32px]">
-            Схожі товари
+            {t("related")}
           </h2>
           <div className="grid grid-cols-2 gap-3.5 min-[600px]:gap-5.5 min-[1024px]:grid-cols-4">
             {related.map((item) => (

@@ -1,6 +1,8 @@
 import "server-only"
 
 import type { Data } from "@repo/strapi-types"
+import type { Locale } from "next-intl"
+import { getTranslations } from "next-intl/server"
 
 import StrapiLink from "@/components/page-builder/components/utilities/StrapiLink"
 import { SECTION_X_PADDING } from "@/lib/layout"
@@ -19,11 +21,14 @@ function buildMapSrc(lat: number, lng: number, zoom: number) {
   return `https://www.openstreetmap.org/export/embed.html?bbox=${bbox.join(",")}&layer=mapnik&marker=${lat},${lng}`
 }
 
-export function StrapiContacts({
+export async function StrapiContacts({
   component,
+  pageParams,
 }: PageBuilderComponentProps & {
   readonly component: Data.Component<"sections.contacts">
 }) {
+  const locale = (pageParams?.locale ?? "uk") as Locale
+  const t = await getTranslations({ locale, namespace: "shop.common" })
   const {
     items,
     socialsLabel,
@@ -103,7 +108,7 @@ export function StrapiContacts({
             // A plain iframe keeps this a server component — no map library, no
             // client JS, no API key.
             src={buildMapSrc(latitude, longitude, zoom ?? 16)}
-            title={mapTitle ?? "Мапа"}
+            title={mapTitle ?? t("mapTitle")}
             loading="lazy"
             className={cn(
               "h-80 w-full rounded-2xl border min-[900px]:h-110",
