@@ -1,6 +1,5 @@
 "use client"
 
-import { useSearchParams } from "next/navigation"
 import type { Locale } from "next-intl"
 import { useTransition } from "react"
 
@@ -15,11 +14,13 @@ const shortLabel: Record<Locale, string> = {
 /**
  * Minimal inline locale toggle ("UA / RU") matching the ЛінОк header design.
  * Search params (catalog filters, pagination) are carried across the switch so
- * changing language never drops the user's current filters.
+ * changing language never drops the user's current filters. The query string is
+ * read from `window.location` inside the click handler rather than via
+ * `useSearchParams()` — the hook would force a Suspense boundary on every
+ * statically prerendered page (the header is global), which breaks the build.
  */
 export function HeaderLocaleToggle({ locale }: { readonly locale: Locale }) {
   const pathname = usePathname()
-  const searchParams = useSearchParams()
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
 
@@ -27,8 +28,8 @@ export function HeaderLocaleToggle({ locale }: { readonly locale: Locale }) {
     if (code === locale) {
       return
     }
-    const query = searchParams.toString()
-    const href = query ? `${pathname}?${query}` : pathname
+    const query = typeof window === "undefined" ? "" : window.location.search
+    const href = query ? `${pathname}${query}` : pathname
     startTransition(() =>
       // Not String#replace — this is the next-intl router's navigation method.
       // eslint-disable-next-line unicorn/no-unsafe-string-replacement
