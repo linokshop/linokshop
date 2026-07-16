@@ -214,6 +214,116 @@ export async function fetchRedirects() {
 
 // ------ Product / Category fetching functions
 
+/**
+ * Fresh data for the slugs sitting in someone's cart.
+ *
+ * The cart itself lives in localStorage and can be weeks old, so price, stock
+ * and availability must be re-read rather than trusted from the browser. Not
+ * cached: a stale stock number is worse than an extra query.
+ */
+export async function fetchProductsBySlugs(
+  slugs: readonly string[],
+  locale: Locale
+) {
+  if (!slugs.length) {
+    return []
+  }
+
+  try {
+    const response = await PublicStrapiClient.fetchMany(
+      "api::product.product",
+      {
+        locale,
+        status: "published",
+        filters: { slug: { $in: [...slugs] } },
+        pagination: { page: 1, pageSize: slugs.length },
+        populate: { images: true, category: true },
+      },
+      { cache: "no-store" }
+    )
+
+    return response?.data ?? []
+  } catch (e: unknown) {
+    logNonBlockingError({
+      message: `Error fetching cart products for locale '${locale}'`,
+      error: { error: e instanceof Error ? e.message : String(e) },
+    })
+
+    return []
+  }
+}
+
+/**
+ * Products flagged "recommended" in the admin — the cart's cross-sell rail.
+ * Editors pick these with a checkbox rather than the code guessing.
+ */
+export async function fetchRecommendedProducts(locale: Locale, limit = 6) {
+  try {
+    const response = await PublicStrapiClient.fetchMany(
+      "api::product.product",
+      {
+        locale,
+        status: "published",
+        filters: { recommended: { $eq: true }, inStock: { $eq: true } },
+        pagination: { page: 1, pageSize: limit },
+        populate: { images: true, category: true },
+        sort: { price: "asc" },
+      },
+      {
+        next: {
+          revalidate: 300,
+          tags: [strapiCacheTag("api::product.product")],
+        },
+      }
+    )
+
+    return response?.data ?? []
+  } catch (e: unknown) {
+    logNonBlockingError({
+      message: `Error fetching recommended products for locale '${locale}'`,
+      error: { error: e instanceof Error ? e.message : String(e) },
+    })
+
+    return []
+  }
+}
+
+/**
+ * Resolves a promo code to its discount. Returns undefined for unknown, inactive
+ * or expired codes — the caller must treat that as "no discount", never as an
+ * error worth trusting the browser over.
+ */
+export async function fetchPromoByCode(code: string) {
+  try {
+    const response = await PublicStrapiClient.fetchMany(
+      "api::promo.promo",
+      {
+        status: "published",
+        filters: { code: { $eqi: code.trim() }, active: { $eq: true } },
+        pagination: { page: 1, pageSize: 1 },
+      },
+      { cache: "no-store" }
+    )
+    const promo = response?.data?.[0]
+    if (!promo?.percent) {
+      return
+    }
+    // An expiry in the past disables the code without anyone editing it.
+    if (promo.expiresAt && new Date(promo.expiresAt) < new Date()) {
+      return
+    }
+
+    return { code: promo.code ?? code, percent: promo.percent }
+  } catch (e: unknown) {
+    logNonBlockingError({
+      message: `Error fetching promo '${code}'`,
+      error: { error: e instanceof Error ? e.message : String(e) },
+    })
+
+    return
+  }
+}
+
 export async function fetchProductBySlug(slug: string, locale: Locale) {
   try {
     return await PublicStrapiClient.fetchOneBySlug(

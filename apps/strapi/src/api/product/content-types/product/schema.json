@@ -72,6 +72,15 @@
       "type": "boolean",
       "default": true
     },
+    "stockQty": {
+      "type": "integer",
+      "min": 0,
+      "default": 0
+    },
+    "recommended": {
+      "type": "boolean",
+      "default": false
+    },
     "description": {
       "type": "text",
       "pluginOptions": {

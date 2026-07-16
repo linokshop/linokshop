@@ -1,0 +1,41 @@
+{
+  "kind": "collectionType",
+  "collectionName": "promos",
+  "info": {
+    "singularName": "promo",
+    "pluralName": "promos",
+    "displayName": "Promo",
+    "description": "A discount code applied at checkout. The percentage is applied server-side — a code the browser claims to hold is never trusted."
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": false
+    }
+  },
+  "attributes": {
+    "code": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "percent": {
+      "type": "integer",
+      "required": true,
+      "min": 1,
+      "max": 90
+    },
+    "active": {
+      "type": "boolean",
+      "default": true
+    },
+    "expiresAt": {
+      "type": "date"
+    },
+    "note": {
+      "type": "string"
+    }
+  }
+}

@@ -792,7 +792,11 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
     price: Schema.Attribute.Decimal & Schema.Attribute.Required
     publishedAt: Schema.Attribute.DateTime
     rating: Schema.Attribute.Decimal
+    recommended: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>
     slug: Schema.Attribute.UID<"name">
+    stockQty: Schema.Attribute.Integer &
+      Schema.Attribute.SetMinMax<{ min: 0 }, number> &
+      Schema.Attribute.DefaultTo<0>
     specs: Schema.Attribute.Component<"elements.spec-row", true> &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -892,6 +896,45 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
           localized: true
         }
       }>
+    updatedAt: Schema.Attribute.DateTime
+    updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
+      Schema.Attribute.Private
+  }
+}
+
+export interface ApiPromoPromo extends Struct.CollectionTypeSchema {
+  collectionName: "promos"
+  info: {
+    description: "A discount code applied at checkout. The percentage is applied server-side — a code the browser claims to hold is never trusted."
+    displayName: "Promo"
+    pluralName: "promos"
+    singularName: "promo"
+  }
+  options: {
+    draftAndPublish: true
+  }
+  pluginOptions: {
+    i18n: {
+      localized: false
+    }
+  }
+  attributes: {
+    active: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>
+    code: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique
+    createdAt: Schema.Attribute.DateTime
+    createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
+      Schema.Attribute.Private
+    expiresAt: Schema.Attribute.Date
+    locale: Schema.Attribute.String & Schema.Attribute.Private
+    localizations: Schema.Attribute.Relation<"oneToMany", "api::promo.promo"> &
+      Schema.Attribute.Private
+    note: Schema.Attribute.String
+    percent: Schema.Attribute.Integer &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMax<{ max: 90; min: 1 }, number>
+    publishedAt: Schema.Attribute.DateTime
     updatedAt: Schema.Attribute.DateTime
     updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
       Schema.Attribute.Private
@@ -1477,6 +1520,7 @@ declare module "@strapi/strapi" {
       "api::header.header": ApiHeaderHeader
       "api::page.page": ApiPagePage
       "api::product.product": ApiProductProduct
+      "api::promo.promo": ApiPromoPromo
       "api::redirect.redirect": ApiRedirectRedirect
       "api::subscriber.subscriber": ApiSubscriberSubscriber
       "plugin::content-releases.release": PluginContentReleasesRelease

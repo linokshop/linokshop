@@ -1,11 +1,15 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { z } from "zod"
 
+import { type ShippingMethod, orderTotals } from "@/lib/checkout"
 import { getEnvVar } from "@/lib/env-vars"
 import { formatPrice as price } from "@/lib/format"
 import { isProduction } from "@/lib/general-helpers"
 import { logError, logger } from "@/lib/logging"
-import { fetchProductBySlug } from "@/lib/strapi-api/content/server"
+import {
+  fetchProductBySlug,
+  fetchPromoByCode,
+} from "@/lib/strapi-api/content/server"
 
 /**
  * Sends a lead to Telegram: either a "write to us" message from the contacts
@@ -45,9 +49,19 @@ const orderSchema = z.object({
   kind: z.literal("order"),
   name: z.string().trim().min(2).max(100),
   phone: z.string().trim().min(6).max(30),
+  shipping: z.enum(["pickup", "branch", "courier"]),
   city: z.string().trim().max(120).optional(),
-  office: z.string().trim().max(160).optional(),
-  payment: z.enum(["card", "cod"]),
+  branch: z.string().trim().max(200).optional(),
+  street: z.string().trim().max(200).optional(),
+  comment: z.string().trim().max(500).optional(),
+  payment: z.enum(["card", "cash"]),
+  /**
+   * What the customer says they hold on «Дія». Payment happens outside this
+   * site, so this is a note for whoever calls them back — never a charge.
+   */
+  vetAmount: z.number().int().min(0).max(1_000_000).optional(),
+  /** Only the code travels; the discount itself is looked up server-side. */
+  promo: z.string().trim().max(40).optional(),
   items: z.array(orderItemSchema).min(1).max(50),
   company: z.string().max(200).optional(),
 })
@@ -56,9 +70,17 @@ const leadSchema = z.discriminatedUnion("kind", [contactSchema, orderSchema])
 
 type Lead = z.infer<typeof leadSchema>
 
+// The shop reads Telegram in Ukrainian regardless of which locale the customer
+// ordered from — these labels are for staff, not for the buyer.
 const PAYMENT_LABELS: Record<string, string> = {
   card: "Картка онлайн",
-  cod: "Готівкою / карткою при отриманні",
+  cash: "Готівкою / карткою при отриманні",
+}
+
+const SHIPPING_LABELS: Record<ShippingMethod, string> = {
+  pickup: "Самовивіз — Житомир, вул. Народицька, 15",
+  branch: "Відділення / поштомат Нової Пошти",
+  courier: "Курʼєр Нової Пошти",
 }
 
 /** Telegram renders HTML — escape anything the user typed. */
@@ -132,21 +154,70 @@ function buildContactMessage(lead: Extract<Lead, { kind: "contact" }>): string {
   ].join("\n")
 }
 
+/**
+ * A reference the customer can quote back. It is generated here and printed in
+ * the Telegram message, so the number on the "order accepted" screen is one the
+ * shop can actually find. (The mockup derived it from the cart total, which
+ * would have looked real while matching nothing.)
+ */
+const makeOrderNo = (): string =>
+  `ЛН-${Date.now().toString().slice(-6)}${Math.floor(Math.random() * 10)}`
+
+/** Where the parcel goes, spelled out per shipping method. */
+function addressLines(lead: Extract<Lead, { kind: "order" }>): string[] {
+  if (lead.shipping === "pickup") {
+    return []
+  }
+
+  return [
+    ...(lead.city ? [`<b>Місто:</b> ${esc(lead.city)}`] : []),
+    ...(lead.branch ? [`<b>Відділення:</b> ${esc(lead.branch)}`] : []),
+    ...(lead.street ? [`<b>Адреса:</b> ${esc(lead.street)}`] : []),
+    ...(lead.comment ? [`<b>Коментар:</b> ${esc(lead.comment)}`] : []),
+  ]
+}
+
+/**
+ * The money lines. Every number here is recomputed from Strapi — the browser's
+ * idea of the price, the discount and the delivery cost is discarded.
+ */
 function buildOrderMessage(
   lead: Extract<Lead, { kind: "order" }>,
-  items: readonly PricedItem[]
+  items: readonly PricedItem[],
+  promo: undefined | { code: string; percent: number },
+  orderNo: string
 ): string {
-  const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0)
+  const subtotal = items.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  )
+  const { discount, shipping, total } = orderTotals(
+    subtotal,
+    promo?.percent ?? 0,
+    lead.shipping
+  )
+
+  // Payment is arranged off-site, so «Дія» is just how they intend to split it.
+  const vetPay = Math.min(lead.vetAmount ?? 0, total)
+  const remainder = Math.max(0, total - vetPay)
+  const payLabel = PAYMENT_LABELS[lead.payment] ?? lead.payment
 
   return [
     ...testBanner(),
-    "<b>🛒 Нове замовлення</b>",
+    `<b>🛒 Нове замовлення ${esc(orderNo)}</b>`,
     "",
     `<b>Отримувач:</b> ${esc(lead.name)}`,
     `<b>Телефон:</b> ${esc(lead.phone)}`,
-    ...(lead.city ? [`<b>Місто:</b> ${esc(lead.city)}`] : []),
-    ...(lead.office ? [`<b>Відділення:</b> ${esc(lead.office)}`] : []),
-    `<b>Оплата:</b> ${PAYMENT_LABELS[lead.payment] ?? lead.payment}`,
+    "",
+    `<b>Доставка:</b> ${SHIPPING_LABELS[lead.shipping]}`,
+    ...addressLines(lead),
+    "",
+    `<b>Оплата:</b> ${payLabel}`,
+    ...(vetPay > 0
+      ? [
+          `<b>«Дія»:</b> ${price(vetPay)}${remainder > 0 ? ` + ${payLabel.toLowerCase()} ${price(remainder)}` : " (покриває все)"}`,
+        ]
+      : []),
     "",
     "<b>Товари:</b>",
     ...items.map(
@@ -154,6 +225,13 @@ function buildOrderMessage(
         `• ${esc(item.name)}${item.option ? ` (${esc(item.option)})` : ""} — ${item.quantity} × ${price(item.price)}`
     ),
     "",
+    `Сума: ${price(subtotal)}`,
+    ...(discount > 0
+      ? [
+          `Знижка (${esc(promo?.code ?? "")} −${promo?.percent}%): −${price(discount)}`,
+        ]
+      : []),
+    `Доставка: ${shipping === 0 ? "безкоштовно" : price(shipping)}`,
     `<b>Разом: ${price(total)}</b>`,
   ].join("\n")
 }
@@ -249,12 +327,21 @@ export async function POST(request: NextRequest) {
     )
   }
 
+  const orderNo = parsed.data.kind === "order" ? makeOrderNo() : undefined
+
   let text: string
   try {
-    text =
-      parsed.data.kind === "contact"
-        ? buildContactMessage(parsed.data)
-        : buildOrderMessage(parsed.data, await repriceItems(parsed.data.items))
+    if (parsed.data.kind === "contact") {
+      text = buildContactMessage(parsed.data)
+    } else {
+      // The code is re-validated here: a browser that faked a discount at
+      // /API/promo still gets priced from what Strapi actually says.
+      const [items, promo] = await Promise.all([
+        repriceItems(parsed.data.items),
+        parsed.data.promo ? fetchPromoByCode(parsed.data.promo) : undefined,
+      ])
+      text = buildOrderMessage(parsed.data, items, promo, orderNo ?? "")
+    }
   } catch (error) {
     logError(error, "Could not price the order from Strapi")
 
@@ -295,5 +382,7 @@ export async function POST(request: NextRequest) {
     )
   }
 
-  return NextResponse.json({ ok: true })
+  // The number goes back so the confirmation screen shows the same reference
+  // that just landed in Telegram.
+  return NextResponse.json({ ok: true, orderNo })
 }
