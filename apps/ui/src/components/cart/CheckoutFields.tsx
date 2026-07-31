@@ -1,20 +1,23 @@
 "use client"
 
-import { useTranslations } from "next-intl"
-import { useState } from "react"
+import { useLocale, useTranslations } from "next-intl"
+import { useEffect, useState } from "react"
 
 import type { useCheckout } from "@/components/cart/useCheckout"
-import {
-  type ShippingMethod,
-  baseShippingCost,
-  shippingCostFor,
-} from "@/lib/checkout"
-import { branchesFor, matchCities } from "@/lib/cities"
+import { useDeliveryEstimates } from "@/components/cart/useDeliveryEstimates"
+import type { ShippingMethod } from "@/lib/checkout"
 import { formatPrice } from "@/lib/format"
 import { cn } from "@/lib/styles"
 
 const FIELD =
   "bg-brand-surface text-brand-nav placeholder:text-brand-muted focus:border-brand-bronze w-full rounded-lg border px-4 py-3.5 text-[15px] outline-none transition-colors"
+
+interface CityOption {
+  readonly ref: string
+  readonly cityRef: string
+  readonly name: string
+  readonly region: string
+}
 
 type Checkout = ReturnType<typeof useCheckout>
 
@@ -31,9 +34,12 @@ export function CheckoutFields({
   readonly afterDiscount: number
 }) {
   const t = useTranslations("shop.cart")
+  const locale = useLocale()
   const {
     shipping,
     setShipping,
+    setDeliveryEstimate,
+    setDeliveryCost,
     payment,
     setPayment,
     form,
@@ -45,6 +51,17 @@ export function CheckoutFields({
 
   const [cityOpen, setCityOpen] = useState(false)
   const [branchOpen, setBranchOpen] = useState(false)
+  const [cityOptions, setCityOptions] = useState<CityOption[]>([])
+  const [warehouses, setWarehouses] = useState<string[]>([])
+  const [whTotal, setWhTotal] = useState(0)
+  const [whPage, setWhPage] = useState(1)
+  const [whLoading, setWhLoading] = useState(false)
+  // The settlement Ref from Nova Poshta — warehouses are looked up by it, not by
+  // the city's display name.
+  const [cityRef, setCityRef] = useState("")
+  // The DeliveryCity ref — the delivery-date estimate keys on this, not the
+  // warehouse/settlement ref.
+  const [cityDeliveryRef, setCityDeliveryRef] = useState("")
 
   const border = (bad?: true) =>
     submitted && bad ? "border-brand-crimson" : "border-brand-field"
@@ -55,7 +72,128 @@ export function CheckoutFields({
     { key: "courier", title: t("shipCourier"), desc: t("shipCourierDesc") },
   ]
 
-  const cityMatches = matchCities(form.city)
+  // City autocomplete — debounced so a fast typist makes one request, not ten.
+  // The lookup (and the clear) live inside the timeout so nothing sets state
+  // synchronously during render.
+  useEffect(() => {
+    let cancelled = false
+    const timer = setTimeout(() => {
+      void (async () => {
+        const query = form.city.trim()
+        if (form.cityPicked || query.length < 2) {
+          if (!cancelled) setCityOptions([])
+
+          return
+        }
+        try {
+          const response = await fetch("/api/np/cities", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ query }),
+          })
+          const body = (await response.json()) as { items?: CityOption[] }
+          if (!cancelled) setCityOptions(body.items ?? [])
+        } catch {
+          // Offline — the field still accepts free text; the order is text anyway.
+        }
+      })()
+    }, 300)
+
+    return () => {
+      cancelled = true
+      clearTimeout(timer)
+    }
+  }, [form.city, form.cityPicked])
+
+  // First page of warehouses for the chosen city, re-queried (debounced) as the
+  // user narrows the branch. Further pages arrive via infinite scroll below.
+  useEffect(() => {
+    let cancelled = false
+    const timer = setTimeout(() => {
+      void (async () => {
+        if (shipping !== "branch" || !cityRef) {
+          if (!cancelled) {
+            setWarehouses([])
+            setWhTotal(0)
+          }
+
+          return
+        }
+        try {
+          const response = await fetch("/api/np/warehouses", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              ref: cityRef,
+              query: form.branch.trim(),
+              page: 1,
+            }),
+          })
+          const body = (await response.json()) as {
+            items?: { name: string }[]
+            total?: number
+          }
+          if (!cancelled) {
+            setWarehouses((body.items ?? []).map((w) => w.name))
+            setWhTotal(body.total ?? 0)
+            setWhPage(1)
+          }
+        } catch {
+          // Offline — leave the last list; the branch field still takes text.
+        }
+      })()
+    }, 300)
+
+    return () => {
+      cancelled = true
+      clearTimeout(timer)
+    }
+  }, [cityRef, form.branch, shipping])
+
+  // Nova Poshta's real delivery date + cheapest price for the chosen city and
+  // method, pushed into shared state so the summary can show them over its rough
+  // fallbacks. Pickup keeps its own "today–tomorrow"/free wording.
+  useDeliveryEstimates({
+    cityDeliveryRef,
+    shipping,
+    declaredValue: afterDiscount,
+    locale,
+    setDate: setDeliveryEstimate,
+    setCost: setDeliveryCost,
+  })
+
+  // Pull the next page of warehouses and append — called as the dropdown nears
+  // its bottom. A big city (thousands of branches) is browsable without ever
+  // loading them all at once.
+  const loadMoreWarehouses = async () => {
+    if (whLoading || warehouses.length >= whTotal) {
+      return
+    }
+    setWhLoading(true)
+    try {
+      const response = await fetch("/api/np/warehouses", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ref: cityRef,
+          query: form.branch.trim(),
+          page: whPage + 1,
+        }),
+      })
+      const body = (await response.json()) as { items?: { name: string }[] }
+      const more = (body.items ?? []).map((w) => w.name)
+      // De-dupe defensively: a warehouse must never appear twice as a key.
+      setWarehouses((prev) => [
+        ...prev,
+        ...more.filter((name) => !prev.includes(name)),
+      ])
+      setWhPage((p) => p + 1)
+    } catch {
+      // Offline — keep what we have.
+    } finally {
+      setWhLoading(false)
+    }
+  }
 
   return (
     <>
@@ -65,8 +203,9 @@ export function CheckoutFields({
       <div className="mb-5.5 flex flex-col gap-3">
         {methods.map((method) => {
           const on = shipping === method.key
-          const cost = shippingCostFor(method.key, afterDiscount)
-          const isFree = cost === 0
+          // Pickup is free; delivery is a weight-dependent Nova Poshta quote, so
+          // the card only labels it — the "від X ₴" figure lives in the summary.
+          const isFree = method.key === "pickup"
 
           return (
             <button
@@ -102,11 +241,7 @@ export function CheckoutFields({
                       isFree ? "text-brand-moss" : "text-brand-gold"
                     )}
                   >
-                    {isFree
-                      ? t("free")
-                      : t("costFrom", {
-                          amount: formatPrice(baseShippingCost(method.key)),
-                        })}
+                    {t(isFree ? "free" : "costByWeight")}
                   </span>
                 </span>
                 <span className="text-brand-muted mt-0.5 block text-[13px]">
@@ -177,23 +312,28 @@ export function CheckoutFields({
                   cityPicked: "",
                   branch: "",
                 })
+                setCityRef("")
+                setCityDeliveryRef("")
                 setCityOpen(true)
               }}
               onBlur={() => setTimeout(() => setCityOpen(false), 120)}
             />
-            {cityOpen && !form.cityPicked && cityMatches.length ? (
+            {cityOpen && !form.cityPicked && cityOptions.length ? (
               <div className="border-brand-field bg-brand-surface absolute inset-x-0 top-[calc(100%+6px)] z-20 overflow-hidden rounded-lg border shadow-[0_16px_40px_rgba(0,0,0,0.5)]">
-                {cityMatches.map((city) => (
+                {cityOptions.map((city) => (
                   <button
-                    key={city.name}
+                    key={city.ref}
                     type="button"
-                    onMouseDown={() =>
+                    onMouseDown={() => {
                       setForm({
                         ...form,
                         city: city.name,
                         cityPicked: city.name,
+                        branch: "",
                       })
-                    }
+                      setCityRef(city.ref)
+                      setCityDeliveryRef(city.cityRef)
+                    }}
                     className="border-brand-border hover:bg-brand-green flex w-full items-center justify-between gap-2.5 border-b px-4 py-3 text-left text-[14.5px] transition-colors last:border-b-0"
                   >
                     <span className="text-brand-cream">{city.name}</span>
@@ -229,23 +369,48 @@ export function CheckoutFields({
                   onBlur={() => setTimeout(() => setBranchOpen(false), 120)}
                 />
                 {branchOpen && form.cityPicked ? (
-                  <div className="border-brand-field bg-brand-surface absolute inset-x-0 top-[calc(100%+6px)] z-20 overflow-hidden rounded-lg border shadow-[0_16px_40px_rgba(0,0,0,0.5)]">
-                    {branchesFor(form.cityPicked)
-                      .filter((b) =>
-                        b
-                          .toLowerCase()
-                          .includes(form.branch.trim().toLowerCase())
-                      )
-                      .map((b) => (
+                  <div
+                    // Near the bottom, pull the next page — infinite scroll over
+                    // however many branches the city has.
+                    onScroll={(e) => {
+                      const el = e.currentTarget
+                      if (
+                        el.scrollTop + el.clientHeight >=
+                        el.scrollHeight - 48
+                      ) {
+                        void loadMoreWarehouses()
+                      }
+                    }}
+                    className="border-brand-field bg-brand-surface absolute inset-x-0 top-[calc(100%+6px)] z-20 max-h-70 overflow-y-auto rounded-lg border shadow-[0_16px_40px_rgba(0,0,0,0.5)]"
+                  >
+                    {warehouses.length ? (
+                      warehouses.map((w) => (
                         <button
-                          key={b}
+                          key={w}
                           type="button"
-                          onMouseDown={() => setForm({ ...form, branch: b })}
+                          onMouseDown={() => setForm({ ...form, branch: w })}
                           className="border-brand-border text-brand-nav hover:bg-brand-green block w-full border-b px-4 py-3 text-left text-[14.5px] transition-colors last:border-b-0"
                         >
-                          {b}
+                          {w}
                         </button>
-                      ))}
+                      ))
+                    ) : (
+                      <p className="text-brand-muted px-4 py-3 text-[13.5px]">
+                        {t("branchEmptyHint")}
+                      </p>
+                    )}
+                    {whLoading ? (
+                      <p className="text-brand-muted px-4 py-2.5 text-center text-[12.5px]">
+                        {t("branchLoading")}
+                      </p>
+                    ) : warehouses.length && warehouses.length < whTotal ? (
+                      <p className="border-brand-border text-brand-muted bg-brand-surface sticky bottom-0 border-t px-4 py-2 text-center text-[12px]">
+                        {t("branchShownOf", {
+                          shown: warehouses.length,
+                          total: whTotal,
+                        })}
+                      </p>
+                    ) : null}
                   </div>
                 ) : null}
               </div>

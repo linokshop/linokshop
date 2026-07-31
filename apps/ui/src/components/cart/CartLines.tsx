@@ -6,7 +6,7 @@ import { useTranslations } from "next-intl"
 
 import type { CheckoutLine } from "@/components/cart/useCheckout"
 import type { CartItem } from "@/lib/cart"
-import { FREE_SHIPPING_FROM, LOW_STOCK_AT } from "@/lib/checkout"
+import { LOW_STOCK_AT } from "@/lib/checkout"
 import { formatPrice } from "@/lib/format"
 import { cn } from "@/lib/styles"
 
@@ -15,15 +15,12 @@ export interface CrossSellItem extends Omit<CartItem, "quantity" | "option"> {
 }
 
 /**
- * Cart lines, the free-shipping nudge above them and the "often bought together"
- * rail below. Quantities are capped by what the shelf actually holds.
+ * Cart lines and the "often bought together" rail below. Quantities are capped
+ * by what the shelf actually holds.
  */
 export function CartLines({
   lines,
   lineIdOf,
-  subtotal,
-  discount,
-  shippingIsPickup,
   crossSell,
   onQuantity,
   onRemove,
@@ -31,9 +28,6 @@ export function CartLines({
 }: {
   readonly lines: readonly CheckoutLine[]
   readonly lineIdOf: (item: { slug: string; option?: string }) => string
-  readonly subtotal: number
-  readonly discount: number
-  readonly shippingIsPickup: boolean
   readonly crossSell: readonly CrossSellItem[]
   readonly onQuantity: (id: string, quantity: number) => void
   readonly onRemove: (id: string) => void
@@ -41,38 +35,9 @@ export function CartLines({
 }) {
   const t = useTranslations("shop.cart")
   const tc = useTranslations("shop.common")
-  const afterDiscount = subtotal - discount
-  const remaining = Math.max(0, FREE_SHIPPING_FROM - afterDiscount)
-  const reached = remaining === 0
-  const pct = Math.min(
-    100,
-    Math.round((afterDiscount / FREE_SHIPPING_FROM) * 100)
-  )
 
   return (
     <div>
-      {/* Pickup is always free, so the nudge would be nonsense there. */}
-      {shippingIsPickup ? null : (
-        <div className="border-brand-border bg-brand-green mb-5 rounded-xl border px-5.5 py-4.5">
-          <div className="text-brand-nav mb-3 flex items-center gap-2.5 text-[14.5px]">
-            <span aria-hidden className="text-[17px]">
-              {reached ? "🎉" : "🚚"}
-            </span>
-            <span>
-              {reached
-                ? t("freeShipReached")
-                : t("freeShipRemaining", { amount: formatPrice(remaining) })}
-            </span>
-          </div>
-          <div className="border-brand-field bg-brand-surface h-[7px] overflow-hidden rounded-md border">
-            <div
-              className="from-brand-bronze to-brand-gold h-full rounded-md bg-gradient-to-r transition-[width] duration-300"
-              style={{ width: `${pct}%` }}
-            />
-          </div>
-        </div>
-      )}
-
       <ul className="border-brand-border bg-brand-green mb-5 list-none overflow-hidden rounded-xl border">
         {lines.map((line) => {
           const id = lineIdOf(line)

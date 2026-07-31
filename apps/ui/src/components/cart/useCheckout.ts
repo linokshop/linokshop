@@ -64,6 +64,14 @@ export function useCheckout() {
   const [status, setStatus] = useState<CheckoutStatus>("idle")
   const [orderNo, setOrderNo] = useState<string>()
   const [error, setError] = useState<string>()
+  // Nova Poshta's delivery estimate (already formatted for display). Set by the
+  // shipping fields once a city is chosen; the summary shows it over the rough
+  // "+2 days" fallback.
+  const [deliveryEstimate, setDeliveryEstimate] = useState<string>()
+  // Nova Poshta's cheapest ("від") delivery price to the chosen city, in UAH.
+  // Set by the shipping fields; the summary shows it as "від X ₴ (залежить від
+  // ваги)". It is a quote only — never folded into the order total.
+  const [deliveryCost, setDeliveryCost] = useState<number>()
 
   // Re-read price/stock for whatever is in the cart. Keyed by the slug list so a
   // added/removed line refetches, but editing quantities does not.
@@ -124,7 +132,7 @@ export function useCheckout() {
 
   const subtotal = lines.reduce((sum, l) => sum + l.price * l.quantity, 0)
   const count = lines.reduce((sum, l) => sum + l.quantity, 0)
-  const totals = orderTotals(subtotal, promo?.percent ?? 0, shipping)
+  const totals = orderTotals(subtotal, promo?.percent ?? 0)
 
   const vetRaw = Number(vetAmount.replaceAll(/\D/g, "")) || 0
   const vetPay = useVet ? Math.min(vetRaw, totals.total) : 0
@@ -247,6 +255,10 @@ export function useCheckout() {
     add,
     shipping,
     setShipping,
+    deliveryEstimate,
+    setDeliveryEstimate,
+    deliveryCost,
+    setDeliveryCost,
     payment,
     setPayment,
     useVet,

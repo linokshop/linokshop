@@ -2,22 +2,15 @@
  * Checkout pricing rules — the single source of truth for both sides.
  *
  * The cart renders these numbers in the browser and `/api/lead` recomputes the
- * order from them on the server. Keeping one module means the two can never
- * quietly disagree; a tariff change is one edit here.
+ * order from them on the server, so the two can never quietly disagree.
+ *
+ * Delivery is NOT part of the order total: it is quoted as "від X ₴ (залежить
+ * від ваги)" from Nova Poshta and settled with the carrier, so `orderTotals`
+ * only ever covers goods minus discount.
  */
-
-/** Order value (after discount) from which Nova Poshta delivery is free. */
-export const FREE_SHIPPING_FROM = 1500
 
 export type ShippingMethod = "pickup" | "branch" | "courier"
 export type PaymentMethod = "card" | "cash"
-
-/** Base cost per method; `pickup` is always free, the rest are free over the threshold. */
-const SHIPPING_COST: Record<ShippingMethod, number> = {
-  pickup: 0,
-  branch: 70,
-  courier: 110,
-}
 
 export const SHIPPING_METHODS: readonly ShippingMethod[] = [
   "pickup",
@@ -30,46 +23,31 @@ export const isShippingMethod = (value: unknown): value is ShippingMethod =>
   (SHIPPING_METHODS as readonly string[]).includes(value)
 
 /**
- * What delivery costs for this order. Free pickup, and free Nova Poshta once the
- * discounted subtotal clears the threshold.
+ * Weight used to ask Nova Poshta for the cheapest ("від") delivery price. A
+ * light parcel gives the floor tariff; the real cost rises with actual weight,
+ * which is why the quote is labelled "від … (залежить від ваги)".
  */
-export function shippingCostFor(
-  method: ShippingMethod,
-  subtotalAfterDiscount: number
-): number {
-  if (method === "pickup") {
-    return 0
-  }
-
-  return subtotalAfterDiscount >= FREE_SHIPPING_FROM ? 0 : SHIPPING_COST[method]
-}
-
-/** Base tariff regardless of the free-shipping threshold — for the "від 70 ₴" hint. */
-export const baseShippingCost = (method: ShippingMethod): number =>
-  SHIPPING_COST[method]
+export const CHEAPEST_QUOTE_WEIGHT_KG = 0.5
 
 export interface OrderTotals {
   readonly subtotal: number
   readonly discount: number
-  readonly shipping: number
   readonly total: number
 }
 
 /**
- * Money for one order. `discountPercent` must come from a validated promo — the
- * browser never gets to name its own discount.
+ * Money for one order — goods minus a validated promo discount. Delivery is
+ * quoted separately (see the summary), never folded in here. `discountPercent`
+ * must come from a server-validated promo.
  */
 export function orderTotals(
   subtotal: number,
-  discountPercent: number,
-  method: ShippingMethod
+  discountPercent: number
 ): OrderTotals {
   const discount =
     discountPercent > 0 ? Math.round((subtotal * discountPercent) / 100) : 0
-  const afterDiscount = subtotal - discount
-  const shipping = shippingCostFor(method, afterDiscount)
 
-  return { subtotal, discount, shipping, total: afterDiscount + shipping }
+  return { subtotal, discount, total: subtotal - discount }
 }
 
 /** Nova Poshta quotes 1–2 days; we promise the later end of it. */

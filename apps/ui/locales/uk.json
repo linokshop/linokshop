@@ -329,8 +329,6 @@
       "countLabel": "{count, plural, one {# товар} few {# товари} many {# товарів} other {# товару}} · оформлення замовлення",
       "empty": "Порожньо",
       "toCatalogArrow": "Перейти в каталог →",
-      "freeShipReached": "Ви отримали безкоштовну доставку Новою Поштою!",
-      "freeShipRemaining": "Додайте ще {amount} до безкоштовної доставки",
       "lowStock": "● Залишилось {count} шт",
       "inStockDot": "● В наявності",
       "perUnit": "{price} / шт",
@@ -344,7 +342,10 @@
       "shipCourier": "Курʼєр Нової Пошти",
       "shipCourierDesc": "Адресна доставка до дверей",
       "free": "Безкоштовно",
-      "costFrom": "від {amount}",
+      "costByWeight": "залежить від ваги",
+      "deliveryFrom": "від {amount}",
+      "byWeightNote": "залежить від ваги",
+      "deliveryByCarrier": "за тарифами Нової Пошти",
       "pickupNote": "Забрати з магазину:",
       "pickupAddress": "м. Житомир, вул. Народицька, 15",
       "pickupHours": "Пн–Нд 9:00–19:00 · зателефонуємо, коли замовлення готове",
@@ -381,7 +382,10 @@
       "doneTitle": "Замовлення прийнято!",
       "doneNote": "Дякуємо за покупку в «ЛінОк». Ми зателефонуємо для підтвердження найближчим часом.",
       "orderNo": "Номер замовлення",
-      "toCatalogDone": "До каталогу →"
+      "toCatalogDone": "До каталогу →",
+      "branchEmptyHint": "Введіть номер відділення або вулицю",
+      "branchShownOf": "Показано {shown} з {total} — гортайте або уточніть пошук",
+      "branchLoading": "Завантаження…"
     },
     "categories": {
       "items": "{count, plural, one {# товар} few {# товари} many {# товарів} other {# товару}}"

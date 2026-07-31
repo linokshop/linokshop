@@ -94,9 +94,6 @@ export function CartView({
           <CartLines
             lines={lines}
             lineIdOf={lineId}
-            subtotal={totals.subtotal}
-            discount={totals.discount}
-            shippingIsPickup={checkout.shipping === "pickup"}
             crossSell={crossSell}
             onQuantity={checkout.setQuantity}
             onRemove={checkout.remove}

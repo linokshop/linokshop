@@ -191,11 +191,7 @@ function buildOrderMessage(
     (sum, item) => sum + item.price * item.quantity,
     0
   )
-  const { discount, shipping, total } = orderTotals(
-    subtotal,
-    promo?.percent ?? 0,
-    lead.shipping
-  )
+  const { discount, total } = orderTotals(subtotal, promo?.percent ?? 0)
 
   // Payment is arranged off-site, so «Дія» is just how they intend to split it.
   const vetPay = Math.min(lead.vetAmount ?? 0, total)
@@ -231,8 +227,10 @@ function buildOrderMessage(
           `Знижка (${esc(promo?.code ?? "")} −${promo?.percent}%): −${price(discount)}`,
         ]
       : []),
-    `Доставка: ${shipping === 0 ? "безкоштовно" : price(shipping)}`,
-    `<b>Разом: ${price(total)}</b>`,
+    lead.shipping === "pickup"
+      ? "Доставка: самовивіз (безкоштовно)"
+      : "Доставка: за тарифами Нової Пошти (залежить від ваги, оплата при отриманні)",
+    `<b>Разом за товар: ${price(total)}</b>`,
   ].join("\n")
 }
 

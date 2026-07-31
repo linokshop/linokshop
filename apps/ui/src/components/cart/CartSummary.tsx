@@ -26,6 +26,8 @@ export function CartSummary({
     count,
     totals,
     shipping,
+    deliveryEstimate,
+    deliveryCost,
     promoInput,
     setPromoInput,
     promo,
@@ -70,16 +72,39 @@ export function CartSummary({
           valueClass="text-brand-crimson"
         />
       ) : null}
-      <Row
-        label={t("delivery")}
-        value={totals.shipping === 0 ? t("free") : formatPrice(totals.shipping)}
-        valueClass={totals.shipping === 0 ? "text-brand-moss" : undefined}
-      />
+      {shipping === "pickup" ? (
+        <Row
+          label={t("delivery")}
+          value={t("free")}
+          valueClass="text-brand-moss"
+        />
+      ) : (
+        <div className="text-brand-nav flex justify-between gap-2 py-2 text-[15px]">
+          <span>{t("delivery")}</span>
+          <span className="text-right">
+            <span className="text-brand-cream block">
+              {deliveryCost == null
+                ? t("deliveryByCarrier")
+                : t("deliveryFrom", { amount: formatPrice(deliveryCost) })}
+            </span>
+            {deliveryCost == null ? null : (
+              <span className="text-brand-muted block text-[12px]">
+                {t("byWeightNote")}
+              </span>
+            )}
+          </span>
+        </div>
+      )}
 
       <p className="text-brand-moss flex items-center gap-2 pt-3 pb-0.5 text-[13.5px]">
         <span aria-hidden>📦</span>
         {t("willArrive", {
-          date: shipping === "pickup" ? t("arriveToday") : deliveryDate,
+          // Nova Poshta's real estimate when we have one; otherwise the rough
+          // server guess. Pickup keeps its own wording.
+          date:
+            shipping === "pickup"
+              ? t("arriveToday")
+              : (deliveryEstimate ?? deliveryDate),
         })}
       </p>
 
