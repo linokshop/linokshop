@@ -4,6 +4,7 @@ import type { Data } from "@repo/strapi-types"
 
 import type { CartItem } from "@/lib/cart"
 import { formatPrice } from "@/lib/format"
+import type { EnrichedProduct } from "@/lib/kasa"
 import { formatStrapiMediaUrl } from "@/lib/strapi-helpers"
 
 /**
@@ -13,7 +14,9 @@ import { formatStrapiMediaUrl } from "@/lib/strapi-helpers"
  * and each built its own adapter — three chances for the price format or the
  * product href to drift apart.
  */
-type ProductEntity = Data.ContentType<"api::product.product">
+// Cards always render kasa-priced products, so the mapper takes the enriched
+// shape — `price`/`inStock` are guaranteed present, not Strapi columns.
+type ProductEntity = EnrichedProduct
 
 const price = (value: number | null | undefined) =>
   value == null ? undefined : formatPrice(value)
@@ -23,7 +26,7 @@ export function toProductCard(
 ): Data.Component<"elements.product-card"> {
   return {
     id: product.id,
-    category: product.category?.name,
+    category: product.subcategory?.name,
     name: product.name,
     price: price(product.price),
     oldPrice: price(product.oldPrice),

@@ -72,7 +72,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   const related = await fetchRelatedProducts(
     locale as Locale,
-    product.category?.slug ?? undefined,
+    product.subcategory?.slug ?? undefined,
     slug
   )
 
@@ -88,6 +88,27 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const options = (product.options ?? [])
     .map((option) => option.text)
     .filter((text): text is string => Boolean(text))
+
+  // One spec table from two sources: the structured attributes (which also drive
+  // the catalogue filters) and the free-text rows for one-offs that deserve no
+  // filter. Attributes come first — they are the comparable facts.
+  const attributeRows = [
+    ...(product.attributeValues ?? []).reduce((rows, value) => {
+      const label = value.attribute?.name
+      if (!label || !value.name) return rows
+      rows.set(label, [...(rows.get(label) ?? []), value.name])
+
+      return rows
+    }, new Map<string, string[]>()),
+  ].map(([label, values]) => ({ label, value: values.join(", ") }))
+
+  const specRows = [
+    ...attributeRows,
+    ...(product.specs ?? []).map((spec) => ({
+      label: spec.label ?? "",
+      value: spec.value ?? "",
+    })),
+  ].filter((row) => row.label && row.value)
 
   const discount =
     product.oldPrice && product.price
@@ -108,15 +129,31 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <AppLink href="/catalog" unstyled className="hover:text-brand-cream">
             {tc("catalog")}
           </AppLink>
-          {product.category ? (
+          {product.subcategory?.category ? (
             <>
               {" · "}
               <AppLink
-                href={`/catalog?category=${product.category.slug}`}
+                href={`/category/${product.subcategory.category.slug}`}
                 unstyled
                 className="hover:text-brand-cream"
               >
-                {product.category.name}
+                {product.subcategory.category.name}
+              </AppLink>
+            </>
+          ) : null}
+          {product.subcategory ? (
+            <>
+              {" · "}
+              <AppLink
+                href={
+                  product.subcategory.category
+                    ? `/category/${product.subcategory.category.slug}/${product.subcategory.slug}`
+                    : "/catalog"
+                }
+                unstyled
+                className="hover:text-brand-cream"
+              >
+                {product.subcategory.name}
               </AppLink>
             </>
           ) : null}
@@ -139,7 +176,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
         <div>
           <div className="font-oswald text-brand-muted mb-2.5 text-[13px] tracking-[0.06em] uppercase">
-            {[product.category?.name, product.brand?.name]
+            {[product.subcategory?.name, product.brand?.name]
               .filter(Boolean)
               .join(" · ")}
           </div>
@@ -219,7 +256,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
         </div>
       </div>
 
-      {product.description || product.specs?.length ? (
+      {product.description || specRows.length ? (
         <div
           className={cn(
             SECTION_X_PADDING,
@@ -246,21 +283,19 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </section>
           ) : null}
 
-          {product.specs?.length ? (
+          {specRows.length ? (
             <section>
               <h2 className="font-oswald text-brand-cream mb-4 text-[26px] font-semibold tracking-[0.02em] uppercase">
                 {t("specs")}
               </h2>
               <dl className="flex flex-col">
-                {product.specs.map((spec) => (
+                {specRows.map((row) => (
                   <div
-                    key={spec.id}
+                    key={row.label}
                     className="border-brand-border flex justify-between gap-6 border-b py-3.5 text-[15px] last:border-b-0"
                   >
-                    <dt className="text-brand-muted">{spec.label}</dt>
-                    <dd className="text-brand-cream text-right">
-                      {spec.value}
-                    </dd>
+                    <dt className="text-brand-muted">{row.label}</dt>
+                    <dd className="text-brand-cream text-right">{row.value}</dd>
                   </div>
                 ))}
               </dl>

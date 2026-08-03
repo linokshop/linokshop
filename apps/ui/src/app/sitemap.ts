@@ -5,7 +5,11 @@ import type { Locale } from "next-intl"
 import { getEnvVar } from "@/lib/env-vars"
 import { isDevelopment, isProduction } from "@/lib/general-helpers"
 import { createPublicFullPath, routing } from "@/lib/navigation"
-import { fetchAllPages } from "@/lib/strapi-api/content/server"
+import {
+  fetchAllPages,
+  fetchSitemapProducts,
+  fetchTopCategories,
+} from "@/lib/strapi-api/content/server"
 
 // This should be static or dynamic based on build/runtime needs
 export const dynamic = "force-dynamic"
@@ -88,7 +92,7 @@ async function generateLocalizedSitemap(
    * iterate over all pageable collections, and push each entry into the sitemap array,
    * alongside mapping of changeFrequency
    */
-  return Object.entries(pageEntities).reduce((acc, [uid, pages]) => {
+  const entries = Object.entries(pageEntities).reduce((acc, [uid, pages]) => {
     for (const page of pages) {
       if (page.fullPath) {
         acc.push({
@@ -102,6 +106,55 @@ async function generateLocalizedSitemap(
 
     return acc
   }, [] as MetadataRoute.Sitemap)
+
+  return [...entries, ...(await shopEntries(locale))]
+}
+
+/**
+ * The shop's own routes — categories, subcategories and products.
+ *
+ * These are code routes rather than CMS pages, so the page loop above cannot see
+ * them: without this the entire catalogue, product pages included, is invisible
+ * to crawlers.
+ */
+async function shopEntries(locale: Locale): Promise<MetadataRoute.Sitemap> {
+  const [categoriesResponse, products] = await Promise.all([
+    fetchTopCategories(locale),
+    fetchSitemapProducts(locale),
+  ])
+
+  const categoryEntries = (categoriesResponse?.data ?? []).flatMap(
+    (category) =>
+      category.slug
+        ? [
+            {
+              url: createPublicFullPath(`/category/${category.slug}`, locale),
+              lastModified: category.updatedAt ?? undefined,
+              changeFrequency: "weekly" as const,
+            },
+            ...(category.subcategories ?? [])
+              .filter((sub) => sub.slug)
+              .map((sub) => ({
+                url: createPublicFullPath(
+                  `/category/${category.slug}/${sub.slug}`,
+                  locale
+                ),
+                lastModified: sub.updatedAt ?? undefined,
+                changeFrequency: "weekly" as const,
+              })),
+          ]
+        : []
+  )
+
+  const productEntries = products
+    .filter((product) => product.slug)
+    .map((product) => ({
+      url: createPublicFullPath(`/product/${product.slug}`, locale),
+      lastModified: product.updatedAt ?? undefined,
+      changeFrequency: "weekly" as const,
+    }))
+
+  return [...categoryEntries, ...productEntries]
 }
 
 // Should you have multiple "pageable" collections, add them to this array

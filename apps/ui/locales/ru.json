@@ -275,6 +275,7 @@
       "shown": "Показано {from}–{to} из {total}",
       "emptyFiltered": "По этим фильтрам товаров нет. Попробуйте снять часть условий.",
       "pagesAria": "Страницы каталога",
+      "prevPageAria": "Предыдущая страница",
       "nextPageAria": "Следующая страница",
       "sortBy": "Сортировать:",
       "sortPopular": "По популярности",
@@ -388,7 +389,9 @@
       "branchLoading": "Загрузка…"
     },
     "categories": {
-      "items": "{count, plural, one {# товар} few {# товара} many {# товаров} other {# товара}}"
+      "items": "{count, plural, one {# товар} few {# товара} many {# товаров} other {# товара}}",
+      "chooseSubcategory": "Выберите подкатегорию",
+      "empty": "В этой категории пока нет товаров."
     },
     "contact": {
       "sending": "Отправляем…",

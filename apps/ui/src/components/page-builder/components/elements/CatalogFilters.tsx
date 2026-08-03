@@ -1,8 +1,9 @@
 "use client"
 
-import { useRouter, useSearchParams } from "next/navigation"
+import { useSearchParams } from "next/navigation"
 import { useState } from "react"
 
+import { Link, usePathname, useRouter } from "@/lib/navigation"
 import { cn } from "@/lib/styles"
 
 export interface FilterOption {
@@ -11,18 +12,45 @@ export interface FilterOption {
   readonly count?: number
 }
 
+/** A category and its subcategories — the nested category filter. */
+export interface CategoryGroup {
+  readonly slug: string
+  readonly name: string
+  readonly subcategories: readonly FilterOption[]
+}
+
+/** A filterable product property and the options products actually carry. */
+export interface AttributeGroup {
+  readonly slug: string
+  readonly name: string
+  readonly values: readonly FilterOption[]
+}
+
 /**
  * The filter state lives in the URL, not in React state — so a filtered view can
  * be shared, bookmarked and rendered on the server, and the back button works.
  * Local state here only holds what the user is editing before pressing "apply".
+ *
+ * The category list has two modes. On the whole catalogue it is a multi-select
+ * filter (checkboxes, applied on demand). Inside a subcategory the choice is
+ * already made by the URL, so it becomes plain navigation — links, with the
+ * current one marked — letting the reader step sideways to a sibling instead of
+ * having to go back. Mixing the two would put the path and a checkbox in charge
+ * of the same thing.
  */
 export function CatalogFilters({
-  categories,
+  categoryTree,
   brands,
   labels,
+  currentSubcategory,
+  attributeGroups = [],
 }: {
-  readonly categories: readonly FilterOption[]
+  readonly categoryTree: readonly CategoryGroup[]
   readonly brands: readonly FilterOption[]
+  /** Per-property facets; only present inside a subcategory. */
+  readonly attributeGroups?: readonly AttributeGroup[]
+  /** Set on a subcategory page: switches the category list to navigation. */
+  readonly currentSubcategory?: string
   readonly labels: {
     readonly categories: string
     readonly price: string
@@ -37,15 +65,17 @@ export function CatalogFilters({
   }
 }) {
   const router = useRouter()
+  const pathname = usePathname()
   const searchParams = useSearchParams()
 
   const readList = (key: string) =>
     (searchParams.get(key) ?? "").split(",").filter(Boolean)
 
   const [selectedCategories, setSelectedCategories] = useState(() =>
-    readList("category")
+    readList("subcategory")
   )
   const [selectedBrands, setSelectedBrands] = useState(() => readList("brand"))
+  const [selectedValues, setSelectedValues] = useState(() => readList("attr"))
   const [priceMin, setPriceMin] = useState(searchParams.get("priceMin") ?? "")
   const [priceMax, setPriceMax] = useState(searchParams.get("priceMax") ?? "")
   const [inStock, setInStock] = useState(searchParams.get("inStock") === "true")
@@ -67,41 +97,75 @@ export function CatalogFilters({
     if (sort) params.set("sort", sort)
 
     if (selectedCategories.length) {
-      params.set("category", selectedCategories.join(","))
+      params.set("subcategory", selectedCategories.join(","))
     }
     if (selectedBrands.length) params.set("brand", selectedBrands.join(","))
+    if (selectedValues.length) params.set("attr", selectedValues.join(","))
     if (priceMin.trim()) params.set("priceMin", priceMin.trim())
     if (priceMax.trim()) params.set("priceMax", priceMax.trim())
     if (inStock) params.set("inStock", "true")
 
-    router.push(params.size ? `?${params.toString()}` : "?", { scroll: false })
+    // Object form: a `"/catalog?brand=…"` string loses its query on the way
+    // through the localised router, and a bare `?…` lands on the home page.
+    router.push(
+      { pathname, query: Object.fromEntries(params) },
+      { scroll: false }
+    )
   }
 
   const reset = () => {
     setSelectedCategories([])
     setSelectedBrands([])
+    setSelectedValues([])
     setPriceMin("")
     setPriceMax("")
     setInStock(false)
-    router.push("?", { scroll: false })
+    router.push(pathname, { scroll: false })
   }
 
   return (
     <aside className="border-brand-border bg-brand-green rounded-[10px] border p-6.5">
-      <FilterHeading>{labels.categories}</FilterHeading>
-      <div className="border-brand-border mb-5 border-b pb-5">
-        {categories.map((category) => (
-          <Checkbox
-            key={category.slug}
-            checked={selectedCategories.includes(category.slug)}
-            onToggle={() =>
-              toggle(selectedCategories, setSelectedCategories, category.slug)
-            }
-            label={category.name}
-            count={category.count}
-          />
-        ))}
-      </div>
+      {categoryTree.length ? (
+        <>
+          <FilterHeading>{labels.categories}</FilterHeading>
+          <div className="border-brand-border mb-5 border-b pb-5">
+            {categoryTree.map((group) => (
+              <div key={group.slug} className="mb-4 last:mb-0">
+                <div className="font-oswald text-brand-cream mb-1 text-[13.5px] tracking-[0.04em] uppercase">
+                  {group.name}
+                </div>
+                <div className="border-brand-border ml-0.5 border-l pl-2.5">
+                  {group.subcategories.map((sub) =>
+                    currentSubcategory ? (
+                      <SubcategoryLink
+                        key={sub.slug}
+                        href={`/category/${group.slug}/${sub.slug}`}
+                        label={sub.name}
+                        count={sub.count}
+                        active={sub.slug === currentSubcategory}
+                      />
+                    ) : (
+                      <Checkbox
+                        key={sub.slug}
+                        checked={selectedCategories.includes(sub.slug)}
+                        onToggle={() =>
+                          toggle(
+                            selectedCategories,
+                            setSelectedCategories,
+                            sub.slug
+                          )
+                        }
+                        label={sub.name}
+                        count={sub.count}
+                      />
+                    )
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
+      ) : null}
 
       <FilterHeading>{labels.price}</FilterHeading>
       <div className="border-brand-border mb-5 flex gap-2.5 border-b pb-5.5">
@@ -118,6 +182,27 @@ export function CatalogFilters({
           aria-label={`${labels.price} — ${labels.priceToAria}`}
         />
       </div>
+
+      {/* One block per property, e.g. Довжина with its lengths. Only shown
+          inside a subcategory, where a shared set of properties exists. */}
+      {attributeGroups.map((group) => (
+        <div key={group.slug}>
+          <FilterHeading>{group.name}</FilterHeading>
+          <div className="border-brand-border mb-5 border-b pb-5">
+            {group.values.map((value) => (
+              <Checkbox
+                key={value.slug}
+                checked={selectedValues.includes(value.slug)}
+                onToggle={() =>
+                  toggle(selectedValues, setSelectedValues, value.slug)
+                }
+                label={value.name}
+                count={value.count}
+              />
+            ))}
+          </div>
+        </div>
+      ))}
 
       {brands.length ? (
         <>
@@ -162,6 +247,47 @@ export function CatalogFilters({
         </button>
       </div>
     </aside>
+  )
+}
+
+/**
+ * A sibling subcategory on a subcategory page. A link, not a checkbox: the URL
+ * owns the choice here, so clicking navigates rather than staging a filter.
+ */
+function SubcategoryLink({
+  href,
+  label,
+  count,
+  active,
+}: {
+  readonly href: string
+  readonly label: string
+  readonly count?: number
+  readonly active: boolean
+}) {
+  return (
+    <Link
+      href={href}
+      aria-current={active ? "page" : undefined}
+      className={cn(
+        "flex items-center gap-2.5 py-1.5 text-[14.5px] transition-colors",
+        active
+          ? "text-brand-gold font-semibold"
+          : "text-brand-nav hover:text-brand-cream"
+      )}
+    >
+      <span
+        aria-hidden
+        className={cn(
+          "size-1.5 shrink-0 rounded-full",
+          active ? "bg-brand-bronze" : "bg-transparent"
+        )}
+      />
+      {label}
+      {count == null ? null : (
+        <span className="text-brand-faded ml-auto">{count}</span>
+      )}
+    </Link>
   )
 }
 
@@ -226,12 +352,14 @@ function PriceInput({
 }) {
   return (
     <input
-      type="number"
+      // Text rather than `type="number"`: the number spinners are noise in a
+      // price box, and a number field also changes value when the wheel is
+      // scrolled over it. `inputMode` still brings up the numeric keypad.
+      type="text"
       inputMode="numeric"
-      min={0}
       value={value}
       placeholder={placeholder}
-      onChange={(event) => onChange(event.target.value)}
+      onChange={(event) => onChange(event.target.value.replaceAll(/\D/g, ""))}
       className="bg-brand-surface text-brand-nav placeholder:text-brand-muted focus:border-brand-bronze border-brand-field w-full rounded-md border px-3 py-2.5 text-sm outline-none"
       {...rest}
     />

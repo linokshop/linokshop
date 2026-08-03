@@ -1,11 +1,11 @@
 {
   "kind": "collectionType",
-  "collectionName": "categories",
+  "collectionName": "attributes",
   "info": {
-    "singularName": "category",
-    "pluralName": "categories",
-    "displayName": "Category",
-    "description": "Product category for the ЛінОк catalog."
+    "singularName": "attribute",
+    "pluralName": "attributes",
+    "displayName": "Attribute",
+    "description": "A filterable product property, e.g. Довжина or Тест. Its options live in Attribute value."
   },
   "options": {
     "draftAndPublish": true
@@ -29,20 +29,21 @@
       "type": "uid",
       "targetField": "name"
     },
-    "image": {
-      "type": "media",
-      "allowedTypes": ["images"],
-      "multiple": false
-    },
     "order": {
       "type": "integer",
       "default": 0
     },
     "subcategories": {
       "type": "relation",
-      "relation": "oneToMany",
+      "relation": "manyToMany",
       "target": "api::subcategory.subcategory",
-      "mappedBy": "category"
+      "inversedBy": "productAttributes"
+    },
+    "values": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::attribute-value.attribute-value",
+      "mappedBy": "attribute"
     }
   }
 }

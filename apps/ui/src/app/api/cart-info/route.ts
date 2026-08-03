@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { z } from "zod"
 
+import { getKasaMap, mergeKasa } from "@/lib/kasa"
 import { fetchProductsBySlugs } from "@/lib/strapi-api/content/server"
 import { formatStrapiMediaUrl } from "@/lib/strapi-helpers"
 
@@ -31,20 +32,26 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Bad request" }, { status: 400 })
   }
 
-  const products = await fetchProductsBySlugs(
-    parsed.data.slugs,
-    parsed.data.locale
-  )
+  const [products, kasaMap] = await Promise.all([
+    fetchProductsBySlugs(parsed.data.slugs, parsed.data.locale),
+    getKasaMap(),
+  ])
 
   return NextResponse.json({
-    items: products.map((product) => ({
-      slug: product.slug,
-      name: product.name,
-      price: product.price,
-      category: product.category?.name ?? null,
-      inStock: product.inStock ?? true,
-      stockQty: product.stockQty ?? null,
-      imageUrl: formatStrapiMediaUrl(product.images?.[0]?.url) ?? null,
-    })),
+    items: products.map((product) => {
+      // Price and stock are the kasa's; a product missing from the kasa is
+      // treated as unavailable so the cart can flag it.
+      const live = mergeKasa(product.kasaCode, kasaMap)
+
+      return {
+        slug: product.slug,
+        name: product.name,
+        price: live.price,
+        category: product.subcategory?.name ?? null,
+        inStock: live.inStock,
+        stockQty: live.stockQty,
+        imageUrl: formatStrapiMediaUrl(product.images?.[0]?.url) ?? null,
+      }
+    }),
   })
 }

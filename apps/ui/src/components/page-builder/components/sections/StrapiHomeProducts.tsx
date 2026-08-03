@@ -6,6 +6,7 @@ import type { Locale } from "next-intl"
 import { ProductCard } from "@/components/page-builder/components/elements/ProductCard"
 import { ProductCarousel } from "@/components/page-builder/components/elements/ProductCarousel"
 import StrapiLink from "@/components/page-builder/components/utilities/StrapiLink"
+import { type EnrichedProduct, enrichProducts, getKasaMap } from "@/lib/kasa"
 import { SECTION_X_PADDING } from "@/lib/layout"
 import { toCartItem, toProductCard } from "@/lib/product-card"
 import { fetchCatalogProducts } from "@/lib/strapi-api/content/server"
@@ -32,19 +33,22 @@ export async function StrapiHomeProducts({
   const locale = (pageParams?.locale ?? "uk") as Locale
   const { title, link, products, limit } = component
 
-  const picked = products ?? []
-  const items = picked.length
-    ? picked.slice(0, limit ?? 6)
-    : ((
+  // Editor-picked products are raw CMS relations, so they need the same kasa
+  // merge as the fallback query — priced from the kasa, unpriced ones dropped.
+  const picked = (products ?? []) as unknown as EnrichedProduct[]
+  const items: EnrichedProduct[] = picked.length
+    ? enrichProducts(picked, await getKasaMap()).slice(0, limit ?? 6)
+    : (
         await fetchCatalogProducts(locale, {
           categories: [],
           brands: [],
+          attributeValues: [],
           inStock: false,
           sort: "popular",
           page: 1,
           pageSize: limit ?? 6,
         })
-      )?.data ?? [])
+      ).data
 
   if (!items.length) {
     return null

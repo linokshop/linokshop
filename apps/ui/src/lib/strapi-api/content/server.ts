@@ -5,6 +5,12 @@ import type { UID } from "@repo/strapi-types"
 import { draftMode } from "next/headers"
 import type { Locale } from "next-intl"
 
+import {
+  type EnrichedProduct,
+  enrichProduct,
+  enrichProducts,
+  getKasaMap,
+} from "@/lib/kasa"
 import { logNonBlockingError } from "@/lib/logging"
 import { PublicStrapiClient } from "@/lib/strapi-api"
 import type { CustomFetchOptions } from "@/types/general"
@@ -237,7 +243,7 @@ export async function fetchProductsBySlugs(
         status: "published",
         filters: { slug: { $in: [...slugs] } },
         pagination: { page: 1, pageSize: slugs.length },
-        populate: { images: true, category: true },
+        populate: { images: true, subcategory: true },
       },
       { cache: "no-store" }
     )
@@ -257,27 +263,37 @@ export async function fetchProductsBySlugs(
  * Products flagged "recommended" in the admin — the cart's cross-sell rail.
  * Editors pick these with a checkbox rather than the code guessing.
  */
-export async function fetchRecommendedProducts(locale: Locale, limit = 6) {
+export async function fetchRecommendedProducts(
+  locale: Locale,
+  limit = 6
+): Promise<EnrichedProduct[]> {
   try {
-    const response = await PublicStrapiClient.fetchMany(
-      "api::product.product",
-      {
-        locale,
-        status: "published",
-        filters: { recommended: { $eq: true }, inStock: { $eq: true } },
-        pagination: { page: 1, pageSize: limit },
-        populate: { images: true, category: true },
-        sort: { price: "asc" },
-      },
-      {
-        next: {
-          revalidate: 300,
-          tags: [strapiCacheTag("api::product.product")],
+    const [response, kasaMap] = await Promise.all([
+      PublicStrapiClient.fetchMany(
+        "api::product.product",
+        {
+          locale,
+          status: "published",
+          filters: { recommended: { $eq: true } },
+          // Over-fetch: kasa filters out unpriced / out-of-stock ones below, so
+          // the visible count is decided after the merge, not by Strapi.
+          pagination: { page: 1, pageSize: 50 },
+          populate: { images: true, subcategory: true },
         },
-      }
-    )
+        {
+          next: {
+            revalidate: 300,
+            tags: [strapiCacheTag("api::product.product")],
+          },
+        }
+      ),
+      getKasaMap(),
+    ])
 
-    return response?.data ?? []
+    return enrichProducts(response?.data ?? [], kasaMap)
+      .filter((product) => product.inStock)
+      .sort((a, b) => a.price - b.price)
+      .slice(0, limit)
   } catch (e: unknown) {
     logNonBlockingError({
       message: `Error fetching recommended products for locale '${locale}'`,
@@ -324,29 +340,53 @@ export async function fetchPromoByCode(code: string) {
   }
 }
 
-export async function fetchProductBySlug(slug: string, locale: Locale) {
+/**
+ * One product for its page, priced from the kasa. Returns `{ data: undefined }`
+ * when the product has no kasa match — the page then 404s, because a product we
+ * can't price is a product we can't sell.
+ */
+export async function fetchProductBySlug(
+  slug: string,
+  locale: Locale
+): Promise<undefined | { data: EnrichedProduct | undefined }> {
   try {
-    return await PublicStrapiClient.fetchOneBySlug(
-      "api::product.product",
-      slug,
-      {
-        locale,
-        status: "published",
-        populate: {
-          images: true,
-          category: true,
-          brand: true,
-          specs: true,
-          options: true,
+    const [response, kasaMap] = await Promise.all([
+      PublicStrapiClient.fetchOneBySlug(
+        "api::product.product",
+        slug,
+        {
+          locale,
+          status: "published",
+          populate: {
+            images: true,
+            // The parent category comes along for the breadcrumb: product →
+            // subcategory → category.
+            subcategory: {
+              populate: { category: { fields: ["name", "slug"] } },
+            },
+            brand: true,
+            specs: true,
+            options: true,
+            // Rendered as part of the spec table — the structured half of it.
+            attributeValues: { populate: { attribute: true } },
+          },
         },
-      },
-      {
-        next: {
-          revalidate: 300,
-          tags: [strapiCacheTag("api::product.product")],
-        },
-      }
-    )
+        {
+          next: {
+            revalidate: 300,
+            tags: [strapiCacheTag("api::product.product")],
+          },
+        }
+      ),
+      getKasaMap(),
+    ])
+
+    const product = response?.data
+    if (!product) {
+      return { data: undefined }
+    }
+
+    return { data: enrichProduct(product, kasaMap) ?? undefined }
   } catch (e: unknown) {
     logNonBlockingError({
       message: `Error fetching product '${slug}' for locale '${locale}'`,
@@ -361,6 +401,8 @@ export async function fetchProductBySlug(slug: string, locale: Locale) {
 export interface CatalogQuery {
   readonly categories: string[]
   readonly brands: string[]
+  /** Chosen attribute-value slugs, e.g. ["3-6-m", "karbon"]. */
+  readonly attributeValues: string[]
   readonly priceMin?: number
   readonly priceMax?: number
   readonly inStock: boolean
@@ -369,56 +411,203 @@ export interface CatalogQuery {
   readonly pageSize: number
 }
 
-// `as const` on purpose: Strapi's `sort` param is typed against the field names,
-// so widening these to string[] makes them unassignable.
-const CATALOG_SORT = {
-  popular: ["popularity:desc", "name:asc"],
-  "price-asc": ["price:asc"],
-  "price-desc": ["price:desc"],
-  new: ["createdAt:desc"],
-} as const
+/**
+ * Does a product satisfy the chosen attribute options?
+ *
+ * Options of the *same* property widen the result (Довжина 3.0 **or** 3.6) while
+ * options of *different* properties narrow it (Довжина 3.6 **and** Карбон) —
+ * ticking a second length must not empty the page, but ticking a material must.
+ * That is the behaviour every shop filter has, and getting it backwards makes
+ * the sidebar feel broken.
+ */
+function matchesAttributes(
+  product: EnrichedProduct,
+  selected: readonly string[],
+  attributeOfValue: Record<string, string>
+): boolean {
+  const owned = new Set(
+    (product.attributeValues ?? [])
+      .map((value) => value.slug)
+      .filter((slug): slug is string => Boolean(slug))
+  )
 
-/** The catalog grid: filtered, sorted and paginated by Strapi, not in the UI. */
+  const byAttribute = new Map<string, string[]>()
+  for (const slug of selected) {
+    const attribute = attributeOfValue[slug] ?? slug
+    byAttribute.set(attribute, [...(byAttribute.get(attribute) ?? []), slug])
+  }
+
+  for (const slugs of byAttribute.values()) {
+    const satisfied = slugs.some((slug) => owned.has(slug))
+    if (!satisfied) {
+      return false
+    }
+  }
+
+  return true
+}
+
+/** Epoch millis for a Strapi datetime, tolerant of a missing value. */
+function timeOf(value: string | Date | null | undefined): number {
+  const date = new Date(value ?? 0)
+
+  return date.getTime()
+}
+
+/** In-memory catalog sort, applied to the kasa-merged list. */
+function sortCatalog(
+  items: EnrichedProduct[],
+  sort: CatalogQuery["sort"]
+): EnrichedProduct[] {
+  const sorted = [...items]
+  switch (sort) {
+    case "price-asc":
+      sorted.sort((a, b) => a.price - b.price)
+      break
+    case "price-desc":
+      sorted.sort((a, b) => b.price - a.price)
+      break
+    case "new":
+      sorted.sort((a, b) => timeOf(b.createdAt) - timeOf(a.createdAt))
+      break
+
+    default:
+      sorted.sort(
+        (a, b) =>
+          (b.popularity ?? 0) - (a.popularity ?? 0) ||
+          (a.name ?? "").localeCompare(b.name ?? "")
+      )
+  }
+
+  return sorted
+}
+
+export interface CatalogPage {
+  readonly data: EnrichedProduct[]
+  readonly meta: {
+    readonly pagination: {
+      readonly page: number
+      readonly pageSize: number
+      readonly total: number
+      readonly pageCount: number
+    }
+  }
+  /** How many products carry each attribute value, keyed by value slug. */
+  readonly attributeCounts: Record<string, number>
+}
+
+/**
+ * The catalog grid. Category/brand filtering stays in Strapi; everything that
+ * depends on the kasa — price range, in-stock, price sort — runs in memory after
+ * the merge, because those numbers no longer live in the database. Products with
+ * no kasa match drop out (they can't be priced).
+ */
 export async function fetchCatalogProducts(
   locale: Locale,
   query: CatalogQuery
-) {
-  const filters: Record<string, unknown> = {}
+): Promise<CatalogPage> {
+  const emptyPage: CatalogPage = {
+    data: [],
+    meta: {
+      pagination: {
+        page: query.page,
+        pageSize: query.pageSize,
+        total: 0,
+        pageCount: 1,
+      },
+    },
+    attributeCounts: {},
+  }
 
+  const filters: Record<string, unknown> = {}
   if (query.categories.length) {
-    filters.category = { slug: { $in: query.categories } }
+    // The catalog is reached by drilling into a subcategory, so this slug filters
+    // on the product's subcategory.
+    filters.subcategory = { slug: { $in: query.categories } }
   }
   if (query.brands.length) {
     filters.brand = { slug: { $in: query.brands } }
   }
-  if (query.inStock) {
-    filters.inStock = { $eq: true }
-  }
-  if (query.priceMin != null || query.priceMax != null) {
-    filters.price = {
-      ...(query.priceMin != null && { $gte: query.priceMin }),
-      ...(query.priceMax != null && { $lte: query.priceMax }),
-    }
-  }
 
   try {
-    return await PublicStrapiClient.fetchMany(
-      "api::product.product",
-      {
-        locale,
-        status: "published",
-        filters,
-        sort: [...CATALOG_SORT[query.sort]],
-        populate: { images: true, category: true, brand: true },
-        pagination: { page: query.page, pageSize: query.pageSize },
-      },
-      {
-        next: {
-          revalidate: 300,
-          tags: [strapiCacheTag("api::product.product")],
+    const [response, kasaMap] = await Promise.all([
+      PublicStrapiClient.fetchAll(
+        "api::product.product",
+        {
+          locale,
+          status: "published",
+          filters,
+          // Attribute values come along so the sidebar can both filter on them
+          // and count them without a second pass over the catalogue.
+          populate: {
+            images: true,
+            subcategory: true,
+            brand: true,
+            // The parent attribute comes along so the filter can tell options of
+            // the same property apart from options of different ones.
+            attributeValues: { populate: { attribute: true } },
+          },
         },
+        {
+          next: {
+            revalidate: 300,
+            tags: [strapiCacheTag("api::product.product")],
+          },
+        }
+      ),
+      getKasaMap(),
+    ])
+
+    let items = enrichProducts(response?.data ?? [], kasaMap)
+
+    // Counts are taken before the attribute filter is applied, so a sidebar
+    // option still shows how many products it would bring back rather than
+    // collapsing to zero the moment a sibling option is ticked.
+    const attributeCounts: Record<string, number> = {}
+    const attributeOfValue: Record<string, string> = {}
+    for (const product of items) {
+      for (const value of product.attributeValues ?? []) {
+        if (value.slug) {
+          attributeCounts[value.slug] = (attributeCounts[value.slug] ?? 0) + 1
+          attributeOfValue[value.slug] = value.attribute?.slug ?? value.slug
+        }
       }
-    )
+    }
+
+    if (query.attributeValues.length) {
+      items = items.filter((product) =>
+        matchesAttributes(product, query.attributeValues, attributeOfValue)
+      )
+    }
+
+    const { priceMin, priceMax } = query
+    if (query.inStock) {
+      items = items.filter((product) => product.inStock)
+    }
+    if (priceMin != null) {
+      items = items.filter((product) => product.price >= priceMin)
+    }
+    if (priceMax != null) {
+      items = items.filter((product) => product.price <= priceMax)
+    }
+    items = sortCatalog(items, query.sort)
+
+    const total = items.length
+    const pageCount = Math.max(1, Math.ceil(total / query.pageSize))
+    const start = (query.page - 1) * query.pageSize
+
+    return {
+      data: items.slice(start, start + query.pageSize),
+      meta: {
+        pagination: {
+          page: query.page,
+          pageSize: query.pageSize,
+          total,
+          pageCount,
+        },
+      },
+      attributeCounts,
+    }
   } catch (e: unknown) {
     logNonBlockingError({
       message: `Error fetching catalog products for locale '${locale}'`,
@@ -427,6 +616,8 @@ export async function fetchCatalogProducts(
         stack: e instanceof Error ? e.stack : undefined,
       },
     })
+
+    return emptyPage
   }
 }
 
@@ -440,28 +631,33 @@ export async function fetchRelatedProducts(
   if (!categorySlug) return []
 
   try {
-    const response = await PublicStrapiClient.fetchMany(
-      "api::product.product",
-      {
-        locale,
-        status: "published",
-        filters: {
-          category: { slug: { $eq: categorySlug } },
-          slug: { $ne: excludeSlug },
+    const [response, kasaMap] = await Promise.all([
+      PublicStrapiClient.fetchMany(
+        "api::product.product",
+        {
+          locale,
+          status: "published",
+          filters: {
+            subcategory: { slug: { $eq: categorySlug } },
+            slug: { $ne: excludeSlug },
+          },
+          sort: ["popularity:desc"],
+          populate: { images: true, subcategory: true },
+          // Over-fetch: the kasa merge drops unpriced ones, so trim to `limit`
+          // after the merge, not in the query.
+          pagination: { page: 1, pageSize: Math.max(limit * 5, 20) },
         },
-        sort: ["popularity:desc"],
-        populate: { images: true, category: true },
-        pagination: { page: 1, pageSize: limit },
-      },
-      {
-        next: {
-          revalidate: 300,
-          tags: [strapiCacheTag("api::product.product")],
-        },
-      }
-    )
+        {
+          next: {
+            revalidate: 300,
+            tags: [strapiCacheTag("api::product.product")],
+          },
+        }
+      ),
+      getKasaMap(),
+    ])
 
-    return response.data
+    return enrichProducts(response.data ?? [], kasaMap).slice(0, limit)
   } catch (e: unknown) {
     logNonBlockingError({
       message: `Error fetching related products for '${excludeSlug}'`,
@@ -571,6 +767,151 @@ export async function fetchCategories(locale: Locale) {
         error: e instanceof Error ? e.message : String(e),
         stack: e instanceof Error ? e.stack : undefined,
       },
+    })
+  }
+}
+
+/**
+ * The filterable attributes of one subcategory, each with its options.
+ *
+ * Attributes are attached to the subcategories they make sense for, so browsing
+ * bait never offers a rod's "Тест". Returns [] outside a subcategory — the whole
+ * catalogue has no single set of attributes worth showing.
+ */
+export async function fetchSubcategoryAttributes(
+  subcategorySlug: string | undefined,
+  locale: Locale
+) {
+  if (!subcategorySlug) {
+    return []
+  }
+
+  try {
+    const response = await PublicStrapiClient.fetchMany(
+      "api::attribute.attribute",
+      {
+        locale,
+        status: "published",
+        filters: { subcategories: { slug: { $eq: subcategorySlug } } },
+        populate: { values: true },
+        sort: ["order:asc", "name:asc"],
+        pagination: { page: 1, pageSize: 50 },
+      },
+      {
+        next: {
+          revalidate: 600,
+          tags: [strapiCacheTag("api::attribute.attribute")],
+        },
+      }
+    )
+
+    return response?.data ?? []
+  } catch (e: unknown) {
+    logNonBlockingError({
+      message: `Error fetching attributes for '${subcategorySlug}'`,
+      error: { error: e instanceof Error ? e.message : String(e) },
+    })
+
+    return []
+  }
+}
+
+/**
+ * Every published product's slug, for the sitemap.
+ *
+ * Deliberately not kasa-merged: an item that is briefly out of stock, or that
+ * the kasa did not answer for on this request, still has a page worth indexing —
+ * dropping it would make the sitemap flicker between crawls.
+ */
+export async function fetchSitemapProducts(locale: Locale) {
+  try {
+    const response = await PublicStrapiClient.fetchAll(
+      "api::product.product",
+      {
+        locale,
+        status: "published",
+        fields: ["slug", "updatedAt"],
+        populate: {},
+      },
+      { next: { revalidate: 3600 } }
+    )
+
+    return response?.data ?? []
+  } catch (e: unknown) {
+    logNonBlockingError({
+      message: `Error fetching products for sitemap '${locale}'`,
+      error: { error: e instanceof Error ? e.message : String(e) },
+    })
+
+    return []
+  }
+}
+
+/**
+ * Categories for the home grid — each carries its subcategory slugs so the
+ * caller can roll a category's product count up from its subcategories (products
+ * live in subcategories, not directly under a category).
+ */
+export async function fetchTopCategories(locale: Locale) {
+  try {
+    return await PublicStrapiClient.fetchMany(
+      "api::category.category",
+      {
+        locale,
+        status: "published",
+        populate: { image: true, subcategories: true },
+        sort: ["order:asc", "name:asc"],
+        pagination: { page: 1, pageSize: 100 },
+      },
+      {
+        next: {
+          revalidate: 600,
+          tags: [strapiCacheTag("api::category.category")],
+        },
+      }
+    )
+  } catch (e: unknown) {
+    logNonBlockingError({
+      message: `Error fetching top categories for locale '${locale}'`,
+      error: { error: e instanceof Error ? e.message : String(e) },
+    })
+  }
+}
+
+/**
+ * One category with its subcategories — the `/category/<slug>` page, which shows
+ * the subcategories as tiles linking into the catalog.
+ */
+export async function fetchCategoryBySlug(slug: string, locale: Locale) {
+  try {
+    const response = await PublicStrapiClient.fetchMany(
+      "api::category.category",
+      {
+        locale,
+        status: "published",
+        filters: { slug: { $eq: slug } },
+        populate: {
+          image: true,
+          subcategories: {
+            populate: { image: true },
+            sort: ["order:asc", "name:asc"],
+          },
+        },
+        pagination: { page: 1, pageSize: 1 },
+      },
+      {
+        next: {
+          revalidate: 600,
+          tags: [strapiCacheTag("api::category.category")],
+        },
+      }
+    )
+
+    return response?.data?.[0]
+  } catch (e: unknown) {
+    logNonBlockingError({
+      message: `Error fetching category '${slug}' for locale '${locale}'`,
+      error: { error: e instanceof Error ? e.message : String(e) },
     })
   }
 }

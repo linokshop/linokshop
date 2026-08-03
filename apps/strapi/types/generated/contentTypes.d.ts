@@ -689,7 +689,103 @@ export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
         }
       }>
     order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>
-    products: Schema.Attribute.Relation<"oneToMany", "api::product.product">
+    publishedAt: Schema.Attribute.DateTime
+    slug: Schema.Attribute.UID<"name">
+    subcategories: Schema.Attribute.Relation<
+      "oneToMany",
+      "api::subcategory.subcategory"
+    >
+    updatedAt: Schema.Attribute.DateTime
+    updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
+      Schema.Attribute.Private
+  }
+}
+
+export interface ApiAttributeAttribute extends Struct.CollectionTypeSchema {
+  collectionName: "attributes"
+  info: {
+    description: "A filterable product property, e.g. Довжина or Тест. Its options live in Attribute value."
+    displayName: "Attribute"
+    pluralName: "attributes"
+    singularName: "attribute"
+  }
+  options: {
+    draftAndPublish: true
+  }
+  pluginOptions: {
+    i18n: {
+      localized: true
+    }
+  }
+  attributes: {
+    createdAt: Schema.Attribute.DateTime
+    createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
+      Schema.Attribute.Private
+    locale: Schema.Attribute.String
+    localizations: Schema.Attribute.Relation<
+      "oneToMany",
+      "api::attribute.attribute"
+    >
+    name: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true
+        }
+      }>
+    order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>
+    publishedAt: Schema.Attribute.DateTime
+    slug: Schema.Attribute.UID<"name">
+    subcategories: Schema.Attribute.Relation<
+      "manyToMany",
+      "api::subcategory.subcategory"
+    >
+    updatedAt: Schema.Attribute.DateTime
+    updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
+      Schema.Attribute.Private
+    values: Schema.Attribute.Relation<
+      "oneToMany",
+      "api::attribute-value.attribute-value"
+    >
+  }
+}
+
+export interface ApiAttributeValueAttributeValue
+  extends Struct.CollectionTypeSchema {
+  collectionName: "attribute_values"
+  info: {
+    description: "One option of an Attribute, e.g. 3.6 м for Довжина. Products link to these, which is what makes them filterable."
+    displayName: "Attribute value"
+    pluralName: "attribute-values"
+    singularName: "attribute-value"
+  }
+  options: {
+    draftAndPublish: true
+  }
+  pluginOptions: {
+    i18n: {
+      localized: true
+    }
+  }
+  attributes: {
+    attribute: Schema.Attribute.Relation<"manyToOne", "api::attribute.attribute">
+    createdAt: Schema.Attribute.DateTime
+    createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
+      Schema.Attribute.Private
+    locale: Schema.Attribute.String
+    localizations: Schema.Attribute.Relation<
+      "oneToMany",
+      "api::attribute-value.attribute-value"
+    >
+    name: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true
+        }
+      }>
+    order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>
+    products: Schema.Attribute.Relation<"manyToMany", "api::product.product">
     publishedAt: Schema.Attribute.DateTime
     slug: Schema.Attribute.UID<"name">
     updatedAt: Schema.Attribute.DateTime
@@ -762,7 +858,6 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
     badgeColor: Schema.Attribute.Enumeration<["bronze", "sale", "stock"]> &
       Schema.Attribute.DefaultTo<"bronze">
     brand: Schema.Attribute.Relation<"manyToOne", "api::brand.brand">
-    category: Schema.Attribute.Relation<"manyToOne", "api::category.category">
     createdAt: Schema.Attribute.DateTime
     createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
       Schema.Attribute.Private
@@ -773,7 +868,7 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
         }
       }>
     images: Schema.Attribute.Media<"images", true>
-    inStock: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>
+    kasaCode: Schema.Attribute.String & Schema.Attribute.Unique
     locale: Schema.Attribute.String
     localizations: Schema.Attribute.Relation<
       "oneToMany",
@@ -789,20 +884,24 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
     oldPrice: Schema.Attribute.Decimal
     options: Schema.Attribute.Component<"utilities.text", true>
     popularity: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>
-    price: Schema.Attribute.Decimal & Schema.Attribute.Required
     publishedAt: Schema.Attribute.DateTime
     rating: Schema.Attribute.Decimal
     recommended: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>
     slug: Schema.Attribute.UID<"name">
-    stockQty: Schema.Attribute.Integer &
-      Schema.Attribute.SetMinMax<{ min: 0 }, number> &
-      Schema.Attribute.DefaultTo<0>
+    attributeValues: Schema.Attribute.Relation<
+      "manyToMany",
+      "api::attribute-value.attribute-value"
+    >
     specs: Schema.Attribute.Component<"elements.spec-row", true> &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true
         }
       }>
+    subcategory: Schema.Attribute.Relation<
+      "manyToOne",
+      "api::subcategory.subcategory"
+    >
     updatedAt: Schema.Attribute.DateTime
     updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
       Schema.Attribute.Private
@@ -964,6 +1063,55 @@ export interface ApiRedirectRedirect extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private
     publishedAt: Schema.Attribute.DateTime
     source: Schema.Attribute.String & Schema.Attribute.Required
+    updatedAt: Schema.Attribute.DateTime
+    updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
+      Schema.Attribute.Private
+  }
+}
+
+export interface ApiSubcategorySubcategory
+  extends Struct.CollectionTypeSchema {
+  collectionName: "subcategories"
+  info: {
+    description: "A subcategory under a Category; products attach here."
+    displayName: "Subcategory"
+    pluralName: "subcategories"
+    singularName: "subcategory"
+  }
+  options: {
+    draftAndPublish: true
+  }
+  pluginOptions: {
+    i18n: {
+      localized: true
+    }
+  }
+  attributes: {
+    category: Schema.Attribute.Relation<"manyToOne", "api::category.category">
+    createdAt: Schema.Attribute.DateTime
+    createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
+      Schema.Attribute.Private
+    image: Schema.Attribute.Media<"images">
+    locale: Schema.Attribute.String
+    localizations: Schema.Attribute.Relation<
+      "oneToMany",
+      "api::subcategory.subcategory"
+    >
+    name: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true
+        }
+      }>
+    order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>
+    productAttributes: Schema.Attribute.Relation<
+      "manyToMany",
+      "api::attribute.attribute"
+    >
+    products: Schema.Attribute.Relation<"oneToMany", "api::product.product">
+    publishedAt: Schema.Attribute.DateTime
+    slug: Schema.Attribute.UID<"name">
     updatedAt: Schema.Attribute.DateTime
     updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
       Schema.Attribute.Private
@@ -1514,6 +1662,8 @@ declare module "@strapi/strapi" {
       "admin::transfer-token-permission": AdminTransferTokenPermission
       "admin::user": AdminUser
       "api::brand.brand": ApiBrandBrand
+      "api::attribute.attribute": ApiAttributeAttribute
+      "api::attribute-value.attribute-value": ApiAttributeValueAttributeValue
       "api::category.category": ApiCategoryCategory
       "api::footer.footer": ApiFooterFooter
       "api::hierarchy.hierarchy": ApiHierarchyHierarchy
@@ -1522,6 +1672,7 @@ declare module "@strapi/strapi" {
       "api::product.product": ApiProductProduct
       "api::promo.promo": ApiPromoPromo
       "api::redirect.redirect": ApiRedirectRedirect
+      "api::subcategory.subcategory": ApiSubcategorySubcategory
       "api::subscriber.subscriber": ApiSubscriberSubscriber
       "plugin::content-releases.release": PluginContentReleasesRelease
       "plugin::content-releases.release-action": PluginContentReleasesReleaseAction

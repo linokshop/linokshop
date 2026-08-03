@@ -1,7 +1,9 @@
 "use client"
 
-import { useRouter, useSearchParams } from "next/navigation"
+import { useSearchParams } from "next/navigation"
 import { useTranslations } from "next-intl"
+
+import { usePathname, useRouter } from "@/lib/navigation"
 
 export const SORT_VALUES = [
   "popular",
@@ -12,6 +14,7 @@ export const SORT_VALUES = [
 
 export function CatalogSort({ current }: { readonly current: string }) {
   const router = useRouter()
+  const pathname = usePathname()
   const searchParams = useSearchParams()
   const t = useTranslations("shop.catalog")
 
@@ -33,7 +36,12 @@ export function CatalogSort({ current }: { readonly current: string }) {
           // Re-sorting reshuffles everything — page 3 of the old order is
           // meaningless in the new one.
           params.delete("page")
-          router.push(`?${params.toString()}`, { scroll: false })
+          // Object form: a `"/catalog?sort=…"` string loses its query on the way
+          // through the localised router, and a bare `?…` lands on the home page.
+          router.push(
+            { pathname, query: Object.fromEntries(params) },
+            { scroll: false }
+          )
         }}
         className="bg-brand-surface text-brand-cream font-oswald focus:border-brand-bronze border-brand-field cursor-pointer rounded-md border px-3.5 py-2.5 text-sm tracking-[0.03em] uppercase outline-none"
       >

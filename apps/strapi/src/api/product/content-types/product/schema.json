@@ -29,10 +29,10 @@
       "type": "uid",
       "targetField": "name"
     },
-    "category": {
+    "subcategory": {
       "type": "relation",
       "relation": "manyToOne",
-      "target": "api::category.category",
+      "target": "api::subcategory.subcategory",
       "inversedBy": "products"
     },
     "brand": {
@@ -40,10 +40,6 @@
       "relation": "manyToOne",
       "target": "api::brand.brand",
       "inversedBy": "products"
-    },
-    "price": {
-      "type": "decimal",
-      "required": true
     },
     "oldPrice": {
       "type": "decimal"
@@ -68,18 +64,13 @@
       "type": "integer",
       "default": 0
     },
-    "inStock": {
-      "type": "boolean",
-      "default": true
-    },
-    "stockQty": {
-      "type": "integer",
-      "min": 0,
-      "default": 0
-    },
     "recommended": {
       "type": "boolean",
       "default": false
+    },
+    "kasaCode": {
+      "type": "string",
+      "unique": true
     },
     "description": {
       "type": "text",
@@ -93,6 +84,12 @@
       "type": "media",
       "allowedTypes": ["images"],
       "multiple": true
+    },
+    "attributeValues": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::attribute-value.attribute-value",
+      "inversedBy": "products"
     },
     "specs": {
       "type": "component",

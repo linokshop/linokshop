@@ -1,11 +1,11 @@
 {
   "kind": "collectionType",
-  "collectionName": "categories",
+  "collectionName": "subcategories",
   "info": {
-    "singularName": "category",
-    "pluralName": "categories",
-    "displayName": "Category",
-    "description": "Product category for the ЛінОк catalog."
+    "singularName": "subcategory",
+    "pluralName": "subcategories",
+    "displayName": "Subcategory",
+    "description": "A subcategory under a Category; products attach here."
   },
   "options": {
     "draftAndPublish": true
@@ -38,11 +38,23 @@
       "type": "integer",
       "default": 0
     },
-    "subcategories": {
+    "category": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::category.category",
+      "inversedBy": "subcategories"
+    },
+    "productAttributes": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::attribute.attribute",
+      "mappedBy": "subcategories"
+    },
+    "products": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "api::subcategory.subcategory",
-      "mappedBy": "category"
+      "target": "api::product.product",
+      "mappedBy": "subcategory"
     }
   }
 }

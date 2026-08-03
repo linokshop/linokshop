@@ -61,7 +61,7 @@ export default async function CartPage({ params }: CartPageProps) {
             slug: product.slug ?? "",
             name: product.name ?? "",
             price: product.price ?? 0,
-            category: product.category?.name ?? null,
+            category: product.subcategory?.name ?? null,
             imageUrl: formatStrapiMediaUrl(product.images?.[0]?.url),
           }))}
         />

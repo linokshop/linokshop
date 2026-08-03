@@ -275,6 +275,7 @@
       "shown": "Показано {from}–{to} з {total}",
       "emptyFiltered": "За цими фільтрами товарів немає. Спробуйте зняти частину умов.",
       "pagesAria": "Сторінки каталогу",
+      "prevPageAria": "Попередня сторінка",
       "nextPageAria": "Наступна сторінка",
       "sortBy": "Сортувати:",
       "sortPopular": "За популярністю",
@@ -388,7 +389,9 @@
       "branchLoading": "Завантаження…"
     },
     "categories": {
-      "items": "{count, plural, one {# товар} few {# товари} many {# товарів} other {# товару}}"
+      "items": "{count, plural, one {# товар} few {# товари} many {# товарів} other {# товару}}",
+      "chooseSubcategory": "Оберіть підкатегорію",
+      "empty": "У цій категорії поки немає товарів."
     },
     "contact": {
       "sending": "Надсилаємо…",
