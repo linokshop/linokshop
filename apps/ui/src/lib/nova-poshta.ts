@@ -17,7 +17,7 @@ const NP_URL = "https://api.novaposhta.ua/v2.0/json/"
 export const WAREHOUSE_PAGE_SIZE = 50
 
 /**
- * The shop ships from Житомир. Delivery-date estimates are city-to-city, so this
+ * The shop ships from Житомир. Delivery quotes are city-to-city, so this
  * is the fixed sender. (It's the settlement's `DeliveryCity` ref, not the
  * warehouse ref.) Change this if the shop ever ships from elsewhere.
  */
@@ -27,7 +27,7 @@ export type NpServiceType = "WarehouseWarehouse" | "WarehouseDoors"
 
 export interface NpCity {
   readonly ref: string
-  /** The `DeliveryCity` ref — what delivery-date estimates key on. */
+  /** The `DeliveryCity` ref — what delivery quotes key on. */
   readonly cityRef: string
   readonly name: string
   readonly region: string
@@ -96,31 +96,6 @@ export async function searchCities(query: string): Promise<NpCity[]> {
     name: a.MainDescription,
     region: a.Area ? `${a.Area} обл.` : "",
   }))
-}
-
-/**
- * Nova Poshta's own estimate of when a parcel sent today would arrive, from the
- * shop's city to the customer's. Returns an ISO date (`2026-08-01`) or null if
- * NP can't answer — the caller then falls back to a rough guess.
- */
-export async function estimateDeliveryDate(
-  recipientCityRef: string,
-  serviceType: NpServiceType
-): Promise<string | null> {
-  const now = new Date()
-  const day = String(now.getDate()).padStart(2, "0")
-  const month = String(now.getMonth() + 1).padStart(2, "0")
-  const body = await npCall("InternetDocument", "getDocumentDeliveryDate", {
-    DateTime: `${day}.${month}.${now.getFullYear()}`,
-    ServiceType: serviceType,
-    CitySender: SHOP_SENDER_CITY_REF,
-    CityRecipient: recipientCityRef,
-  })
-  const raw = (body.data?.[0] as { DeliveryDate?: { date?: string } })
-    ?.DeliveryDate?.date
-
-  // "2026-08-01 09:00:00.000000" → "2026-08-01".
-  return raw ? raw.slice(0, 10) : null
 }
 
 /**

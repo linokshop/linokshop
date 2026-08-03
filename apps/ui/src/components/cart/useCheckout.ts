@@ -64,10 +64,6 @@ export function useCheckout() {
   const [status, setStatus] = useState<CheckoutStatus>("idle")
   const [orderNo, setOrderNo] = useState<string>()
   const [error, setError] = useState<string>()
-  // Nova Poshta's delivery estimate (already formatted for display). Set by the
-  // shipping fields once a city is chosen; the summary shows it over the rough
-  // "+2 days" fallback.
-  const [deliveryEstimate, setDeliveryEstimate] = useState<string>()
   // Nova Poshta's cheapest ("від") delivery price to the chosen city, in UAH.
   // Set by the shipping fields; the summary shows it as "від X ₴ (залежить від
   // ваги)". It is a quote only — never folded into the order total.
@@ -255,8 +251,6 @@ export function useCheckout() {
     add,
     shipping,
     setShipping,
-    deliveryEstimate,
-    setDeliveryEstimate,
     deliveryCost,
     setDeliveryCost,
     payment,

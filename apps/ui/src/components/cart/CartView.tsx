@@ -15,14 +15,8 @@ import { useCheckout } from "@/components/cart/useCheckout"
  */
 export function CartView({
   recommended,
-  deliveryDate,
 }: {
   readonly recommended: readonly CrossSellItem[]
-  /**
-   * Formatted on the server. Reading the clock while rendering would make the
-   * server and the browser disagree on the date and break hydration.
-   */
-  readonly deliveryDate: string
 }) {
   const t = useTranslations("shop.cart")
   const checkout = useCheckout()
@@ -105,7 +99,7 @@ export function CartView({
           />
         </div>
 
-        <CartSummary checkout={checkout} deliveryDate={deliveryDate} />
+        <CartSummary checkout={checkout} />
       </div>
     </>
   )

@@ -13,20 +13,13 @@ type Checkout = ReturnType<typeof useCheckout>
  * The sticky money column. Every figure here is a preview — `/api/lead` recomputes
  * the order from Strapi when it is placed, so nothing shown can decide the price.
  */
-export function CartSummary({
-  checkout,
-  deliveryDate,
-}: {
-  readonly checkout: Checkout
-  readonly deliveryDate: string
-}) {
+export function CartSummary({ checkout }: { readonly checkout: Checkout }) {
   const t = useTranslations("shop.cart")
   const tc = useTranslations("shop.common")
   const {
     count,
     totals,
     shipping,
-    deliveryEstimate,
     deliveryCost,
     promoInput,
     setPromoInput,
@@ -96,17 +89,9 @@ export function CartSummary({
         </div>
       )}
 
-      <p className="text-brand-moss flex items-center gap-2 pt-3 pb-0.5 text-[13.5px]">
-        <span aria-hidden>📦</span>
-        {t("willArrive", {
-          // Nova Poshta's real estimate when we have one; otherwise the rough
-          // server guess. Pickup keeps its own wording.
-          date:
-            shipping === "pickup"
-              ? t("arriveToday")
-              : (deliveryEstimate ?? deliveryDate),
-        })}
-      </p>
+      {/* No arrival estimate is shown anywhere: real delivery times vary far too
+          much to promise a date, and a promise the shop cannot keep costs more
+          than the reassurance it buys. */}
 
       <div className="border-brand-border mt-3.5 flex items-baseline justify-between border-t pt-4.5">
         <span className="font-oswald text-brand-cream text-lg uppercase">

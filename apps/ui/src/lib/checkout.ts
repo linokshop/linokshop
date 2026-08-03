@@ -50,26 +50,6 @@ export function orderTotals(
   return { subtotal, discount, total: subtotal - discount }
 }
 
-/** Nova Poshta quotes 1–2 days; we promise the later end of it. */
-const DELIVERY_DAYS = 2
-
-/**
- * "You should get it around 18 липня", in the reader's language.
- *
- * Lives here rather than inline in the page so the clock is not read during
- * render — that makes the server and the browser disagree on today's date.
- */
-export function estimatedDeliveryDate(locale: string): string {
-  const formatter = new Intl.DateTimeFormat(
-    locale === "ru" ? "ru-UA" : "uk-UA",
-    { day: "numeric", month: "long" }
-  )
-
-  return formatter.format(
-    new Date(Date.now() + DELIVERY_DAYS * 24 * 60 * 60 * 1000)
-  )
-}
-
 /** Cart lines cannot exceed what is on the shelf; an untracked product allows a sane max. */
 export const UNTRACKED_STOCK_MAX = 99
 export const LOW_STOCK_AT = 5

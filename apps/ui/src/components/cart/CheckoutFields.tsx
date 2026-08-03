@@ -1,10 +1,10 @@
 "use client"
 
-import { useLocale, useTranslations } from "next-intl"
+import { useTranslations } from "next-intl"
 import { useEffect, useState } from "react"
 
 import type { useCheckout } from "@/components/cart/useCheckout"
-import { useDeliveryEstimates } from "@/components/cart/useDeliveryEstimates"
+import { useDeliveryCost } from "@/components/cart/useDeliveryCost"
 import type { ShippingMethod } from "@/lib/checkout"
 import { formatPrice } from "@/lib/format"
 import { cn } from "@/lib/styles"
@@ -34,11 +34,9 @@ export function CheckoutFields({
   readonly afterDiscount: number
 }) {
   const t = useTranslations("shop.cart")
-  const locale = useLocale()
   const {
     shipping,
     setShipping,
-    setDeliveryEstimate,
     setDeliveryCost,
     payment,
     setPayment,
@@ -59,7 +57,7 @@ export function CheckoutFields({
   // The settlement Ref from Nova Poshta — warehouses are looked up by it, not by
   // the city's display name.
   const [cityRef, setCityRef] = useState("")
-  // The DeliveryCity ref — the delivery-date estimate keys on this, not the
+  // The DeliveryCity ref — the delivery-cost estimate keys on this, not the
   // warehouse/settlement ref.
   const [cityDeliveryRef, setCityDeliveryRef] = useState("")
 
@@ -150,15 +148,12 @@ export function CheckoutFields({
     }
   }, [cityRef, form.branch, shipping])
 
-  // Nova Poshta's real delivery date + cheapest price for the chosen city and
-  // method, pushed into shared state so the summary can show them over its rough
-  // fallbacks. Pickup keeps its own "today–tomorrow"/free wording.
-  useDeliveryEstimates({
+  // Nova Poshta's cheapest price for the chosen city and method, pushed into
+  // shared state for the summary. No arrival date is fetched — see the hook.
+  useDeliveryCost({
     cityDeliveryRef,
     shipping,
     declaredValue: afterDiscount,
-    locale,
-    setDate: setDeliveryEstimate,
     setCost: setDeliveryCost,
   })
 
