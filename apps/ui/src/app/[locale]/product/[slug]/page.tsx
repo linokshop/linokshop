@@ -4,17 +4,13 @@ import type { Locale } from "next-intl"
 import { getTranslations, setRequestLocale } from "next-intl/server"
 
 import AppLink from "@/components/elementary/AppLink"
-import { ProductCard } from "@/components/page-builder/components/elements/ProductCard"
 import { AddToCart } from "@/components/product/AddToCart"
+import { AlsoBought, toAlsoBoughtTiles } from "@/components/product/AlsoBought"
 import { ProductGallery } from "@/components/product/ProductGallery"
 import { badgeClass } from "@/lib/badges"
 import { formatPrice as formatUah } from "@/lib/format"
 import { CONTENT_MAX_W, SECTION_X_PADDING } from "@/lib/layout"
-import { toCartItem, toProductCard } from "@/lib/product-card"
-import {
-  fetchProductBySlug,
-  fetchRelatedProducts,
-} from "@/lib/strapi-api/content/server"
+import { fetchProductBySlug } from "@/lib/strapi-api/content/server"
 import { formatStrapiMediaUrl } from "@/lib/strapi-helpers"
 import { cn } from "@/lib/styles"
 
@@ -70,12 +66,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
     t("deliveryNote3"),
   ]
 
-  const related = await fetchRelatedProducts(
-    locale as Locale,
-    product.subcategory?.slug ?? undefined,
-    slug
-  )
-
   const name = product.name ?? ""
 
   const images = (product.images ?? [])
@@ -109,6 +99,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
       value: spec.value ?? "",
     })),
   ].filter((row) => row.label && row.value)
+
+  // Whole subcategories a buyer typically needs alongside this one — a rod wants
+  // worms, not one specific jar of them. Configured on the subcategory in the
+  // CMS, so it is set once for every rod rather than product by product.
+  const alsoBoughtTiles = toAlsoBoughtTiles(
+    product.subcategory?.alsoBought ?? []
+  )
 
   const discount =
     product.oldPrice && product.price
@@ -304,21 +301,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
         </div>
       ) : null}
 
-      {related.length ? (
+      {alsoBoughtTiles.length ? (
         <div className={cn(SECTION_X_PADDING, CONTENT_MAX_W, "pb-17.5")}>
-          <h2 className="font-oswald text-brand-cream mb-6.5 text-[30px] font-semibold tracking-[0.02em] uppercase min-[600px]:text-[32px]">
-            {t("related")}
-          </h2>
-          <div className="grid grid-cols-2 gap-3.5 min-[600px]:gap-5.5 min-[1024px]:grid-cols-4">
-            {related.map((item) => (
-              <ProductCard
-                key={item.documentId}
-                product={toProductCard(item)}
-                cartItem={toCartItem(item)}
-                sizes="(min-width: 1024px) 25vw, 50vw"
-              />
-            ))}
-          </div>
+          <AlsoBought tiles={alsoBoughtTiles} locale={locale as Locale} />
         </div>
       ) : null}
     </main>

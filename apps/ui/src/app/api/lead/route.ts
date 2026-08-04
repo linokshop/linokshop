@@ -1,15 +1,16 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { z } from "zod"
 
-import { type ShippingMethod, orderTotals } from "@/lib/checkout"
+import {
+  type ShippingMethod,
+  VETERAN_DISCOUNT_PERCENT,
+  orderTotals,
+} from "@/lib/checkout"
 import { getEnvVar } from "@/lib/env-vars"
 import { formatPrice as price } from "@/lib/format"
 import { isProduction } from "@/lib/general-helpers"
 import { logError, logger } from "@/lib/logging"
-import {
-  fetchProductBySlug,
-  fetchPromoByCode,
-} from "@/lib/strapi-api/content/server"
+import { fetchProductBySlug } from "@/lib/strapi-api/content/server"
 
 /**
  * Sends a lead to Telegram: either a "write to us" message from the contacts
@@ -56,12 +57,10 @@ const orderSchema = z.object({
   comment: z.string().trim().max(500).optional(),
   payment: z.enum(["card", "cash"]),
   /**
-   * What the customer says they hold on «Дія». Payment happens outside this
-   * site, so this is a note for whoever calls them back — never a charge.
+   * The buyer ticked "I am a combat veteran". Deliberately unverified — the
+   * discount is a gesture, not an entitlement to be policed.
    */
-  vetAmount: z.number().int().min(0).max(1_000_000).optional(),
-  /** Only the code travels; the discount itself is looked up server-side. */
-  promo: z.string().trim().max(40).optional(),
+  veteran: z.boolean().optional(),
   items: z.array(orderItemSchema).min(1).max(50),
   company: z.string().max(200).optional(),
 })
@@ -184,18 +183,19 @@ function addressLines(lead: Extract<Lead, { kind: "order" }>): string[] {
 function buildOrderMessage(
   lead: Extract<Lead, { kind: "order" }>,
   items: readonly PricedItem[],
-  promo: undefined | { code: string; percent: number },
   orderNo: string
 ): string {
   const subtotal = items.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
   )
-  const { discount, total } = orderTotals(subtotal, promo?.percent ?? 0)
+  const { discount, total } = orderTotals(
+    subtotal,
+    lead.veteran ? VETERAN_DISCOUNT_PERCENT : 0
+  )
 
-  // Payment is arranged off-site, so «Дія» is just how they intend to split it.
-  const vetPay = Math.min(lead.vetAmount ?? 0, total)
-  const remainder = Math.max(0, total - vetPay)
+  // Whether any of this is covered by «Дія» is settled on the call, so the order
+  // carries only the method the buyer picked.
   const payLabel = PAYMENT_LABELS[lead.payment] ?? lead.payment
 
   return [
@@ -209,11 +209,6 @@ function buildOrderMessage(
     ...addressLines(lead),
     "",
     `<b>Оплата:</b> ${payLabel}`,
-    ...(vetPay > 0
-      ? [
-          `<b>«Дія»:</b> ${price(vetPay)}${remainder > 0 ? ` + ${payLabel.toLowerCase()} ${price(remainder)}` : " (покриває все)"}`,
-        ]
-      : []),
     "",
     "<b>Товари:</b>",
     ...items.map(
@@ -224,7 +219,7 @@ function buildOrderMessage(
     `Сума: ${price(subtotal)}`,
     ...(discount > 0
       ? [
-          `Знижка (${esc(promo?.code ?? "")} −${promo?.percent}%): −${price(discount)}`,
+          `Знижка учаснику бойових дій (−${VETERAN_DISCOUNT_PERCENT}%): −${price(discount)}`,
         ]
       : []),
     lead.shipping === "pickup"
@@ -332,13 +327,10 @@ export async function POST(request: NextRequest) {
     if (parsed.data.kind === "contact") {
       text = buildContactMessage(parsed.data)
     } else {
-      // The code is re-validated here: a browser that faked a discount at
-      // /API/promo still gets priced from what Strapi actually says.
-      const [items, promo] = await Promise.all([
-        repriceItems(parsed.data.items),
-        parsed.data.promo ? fetchPromoByCode(parsed.data.promo) : undefined,
-      ])
-      text = buildOrderMessage(parsed.data, items, promo, orderNo ?? "")
+      // Prices come from Strapi, never from the browser; the veteran discount is
+      // a flat percentage applied on top, so there is nothing to look up.
+      const items = await repriceItems(parsed.data.items)
+      text = buildOrderMessage(parsed.data, items, orderNo ?? "")
     }
   } catch (error) {
     logError(error, "Could not price the order from Strapi")

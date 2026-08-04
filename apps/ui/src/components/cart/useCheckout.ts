@@ -7,6 +7,7 @@ import { type CartItem, lineId, useCart } from "@/lib/cart"
 import {
   type PaymentMethod,
   type ShippingMethod,
+  VETERAN_DISCOUNT_PERCENT,
   maxQuantityFor,
   orderTotals,
 } from "@/lib/checkout"
@@ -29,7 +30,7 @@ export interface CheckoutLine extends CartItem {
 }
 
 export type CheckoutStatus = "idle" | "sending" | "sent" | "error"
-export type ErrorKey = "name" | "phone" | "city" | "branch" | "street" | "vet"
+export type ErrorKey = "name" | "phone" | "city" | "branch" | "street"
 
 /**
  * Turns a browser-side cart into an order.
@@ -46,8 +47,6 @@ export function useCheckout() {
   const [fresh, setFresh] = useState<Record<string, FreshInfo>>({})
   const [shipping, setShipping] = useState<ShippingMethod>("branch")
   const [payment, setPayment] = useState<PaymentMethod>("card")
-  const [useVet, setUseVet] = useState(false)
-  const [vetAmount, setVetAmount] = useState("")
   const [form, setForm] = useState({
     name: "",
     phone: "",
@@ -57,9 +56,9 @@ export function useCheckout() {
     street: "",
     comment: "",
   })
-  const [promoInput, setPromoInput] = useState("")
-  const [promo, setPromo] = useState<{ code: string; percent: number }>()
-  const [promoChecked, setPromoChecked] = useState(false)
+  // Ticked by the buyer to claim the veteran discount. Taken at face value —
+  // see VETERAN_DISCOUNT_PERCENT.
+  const [veteran, setVeteran] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [status, setStatus] = useState<CheckoutStatus>("idle")
   const [orderNo, setOrderNo] = useState<string>()
@@ -128,11 +127,7 @@ export function useCheckout() {
 
   const subtotal = lines.reduce((sum, l) => sum + l.price * l.quantity, 0)
   const count = lines.reduce((sum, l) => sum + l.quantity, 0)
-  const totals = orderTotals(subtotal, promo?.percent ?? 0)
-
-  const vetRaw = Number(vetAmount.replaceAll(/\D/g, "")) || 0
-  const vetPay = useVet ? Math.min(vetRaw, totals.total) : 0
-  const remainder = useVet ? Math.max(0, totals.total - vetPay) : 0
+  const totals = orderTotals(subtotal, veteran ? VETERAN_DISCOUNT_PERCENT : 0)
 
   const errors: Partial<Record<ErrorKey, true>> = {}
   if (!form.name.trim()) errors.name = true
@@ -144,7 +139,6 @@ export function useCheckout() {
     if (!form.cityPicked) errors.city = true
     if (!form.street.trim()) errors.street = true
   }
-  if (useVet && vetRaw <= 0) errors.vet = true
 
   const errorKeys = Object.keys(errors) as ErrorKey[]
 
@@ -163,31 +157,6 @@ export function useCheckout() {
     if (d.length > 7) out += ` ${d.slice(7, 9)}`
 
     return out
-  }
-
-  async function checkPromo() {
-    const code = promoInput.trim()
-    if (!code) return
-    setPromoChecked(true)
-    try {
-      const response = await fetch("/api/promo", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code }),
-      })
-      const body = (await response.json()) as {
-        valid: boolean
-        code?: string
-        percent?: number
-      }
-      setPromo(
-        body.valid && body.percent
-          ? { code: body.code ?? code, percent: body.percent }
-          : undefined
-      )
-    } catch {
-      setPromo(undefined)
-    }
   }
 
   async function submit(failMessage: string) {
@@ -214,8 +183,7 @@ export function useCheckout() {
           street: shipping === "courier" ? form.street : undefined,
           comment: form.comment || undefined,
           payment,
-          vetAmount: useVet ? vetRaw : undefined,
-          promo: promo?.code,
+          veteran,
           // Only what and how many — every price is decided server-side.
           items: lines.map((l) => ({
             slug: l.slug,
@@ -255,22 +223,11 @@ export function useCheckout() {
     setDeliveryCost,
     payment,
     setPayment,
-    useVet,
-    toggleVet: () => setUseVet((on) => !on),
-    vetAmount,
-    setVetAmount: (raw: string) => setVetAmount(raw.replaceAll(/\D/g, "")),
-    vetPay,
-    remainder,
-    showSplit: useVet && vetRaw > 0 && remainder > 0,
-    vetCoversAll: useVet && vetRaw > 0 && remainder === 0,
     form,
     setForm,
     formatPhone,
-    promoInput,
-    setPromoInput,
-    promo,
-    promoChecked,
-    checkPromo,
+    veteran,
+    toggleVeteran: () => setVeteran((on) => !on),
     errors,
     errorKeys,
     submitted,

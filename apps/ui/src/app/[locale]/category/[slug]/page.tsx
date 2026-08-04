@@ -5,6 +5,10 @@ import type { Locale } from "next-intl"
 import { getTranslations, setRequestLocale } from "next-intl/server"
 
 import AppLink from "@/components/elementary/AppLink"
+import {
+  CatalogBrowser,
+  type SearchParams,
+} from "@/components/page-builder/components/elements/CatalogBrowser"
 import { CONTENT_MAX_W, SECTION_X_PADDING } from "@/lib/layout"
 import {
   fetchCategoryBySlug,
@@ -15,6 +19,7 @@ import { cn } from "@/lib/styles"
 
 interface CategoryPageProps {
   readonly params: Promise<{ locale: string; slug: string }>
+  readonly searchParams: Promise<SearchParams>
 }
 
 export async function generateMetadata({
@@ -26,7 +31,10 @@ export async function generateMetadata({
   return { title: category?.name ?? undefined }
 }
 
-export default async function CategoryPage({ params }: CategoryPageProps) {
+export default async function CategoryPage({
+  params,
+  searchParams,
+}: CategoryPageProps) {
   const { locale, slug } = await params
   setRequestLocale(locale as Locale)
   const t = await getTranslations({
@@ -43,6 +51,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     notFound()
   }
 
+  const query = await searchParams
   const counts = await fetchCategoryCounts(locale as Locale)
   const subcategories = category.subcategories ?? []
   const countBySlug = new Map(counts.map((c) => [c.slug, c.count]))
@@ -132,6 +141,15 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           })}
         </div>
       </section>
+
+      {/* Everything in the category, under the tiles. The tiles are for a reader
+          who knows which shelf they want; this is for one who would rather see
+          the whole aisle and filter it down. */}
+      <CatalogBrowser
+        locale={locale as Locale}
+        searchParams={query}
+        lockedCategory={category.slug ?? undefined}
+      />
     </main>
   )
 }

@@ -58,12 +58,15 @@ export async function CatalogBrowser({
   // and 24 divides evenly into the 3-per-row grid.
   pageSize = 24,
   lockedSubcategory,
+  lockedCategory,
 }: {
   readonly locale: Locale
   readonly searchParams?: SearchParams
   readonly pageSize?: number
   /** Subcategory slug fixed by the URL path; hides the category filter. */
   readonly lockedSubcategory?: string
+  /** Category slug fixed by the URL path: everything under its subcategories. */
+  readonly lockedCategory?: string
 }) {
   const t = await getTranslations({ locale, namespace: "shop.catalog" })
 
@@ -72,6 +75,7 @@ export async function CatalogBrowser({
     categories: lockedSubcategory
       ? [lockedSubcategory]
       : readList(searchParams, "subcategory"),
+    category: lockedCategory,
     brands: readList(searchParams, "brand"),
     attributeValues: readList(searchParams, "attr"),
     priceMin: readNumber(searchParams, "priceMin"),
@@ -99,6 +103,10 @@ export async function CatalogBrowser({
   // product counts. Categories with no subcategories are left out.
   const countBySlug = new Map(categoryCounts.map((c) => [c.slug, c.count]))
   const categoryTree = (topCategories?.data ?? [])
+    // Inside a category the tree narrows to that category: offering a sibling
+    // category as a checkbox would silently carry the reader out of the page
+    // they are on.
+    .filter((category) => !lockedCategory || category.slug === lockedCategory)
     .map((category) => ({
       slug: category.slug ?? "",
       name: category.name ?? "",
@@ -147,10 +155,17 @@ export async function CatalogBrowser({
           categoryTree={categoryTree}
           currentSubcategory={lockedSubcategory}
           attributeGroups={attributeGroups}
-          brands={(brands?.data ?? []).map((brand) => ({
-            slug: brand.slug ?? "",
-            name: brand.name ?? "",
-          }))}
+          priceBounds={products.priceBounds}
+          // Only brands actually present here, with their tallies. A brand that
+          // no product in this view carries is a tick that guarantees an empty
+          // page — the same reason the attribute options are pruned.
+          brands={(brands?.data ?? [])
+            .map((brand) => ({
+              slug: brand.slug ?? "",
+              name: brand.name ?? "",
+              count: products.brandCounts[brand.slug ?? ""] ?? 0,
+            }))
+            .filter((brand) => brand.count > 0)}
           labels={{
             categories: t("categories"),
             price: t("price"),
@@ -158,8 +173,14 @@ export async function CatalogBrowser({
             inStock: t("inStockOnly"),
             apply: t("apply"),
             reset: t("reset"),
-            priceFromPlaceholder: t("priceFromPlaceholder"),
-            priceToPlaceholder: t("priceToPlaceholder"),
+            // The hints quote the real ends of this catalogue rather than a
+            // made-up round number — "до 10000" beside a 470 ₴ shelf is noise.
+            priceFromPlaceholder: t("priceFromPlaceholder", {
+              value: products.priceBounds.min,
+            }),
+            priceToPlaceholder: t("priceToPlaceholder", {
+              value: products.priceBounds.max,
+            }),
             priceFromAria: t("priceFromAria"),
             priceToAria: t("priceToAria"),
           }}

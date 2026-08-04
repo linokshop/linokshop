@@ -3,6 +3,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { useTranslations } from "next-intl"
+import { useRef } from "react"
 
 import type { CheckoutLine } from "@/components/cart/useCheckout"
 import type { CartItem } from "@/lib/cart"
@@ -13,6 +14,9 @@ import { cn } from "@/lib/styles"
 export interface CrossSellItem extends Omit<CartItem, "quantity" | "option"> {
   readonly category: string | null
 }
+
+/** Card width plus the gap — one arrow press moves by exactly one card. */
+const CROSS_CARD_STEP = 320
 
 /**
  * Cart lines and the "often bought together" rail below. Quantities are capped
@@ -35,6 +39,15 @@ export function CartLines({
 }) {
   const t = useTranslations("shop.cart")
   const tc = useTranslations("shop.common")
+  const crossTrack = useRef<HTMLDivElement>(null)
+
+  /** One card-width nudge along the cross-sell rail. */
+  const scrollCross = (direction: 1 | -1) => {
+    crossTrack.current?.scrollBy({
+      left: direction * CROSS_CARD_STEP,
+      behavior: "smooth",
+    })
+  }
 
   return (
     <div>
@@ -138,49 +151,100 @@ export function CartLines({
 
       {crossSell.length ? (
         <div className="mb-7">
-          <div className="font-oswald text-brand-sand mb-3.5 text-[15px] tracking-[0.06em] uppercase">
-            {t("oftenTogether")}
+          <div className="mb-3.5 flex items-center justify-between gap-4">
+            <div className="font-oswald text-brand-sand text-[15px] tracking-[0.06em] uppercase">
+              {t("oftenTogether")}
+            </div>
+            {/* Arrows only once the rail can actually move. */}
+            {crossSell.length > 2 ? (
+              <div className="flex gap-2">
+                <CrossNav
+                  label={t("crossPrev")}
+                  onClick={() => scrollCross(-1)}
+                >
+                  ‹
+                </CrossNav>
+                <CrossNav label={t("crossNext")} onClick={() => scrollCross(1)}>
+                  ›
+                </CrossNav>
+              </div>
+            ) : null}
           </div>
-          <div className="grid gap-3.5 min-[600px]:grid-cols-2">
+
+          {/* A rail rather than a grid: the cards carry a full-width photo now,
+              so two of them would push the checkout form off the first screen. */}
+          <div
+            ref={crossTrack}
+            className="flex snap-x snap-proximity [scrollbar-width:none] gap-5 overflow-x-auto pb-1 [&::-webkit-scrollbar]:hidden"
+          >
             {crossSell.map((item) => (
               <div
                 key={item.slug}
-                className="border-brand-border bg-brand-green flex items-center gap-3.5 rounded-[10px] border p-3.5"
+                className="border-brand-border bg-brand-green hover:border-brand-field-hover w-75 flex-none snap-start overflow-hidden rounded-md border transition-[transform,box-shadow,border-color] duration-200 hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(0,0,0,0.4)]"
               >
-                <span className="bg-brand-surface relative block size-13.5 shrink-0 overflow-hidden rounded-lg">
+                <span className="bg-brand-surface relative block h-37.5 w-full overflow-hidden">
                   {item.imageUrl ? (
                     <Image
                       src={item.imageUrl}
                       alt=""
                       fill
-                      sizes="54px"
+                      sizes="300px"
                       className="object-cover"
                       unoptimized
                     />
                   ) : null}
                 </span>
-                <span className="min-w-0 flex-1">
-                  <span className="text-brand-cream block text-[14.5px] leading-tight font-semibold">
+                <div className="p-4">
+                  {item.category ? (
+                    <div className="font-oswald text-brand-muted text-xs tracking-[0.05em] uppercase">
+                      {item.category}
+                    </div>
+                  ) : null}
+                  <div className="text-brand-cream mt-1.5 mb-3 min-h-10 text-[15px] leading-snug font-semibold">
                     {item.name}
-                  </span>
-                  <span className="font-oswald text-brand-gold mt-0.5 block text-base">
-                    {formatPrice(item.price)}
-                  </span>
-                </span>
-                <button
-                  type="button"
-                  onClick={() => onAdd(item)}
-                  aria-label={tc("addToCartFor", { name: item.name })}
-                  className="border-brand-field bg-brand-surface text-brand-gold hover:bg-brand-bronze size-10 shrink-0 cursor-pointer rounded-lg border text-xl leading-none transition-colors hover:text-white"
-                >
-                  +
-                </button>
+                  </div>
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="font-oswald text-brand-gold text-[19px] font-semibold">
+                      {formatPrice(item.price)}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => onAdd(item)}
+                      aria-label={tc("addToCartFor", { name: item.name })}
+                      className="bg-brand-bronze hover:bg-brand-orange size-9 shrink-0 cursor-pointer rounded-md text-lg leading-none text-white transition-colors"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
         </div>
       ) : null}
     </div>
+  )
+}
+
+/** Round arrow beside the "often bought together" heading. */
+function CrossNav({
+  label,
+  onClick,
+  children,
+}: {
+  readonly label: string
+  readonly onClick: () => void
+  readonly children: React.ReactNode
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label={label}
+      className="border-brand-field bg-brand-green text-brand-gold hover:bg-brand-surface flex size-9 cursor-pointer items-center justify-center rounded-full border text-base transition-colors"
+    >
+      {children}
+    </button>
   )
 }
 

@@ -4,6 +4,7 @@ import Link from "next/link"
 import { useTranslations } from "next-intl"
 
 import type { ErrorKey, useCheckout } from "@/components/cart/useCheckout"
+import { VETERAN_DISCOUNT_PERCENT } from "@/lib/checkout"
 import { formatPrice } from "@/lib/format"
 import { cn } from "@/lib/styles"
 
@@ -21,15 +22,8 @@ export function CartSummary({ checkout }: { readonly checkout: Checkout }) {
     totals,
     shipping,
     deliveryCost,
-    promoInput,
-    setPromoInput,
-    promo,
-    promoChecked,
-    checkPromo,
-    payment,
-    showSplit,
-    vetPay,
-    remainder,
+    veteran,
+    toggleVeteran,
     errorKeys,
     submitted,
     status,
@@ -44,9 +38,7 @@ export function CartSummary({ checkout }: { readonly checkout: Checkout }) {
     city: t("errCity"),
     branch: t("errBranch"),
     street: t("errStreet"),
-    vet: t("errVet"),
   }
-  const methodLabel = t(payment === "card" ? "payCardShort" : "payCashShort")
 
   return (
     <aside className="border-brand-border bg-brand-green sticky top-5 rounded-xl border p-6.5">
@@ -60,7 +52,7 @@ export function CartSummary({ checkout }: { readonly checkout: Checkout }) {
       />
       {totals.discount > 0 ? (
         <Row
-          label={`${t("discount")}${promo ? ` · ${promo.code}` : ""}`}
+          label={`${t("discount")} · ${t("veteranDiscountTag")}`}
           value={`−${formatPrice(totals.discount)}`}
           valueClass="text-brand-crimson"
         />
@@ -102,44 +94,31 @@ export function CartSummary({ checkout }: { readonly checkout: Checkout }) {
         </span>
       </div>
 
-      {showSplit ? (
-        <div className="bg-brand-steel border-brand-steel-line mt-3.5 rounded-lg border px-3.5 py-3">
-          <div className="text-brand-mist flex justify-between py-0.5 text-[13.5px]">
-            <span>«Дія»</span>
-            <span className="text-brand-orange">{formatPrice(vetPay)}</span>
-          </div>
-          <div className="text-brand-mist flex justify-between py-0.5 text-[13.5px]">
-            <span>{methodLabel}</span>
-            <span className="text-white">{formatPrice(remainder)}</span>
-          </div>
-        </div>
-      ) : null}
-
-      <div className="mt-5 mb-2 flex gap-2.5">
-        <input
-          className="bg-brand-surface text-brand-nav placeholder:text-brand-muted focus:border-brand-bronze border-brand-field flex-1 rounded-lg border px-4 py-3.5 text-[15px] transition-colors outline-none"
-          placeholder={t("promoPlaceholder")}
-          value={promoInput}
-          onChange={(e) => setPromoInput(e.target.value)}
-        />
-        <button
-          type="button"
-          onClick={() => void checkPromo()}
-          className="border-brand-field text-brand-nav hover:border-brand-orange hover:text-brand-cream font-oswald cursor-pointer rounded-lg border px-4.5 text-sm uppercase transition-colors"
-        >
-          OK
-        </button>
-      </div>
-      {promoChecked ? (
-        <p
+      {/* Label left, benefit right — the same shape as the money rows above, so
+          it reads as part of the bill rather than a form to fill in. Nothing is
+          verified, so nothing is asked for beyond the tick. */}
+      <button
+        type="button"
+        onClick={toggleVeteran}
+        aria-pressed={veteran}
+        className="bg-brand-steel border-brand-steel-line mt-3.5 flex w-full cursor-pointer items-center gap-3 rounded-lg border px-4 py-3.5 text-left"
+      >
+        <span
+          aria-hidden
           className={cn(
-            "mb-3.5 text-[13px]",
-            promo ? "text-brand-moss" : "text-brand-crimson"
+            "border-brand-orange text-brand-navy flex size-5 shrink-0 items-center justify-center rounded-[5px] border-2 text-[13px] font-extrabold transition-colors",
+            veteran ? "bg-brand-orange" : "bg-transparent"
           )}
         >
-          {promo ? t("promoOk", { percent: promo.percent }) : t("promoBad")}
-        </p>
-      ) : null}
+          {veteran ? "✓" : null}
+        </span>
+        <span className="text-brand-mist flex-1 text-[14.5px]">
+          {t("veteranDiscount")}
+        </span>
+        <span className="font-oswald text-brand-orange shrink-0 text-sm font-semibold">
+          −{VETERAN_DISCOUNT_PERCENT}%
+        </span>
+      </button>
 
       {submitted && errorKeys.length ? (
         <div className="border-brand-crimson mb-3 rounded-lg border bg-[rgba(207,59,59,0.1)] px-4 py-3.5">
@@ -167,15 +146,9 @@ export function CartSummary({ checkout }: { readonly checkout: Checkout }) {
         <p className="text-brand-orange mt-3 text-center text-sm">{error}</p>
       ) : null}
 
-      <div className="border-brand-border mt-5 flex flex-col gap-2.5 border-t pt-4.5">
-        <Trust icon="🔒">{t("trustPay")}</Trust>
-        <Trust icon="↩">{t("trustReturn")}</Trust>
-        <Trust icon="✓">{t("trustWarranty")}</Trust>
-      </div>
-
       <Link
         href="/catalog"
-        className="text-brand-muted hover:text-brand-cream mt-4 block text-center text-sm transition-colors"
+        className="text-brand-muted hover:text-brand-cream mt-5 block text-center text-sm transition-colors"
       >
         {tc("continueShopping")}
       </Link>
@@ -197,23 +170,6 @@ function Row({
       <span>{label}</span>
       <span className={valueClass}>{value}</span>
     </div>
-  )
-}
-
-function Trust({
-  icon,
-  children,
-}: {
-  readonly icon: string
-  readonly children: React.ReactNode
-}) {
-  return (
-    <p className="text-brand-muted flex items-center gap-2.5 text-[13px]">
-      <span aria-hidden className="text-brand-moss">
-        {icon}
-      </span>
-      {children}
-    </p>
   )
 }
 

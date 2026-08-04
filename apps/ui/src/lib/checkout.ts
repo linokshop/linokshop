@@ -29,6 +29,14 @@ export const isShippingMethod = (value: unknown): value is ShippingMethod =>
  */
 export const CHEAPEST_QUOTE_WEIGHT_KG = 0.5
 
+/**
+ * What a combat veteran takes off the order by ticking the box in the cart.
+ *
+ * Nothing is checked: the shop would rather lose a tenth of an order now and
+ * then than put paperwork between a veteran and a fishing rod.
+ */
+export const VETERAN_DISCOUNT_PERCENT = 10
+
 export interface OrderTotals {
   readonly subtotal: number
   readonly discount: number

@@ -50,6 +50,11 @@
       "target": "api::attribute.attribute",
       "mappedBy": "subcategories"
     },
+    "alsoBought": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::subcategory.subcategory"
+    },
     "products": {
       "type": "relation",
       "relation": "oneToMany",

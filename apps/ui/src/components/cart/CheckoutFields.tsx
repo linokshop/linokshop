@@ -6,7 +6,6 @@ import { useEffect, useState } from "react"
 import type { useCheckout } from "@/components/cart/useCheckout"
 import { useDeliveryCost } from "@/components/cart/useDeliveryCost"
 import type { ShippingMethod } from "@/lib/checkout"
-import { formatPrice } from "@/lib/format"
 import { cn } from "@/lib/styles"
 
 const FIELD =
@@ -23,8 +22,9 @@ type Checkout = ReturnType<typeof useCheckout>
 
 /**
  * Everything between the cart lines and the summary: how it ships, who gets it,
- * how they intend to pay. Payment is arranged off-site — the «Дія» box only
- * records how the customer plans to split it, so the shop knows before calling.
+ * how they intend to pay. Payment itself is arranged off-site, and whether any
+ * of it comes from «Дія» is settled by the manager on the call — asking the
+ * buyer to declare a split here only invited numbers nobody could act on.
  */
 export function CheckoutFields({
   checkout,
@@ -473,117 +473,10 @@ export function CheckoutFields({
                 {t(method === "card" ? "paymentCard" : "paymentCod")}
               </span>
             </button>
-            {payment === method ? <VetPayAddon checkout={checkout} /> : null}
           </div>
         ))}
       </div>
     </>
   )
 }
-
-/** The «Дія» add-on: state support tops the order up, the rest is paid normally. */
-function VetPayAddon({ checkout }: { readonly checkout: Checkout }) {
-  const t = useTranslations("shop.cart")
-  const {
-    useVet,
-    toggleVet,
-    vetAmount,
-    setVetAmount,
-    payment,
-    totals,
-    vetPay,
-    remainder,
-    showSplit,
-    vetCoversAll,
-    errors,
-    submitted,
-  } = checkout
-
-  const methodLabel = t(payment === "card" ? "payCardShort" : "payCashShort")
-
-  return (
-    <div
-      className={cn(
-        "bg-brand-steel mt-3 overflow-hidden rounded-xl border-[1.5px]",
-        useVet ? "border-brand-orange" : "border-brand-steel-line"
-      )}
-    >
-      <button
-        type="button"
-        onClick={toggleVet}
-        className="flex w-full cursor-pointer items-center gap-3.5 p-4.5 text-left"
-      >
-        <span
-          aria-hidden
-          className={cn(
-            "border-brand-orange flex size-5.5 shrink-0 items-center justify-center rounded-md border-2 text-sm font-extrabold",
-            useVet ? "bg-brand-orange text-brand-steel" : "bg-transparent"
-          )}
-        >
-          {useVet ? "✓" : ""}
-        </span>
-        <span className="flex-1">
-          <span className="block text-[15px] font-semibold text-white">
-            {t("vetTitle")}
-          </span>
-          <span className="text-brand-mist mt-0.5 block text-[12.5px]">
-            {t("vetSubtitle")}
-          </span>
-        </span>
-      </button>
-
-      {useVet ? (
-        <div className="px-4.5 pb-5">
-          <p className="text-brand-mist mb-3.5 text-[13px] leading-relaxed">
-            {t("vetExplain", { method: methodLabel })}
-          </p>
-          <div className="relative mb-1.5 max-w-65">
-            <span className="text-brand-mist absolute top-1/2 left-4 -translate-y-1/2 text-sm">
-              {t("vetAmountLabel")}
-            </span>
-            <input
-              className={cn(
-                "bg-brand-field text-brand-cream focus:border-brand-orange w-full rounded-lg border py-3.5 pr-4 pl-[74px] text-[15px] transition-colors outline-none",
-                submitted && errors.vet
-                  ? "border-brand-crimson"
-                  : "border-brand-field"
-              )}
-              inputMode="numeric"
-              placeholder="0"
-              value={vetAmount}
-              onChange={(e) => setVetAmount(e.target.value)}
-            />
-          </div>
-          <p className="text-brand-muted text-[12.5px]">
-            {t("vetMax", { amount: formatPrice(totals.total) })}
-          </p>
-
-          {showSplit ? (
-            <div className="border-brand-steel-line mt-4 border-t pt-4">
-              <div className="text-brand-mist flex justify-between py-1 text-[14.5px]">
-                <span>{t("vetWillCharge")}</span>
-                <span className="font-oswald text-brand-orange">
-                  {formatPrice(vetPay)}
-                </span>
-              </div>
-              <div className="text-brand-mist flex justify-between py-1 text-[14.5px]">
-                <span>{t("vetRest", { method: methodLabel })}</span>
-                <span className="font-oswald text-white">
-                  {formatPrice(remainder)}
-                </span>
-              </div>
-            </div>
-          ) : null}
-          {vetCoversAll ? (
-            <p className="border-brand-steel-line text-brand-moss mt-3.5 flex items-center gap-2 border-t pt-3.5 text-[13.5px]">
-              <span aria-hidden>✓</span>
-              {t("vetCoversAll")}
-            </p>
-          ) : null}
-        </div>
-      ) : null}
-    </div>
-  )
-}
-
 export default CheckoutFields

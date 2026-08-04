@@ -1,4 +1,13 @@
 /**
+ * Anchor for the product page's "often bought with this" block.
+ *
+ * Lives here rather than beside the section because the button that scrolls to
+ * it runs in the browser, and that section is server-only — a client import of
+ * it would drag server code into the bundle.
+ */
+export const ALSO_BOUGHT_ID = "also-bought"
+
+/**
  * Horizontal rhythm for full-bleed blocks (header, footer, page sections).
  *
  * RULE: every full-bleed block MUST use `SECTION_X_PADDING` for its left/right

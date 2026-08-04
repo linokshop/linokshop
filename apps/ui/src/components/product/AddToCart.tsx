@@ -5,7 +5,21 @@ import { useTranslations } from "next-intl"
 import { useState } from "react"
 
 import { type CartItem, useCart } from "@/lib/cart"
+import { ALSO_BOUGHT_ID } from "@/lib/layout"
 import { cn } from "@/lib/styles"
+
+/**
+ * Nudge the page down to "often bought with this" once something is in the cart.
+ *
+ * The moment after adding is when a buyer is most open to the next item, and the
+ * section sits well below the fold. Silent when the section is absent — not every
+ * subcategory has companions configured.
+ */
+function scrollToAlsoBought() {
+  document
+    .querySelector(`#${ALSO_BOUGHT_ID}`)
+    ?.scrollIntoView({ behavior: "smooth", block: "start" })
+}
 
 /**
  * Quantity stepper + "add to cart". The item really lands in the cart (the store
@@ -84,6 +98,7 @@ export function AddToCart({
           onClick={() => {
             add({ ...item, option }, quantity)
             setAdded(true)
+            scrollToAlsoBought()
           }}
           className="bg-brand-bronze font-oswald hover:bg-brand-orange h-13.5 flex-1 cursor-pointer rounded-lg px-6 text-[17px] font-medium tracking-[0.05em] text-white uppercase transition-colors disabled:cursor-not-allowed disabled:opacity-45"
         >

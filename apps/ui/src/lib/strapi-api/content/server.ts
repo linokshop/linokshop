@@ -305,42 +305,6 @@ export async function fetchRecommendedProducts(
 }
 
 /**
- * Resolves a promo code to its discount. Returns undefined for unknown, inactive
- * or expired codes — the caller must treat that as "no discount", never as an
- * error worth trusting the browser over.
- */
-export async function fetchPromoByCode(code: string) {
-  try {
-    const response = await PublicStrapiClient.fetchMany(
-      "api::promo.promo",
-      {
-        status: "published",
-        filters: { code: { $eqi: code.trim() }, active: { $eq: true } },
-        pagination: { page: 1, pageSize: 1 },
-      },
-      { cache: "no-store" }
-    )
-    const promo = response?.data?.[0]
-    if (!promo?.percent) {
-      return
-    }
-    // An expiry in the past disables the code without anyone editing it.
-    if (promo.expiresAt && new Date(promo.expiresAt) < new Date()) {
-      return
-    }
-
-    return { code: promo.code ?? code, percent: promo.percent }
-  } catch (e: unknown) {
-    logNonBlockingError({
-      message: `Error fetching promo '${code}'`,
-      error: { error: e instanceof Error ? e.message : String(e) },
-    })
-
-    return
-  }
-}
-
-/**
  * One product for its page, priced from the kasa. Returns `{ data: undefined }`
  * when the product has no kasa match — the page then 404s, because a product we
  * can't price is a product we can't sell.
@@ -359,10 +323,20 @@ export async function fetchProductBySlug(
           status: "published",
           populate: {
             images: true,
-            // The parent category comes along for the breadcrumb: product →
-            // subcategory → category.
+            // The parent category comes along for the breadcrumb (product →
+            // subcategory → category), and `alsoBought` carries the
+            // subcategories a buyer typically needs alongside this one — each
+            // with its own category, because the link is a nested path.
             subcategory: {
-              populate: { category: { fields: ["name", "slug"] } },
+              populate: {
+                category: { fields: ["name", "slug"] },
+                alsoBought: {
+                  populate: {
+                    image: true,
+                    category: { fields: ["slug"] },
+                  },
+                },
+              },
             },
             brand: true,
             specs: true,
@@ -400,6 +374,8 @@ export async function fetchProductBySlug(
 
 export interface CatalogQuery {
   readonly categories: string[]
+  /** Whole-category view: every product under this category's subcategories. */
+  readonly category?: string
   readonly brands: string[]
   /** Chosen attribute-value slugs, e.g. ["3-6-m", "karbon"]. */
   readonly attributeValues: string[]
@@ -494,6 +470,14 @@ export interface CatalogPage {
   }
   /** How many products carry each attribute value, keyed by value slug. */
   readonly attributeCounts: Record<string, number>
+  /** How many products carry each brand, keyed by brand slug. */
+  readonly brandCounts: Record<string, number>
+  /**
+   * Cheapest and dearest product in this view, before the price filter narrows
+   * it — the ends of the price slider. Taken pre-filter so dragging a handle
+   * never shrinks the track under the reader's finger.
+   */
+  readonly priceBounds: { readonly min: number; readonly max: number }
 }
 
 /**
@@ -517,13 +501,18 @@ export async function fetchCatalogProducts(
       },
     },
     attributeCounts: {},
+    brandCounts: {},
+    priceBounds: { min: 0, max: 0 },
   }
 
   const filters: Record<string, unknown> = {}
   if (query.categories.length) {
     // The catalog is reached by drilling into a subcategory, so this slug filters
-    // on the product's subcategory.
+    // on the product's subcategory. A chosen subcategory always sits inside the
+    // locked category, so it is the narrower of the two and wins.
     filters.subcategory = { slug: { $in: query.categories } }
+  } else if (query.category) {
+    filters.subcategory = { category: { slug: { $eq: query.category } } }
   }
   if (query.brands.length) {
     filters.brand = { slug: { $in: query.brands } }
@@ -563,14 +552,25 @@ export async function fetchCatalogProducts(
     // Counts are taken before the attribute filter is applied, so a sidebar
     // option still shows how many products it would bring back rather than
     // collapsing to zero the moment a sibling option is ticked.
+    const prices = items.map((product) => product.price)
+    const priceBounds = {
+      min: prices.length ? Math.floor(Math.min(...prices)) : 0,
+      max: prices.length ? Math.ceil(Math.max(...prices)) : 0,
+    }
+
     const attributeCounts: Record<string, number> = {}
     const attributeOfValue: Record<string, string> = {}
+    const brandCounts: Record<string, number> = {}
     for (const product of items) {
       for (const value of product.attributeValues ?? []) {
         if (value.slug) {
           attributeCounts[value.slug] = (attributeCounts[value.slug] ?? 0) + 1
           attributeOfValue[value.slug] = value.attribute?.slug ?? value.slug
         }
+      }
+      const brand = product.brand?.slug
+      if (brand) {
+        brandCounts[brand] = (brandCounts[brand] ?? 0) + 1
       }
     }
 
@@ -607,6 +607,8 @@ export async function fetchCatalogProducts(
         },
       },
       attributeCounts,
+      brandCounts,
+      priceBounds,
     }
   } catch (e: unknown) {
     logNonBlockingError({
@@ -618,56 +620,6 @@ export async function fetchCatalogProducts(
     })
 
     return emptyPage
-  }
-}
-
-/** Other products from the same category — the "related" rail on a product page. */
-export async function fetchRelatedProducts(
-  locale: Locale,
-  categorySlug: string | undefined,
-  excludeSlug: string,
-  limit = 4
-) {
-  if (!categorySlug) return []
-
-  try {
-    const [response, kasaMap] = await Promise.all([
-      PublicStrapiClient.fetchMany(
-        "api::product.product",
-        {
-          locale,
-          status: "published",
-          filters: {
-            subcategory: { slug: { $eq: categorySlug } },
-            slug: { $ne: excludeSlug },
-          },
-          sort: ["popularity:desc"],
-          populate: { images: true, subcategory: true },
-          // Over-fetch: the kasa merge drops unpriced ones, so trim to `limit`
-          // after the merge, not in the query.
-          pagination: { page: 1, pageSize: Math.max(limit * 5, 20) },
-        },
-        {
-          next: {
-            revalidate: 300,
-            tags: [strapiCacheTag("api::product.product")],
-          },
-        }
-      ),
-      getKasaMap(),
-    ])
-
-    return enrichProducts(response.data ?? [], kasaMap).slice(0, limit)
-  } catch (e: unknown) {
-    logNonBlockingError({
-      message: `Error fetching related products for '${excludeSlug}'`,
-      error: {
-        error: e instanceof Error ? e.message : String(e),
-        stack: e instanceof Error ? e.stack : undefined,
-      },
-    })
-
-    return []
   }
 }
 

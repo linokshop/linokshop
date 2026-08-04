@@ -1001,45 +1001,6 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
   }
 }
 
-export interface ApiPromoPromo extends Struct.CollectionTypeSchema {
-  collectionName: "promos"
-  info: {
-    description: "A discount code applied at checkout. The percentage is applied server-side — a code the browser claims to hold is never trusted."
-    displayName: "Promo"
-    pluralName: "promos"
-    singularName: "promo"
-  }
-  options: {
-    draftAndPublish: true
-  }
-  pluginOptions: {
-    i18n: {
-      localized: false
-    }
-  }
-  attributes: {
-    active: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>
-    code: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.Unique
-    createdAt: Schema.Attribute.DateTime
-    createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
-      Schema.Attribute.Private
-    expiresAt: Schema.Attribute.Date
-    locale: Schema.Attribute.String & Schema.Attribute.Private
-    localizations: Schema.Attribute.Relation<"oneToMany", "api::promo.promo"> &
-      Schema.Attribute.Private
-    note: Schema.Attribute.String
-    percent: Schema.Attribute.Integer &
-      Schema.Attribute.Required &
-      Schema.Attribute.SetMinMax<{ max: 90; min: 1 }, number>
-    publishedAt: Schema.Attribute.DateTime
-    updatedAt: Schema.Attribute.DateTime
-    updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
-      Schema.Attribute.Private
-  }
-}
-
 export interface ApiRedirectRedirect extends Struct.CollectionTypeSchema {
   collectionName: "redirects"
   info: {
@@ -1087,6 +1048,10 @@ export interface ApiSubcategorySubcategory
     }
   }
   attributes: {
+    alsoBought: Schema.Attribute.Relation<
+      "manyToMany",
+      "api::subcategory.subcategory"
+    >
     category: Schema.Attribute.Relation<"manyToOne", "api::category.category">
     createdAt: Schema.Attribute.DateTime
     createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
@@ -1670,7 +1635,6 @@ declare module "@strapi/strapi" {
       "api::header.header": ApiHeaderHeader
       "api::page.page": ApiPagePage
       "api::product.product": ApiProductProduct
-      "api::promo.promo": ApiPromoPromo
       "api::redirect.redirect": ApiRedirectRedirect
       "api::subcategory.subcategory": ApiSubcategorySubcategory
       "api::subscriber.subscriber": ApiSubscriberSubscriber

@@ -3,6 +3,7 @@
 import { useSearchParams } from "next/navigation"
 import { useState } from "react"
 
+import { PriceSlider } from "@/components/page-builder/components/elements/PriceSlider"
 import { Link, usePathname, useRouter } from "@/lib/navigation"
 import { cn } from "@/lib/styles"
 
@@ -44,9 +45,12 @@ export function CatalogFilters({
   labels,
   currentSubcategory,
   attributeGroups = [],
+  priceBounds,
 }: {
   readonly categoryTree: readonly CategoryGroup[]
   readonly brands: readonly FilterOption[]
+  /** Ends of the price slider — the cheapest and dearest product in this view. */
+  readonly priceBounds: { readonly min: number; readonly max: number }
   /** Per-property facets; only present inside a subcategory. */
   readonly attributeGroups?: readonly AttributeGroup[]
   /** Set on a subcategory page: switches the category list to navigation. */
@@ -168,18 +172,34 @@ export function CatalogFilters({
       ) : null}
 
       <FilterHeading>{labels.price}</FilterHeading>
-      <div className="border-brand-border mb-5 flex gap-2.5 border-b pb-5.5">
-        <PriceInput
-          value={priceMin}
-          onChange={setPriceMin}
-          placeholder={labels.priceFromPlaceholder}
-          aria-label={`${labels.price} — ${labels.priceFromAria}`}
-        />
-        <PriceInput
-          value={priceMax}
-          onChange={setPriceMax}
-          placeholder={labels.priceToPlaceholder}
-          aria-label={`${labels.price} — ${labels.priceToAria}`}
+      <div className="border-brand-border mb-5 border-b pb-5.5">
+        <div className="mb-4 flex gap-2.5">
+          <PriceInput
+            value={priceMin}
+            onChange={setPriceMin}
+            placeholder={labels.priceFromPlaceholder}
+            aria-label={`${labels.price} — ${labels.priceFromAria}`}
+          />
+          <PriceInput
+            value={priceMax}
+            onChange={setPriceMax}
+            placeholder={labels.priceToPlaceholder}
+            aria-label={`${labels.price} — ${labels.priceToAria}`}
+          />
+        </div>
+        {/* The boxes and the slider are two views of one range — typing moves the
+            handles, dragging fills the boxes. */}
+        <PriceSlider
+          min={priceBounds.min}
+          max={priceBounds.max}
+          from={priceMin.trim() ? Number(priceMin) : priceBounds.min}
+          to={priceMax.trim() ? Number(priceMax) : priceBounds.max}
+          onChange={({ from, to }) => {
+            setPriceMin(String(from))
+            setPriceMax(String(to))
+          }}
+          labelFrom={`${labels.price} — ${labels.priceFromAria}`}
+          labelTo={`${labels.price} — ${labels.priceToAria}`}
         />
       </div>
 
@@ -216,6 +236,7 @@ export function CatalogFilters({
                   toggle(selectedBrands, setSelectedBrands, brand.slug)
                 }
                 label={brand.name}
+                count={brand.count}
               />
             ))}
           </div>
