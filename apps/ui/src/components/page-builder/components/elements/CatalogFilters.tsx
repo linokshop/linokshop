@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation"
 import { useState } from "react"
 
 import { PriceSlider } from "@/components/page-builder/components/elements/PriceSlider"
+import { SECTION_X_PADDING } from "@/lib/layout"
 import { Link, usePathname, useRouter } from "@/lib/navigation"
 import { cn } from "@/lib/styles"
 
@@ -128,7 +129,15 @@ export function CatalogFilters({
   }
 
   return (
-    <aside className="border-brand-border bg-brand-green rounded-[10px] border p-6.5">
+    <aside
+      className={cn(
+        SECTION_X_PADDING,
+        // Vertical padding stays its own value; only the horizontal side
+        // borrows the page gutter, so this card's text lines up with the
+        // heading above it instead of drifting in by its own border-inset.
+        "border-brand-border bg-brand-green rounded-[10px] border py-6.5"
+      )}
+    >
       {categoryTree.length ? (
         <>
           <FilterHeading>{labels.categories}</FilterHeading>

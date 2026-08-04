@@ -87,7 +87,10 @@ export default async function CategoryPage({
         ) : null}
       </div>
 
-      <section className={cn(SECTION_X_PADDING, CONTENT_MAX_W, "pt-2 pb-17.5")}>
+      {/* No SECTION_X_PADDING here: the tile grid's own edge should land on the
+          filters card's outer border below, not add a second gutter on top of
+          it. */}
+      <section className={cn(CONTENT_MAX_W, "pt-2 pb-17.5")}>
         {/* A category with no subcategories holds no products either — products
             attach to subcategories. Say so instead of showing an empty grid. */}
         {subcategories.length === 0 ? (

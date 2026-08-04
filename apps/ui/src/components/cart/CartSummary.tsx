@@ -50,13 +50,15 @@ export function CartSummary({ checkout }: { readonly checkout: Checkout }) {
         label={t("itemsCount", { count })}
         value={formatPrice(totals.subtotal)}
       />
-      {totals.discount > 0 ? (
-        <Row
-          label={`${t("discount")} · ${t("veteranDiscountTag")}`}
-          value={`−${formatPrice(totals.discount)}`}
-          valueClass="text-brand-crimson"
-        />
-      ) : null}
+      {/* Always in the layout, just invisible at 0 — `visibility` rather than
+          conditional rendering, so ticking the veteran box doesn't shift
+          delivery/total/the box itself up and down by a row's height. */}
+      <Row
+        label={`${t("discount")} · ${t("veteranDiscountTag")}`}
+        value={`−${formatPrice(totals.discount)}`}
+        valueClass="text-brand-orange"
+        className={totals.discount > 0 ? undefined : "invisible"}
+      />
       {shipping === "pickup" ? (
         <Row
           label={t("delivery")}
@@ -160,13 +162,20 @@ function Row({
   label,
   value,
   valueClass,
+  className,
 }: {
   readonly label: string
   readonly value: string
   readonly valueClass?: string
+  readonly className?: string
 }) {
   return (
-    <div className="text-brand-nav flex justify-between py-2 text-[15px]">
+    <div
+      className={cn(
+        "text-brand-nav flex justify-between py-2 text-[15px]",
+        className
+      )}
+    >
       <span>{label}</span>
       <span className={valueClass}>{value}</span>
     </div>

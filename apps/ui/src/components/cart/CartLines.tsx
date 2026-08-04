@@ -175,7 +175,7 @@ export function CartLines({
               so two of them would push the checkout form off the first screen. */}
           <div
             ref={crossTrack}
-            className="flex snap-x snap-proximity [scrollbar-width:none] gap-5 overflow-x-auto pb-1 [&::-webkit-scrollbar]:hidden"
+            className="flex min-w-0 snap-x snap-proximity scrollbar-none gap-5 overflow-x-auto pb-1 [&::-webkit-scrollbar]:hidden"
           >
             {crossSell.map((item) => (
               <div

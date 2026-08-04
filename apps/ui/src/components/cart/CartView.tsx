@@ -84,7 +84,11 @@ export function CartView({
       </p>
 
       <div className="grid items-start gap-8 min-[900px]:grid-cols-[1fr_400px]">
-        <div>
+        {/* `min-w-0`: a bare grid track defaults to `minmax(auto, 1fr)`, so
+            without this the cross-sell rail's unshrinkable card row (below,
+            inside its own overflow-x-auto) blows the track out to its
+            min-content width instead of scrolling within it. */}
+        <div className="min-w-0">
           <CartLines
             lines={lines}
             lineIdOf={lineId}
