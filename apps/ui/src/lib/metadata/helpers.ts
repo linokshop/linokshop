@@ -4,7 +4,7 @@ import type { Metadata } from "next"
 import type { Locale } from "next-intl"
 
 import { metaRobots } from "@/lib/metadata/constants"
-import { routing } from "@/lib/navigation"
+import { isValidLocale, routing } from "@/lib/navigation"
 import type { StrapiLocalization } from "@/types/api"
 import type { NextMetadataTwitterCard, SocialMetadata } from "@/types/general"
 
@@ -89,9 +89,12 @@ export const getMetaAlternates = ({
   if (Array.isArray(localizations)) {
     languages = {}
 
-    // Only available languages should be added as alternates
+    // Only available languages should be added as alternates — Strapi may
+    // still hold a localization (e.g. ru) for a locale the app no longer
+    // routes, and advertising that hreflang would point search engines at a
+    // 404.
     for (const localization of localizations) {
-      if (!localization.locale) {
+      if (!localization.locale || !isValidLocale(localization.locale)) {
         continue
       }
 

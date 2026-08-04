@@ -8,7 +8,6 @@ import { cn } from "@/lib/styles"
 
 const shortLabel: Record<Locale, string> = {
   uk: "UA",
-  ru: "RU",
 }
 
 /**
@@ -20,9 +19,17 @@ const shortLabel: Record<Locale, string> = {
  * statically prerendered page (the header is global), which breaks the build.
  */
 export function HeaderLocaleToggle({ locale }: { readonly locale: Locale }) {
+  // Hooks run unconditionally; the single-locale early-out sits below them,
+  // after render() has whatever it needs either way.
   const pathname = usePathname()
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
+
+  // Nothing to switch to with a single locale — renders itself back in the
+  // moment a second one is added to `routing.locales`.
+  if (routing.locales.length < 2) {
+    return null
+  }
 
   const switchTo = (code: Locale) => {
     if (code === locale) {

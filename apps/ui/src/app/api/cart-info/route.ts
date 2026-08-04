@@ -16,7 +16,7 @@ import { formatStrapiMediaUrl } from "@/lib/strapi-helpers"
  */
 const schema = z.object({
   slugs: z.array(z.string().trim().min(1).max(200)).min(1).max(50),
-  locale: z.enum(["uk", "ru"]).default("uk"),
+  locale: z.enum(["uk"]).default("uk"),
 })
 
 export async function POST(request: NextRequest) {

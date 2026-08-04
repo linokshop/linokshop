@@ -6,17 +6,20 @@ import { defineRouting } from "next-intl/routing"
 import { getEnvVar } from "@/lib/env-vars"
 
 export const routing = defineRouting({
-  // A list of all locales that are supported
-  locales: ["ru", "uk"],
+  // A list of all locales that are supported.
+  //
+  // Launching uk-only (2026-08-04): ru was cut from here rather than left
+  // configured-but-hidden, so a stray `/ru/...` link 404s instead of quietly
+  // serving a locale nobody is maintaining anymore.
+  locales: ["uk"],
 
   // Used when no locale matches
   defaultLocale: "uk",
 
   localePrefix: "as-needed",
 
-  // Don't auto-redirect "/" to a browser/cookie-detected locale (e.g. "/ru").
-  // The site is Ukrainian-first; "/" always serves the default (uk), and
-  // Russian lives under "/ru".
+  // Don't auto-redirect "/" to a browser/cookie-detected locale. With a single
+  // locale this is moot, but kept explicit for when a second locale returns.
   localeDetection: false,
 })
 

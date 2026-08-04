@@ -265,7 +265,6 @@
       "price": "Ціна, ₴",
       "brand": "Бренд",
       "inStockOnly": "Тільки в наявності",
-      "apply": "Застосувати",
       "reset": "Скинути",
       "priceFromPlaceholder": "від {value}",
       "priceToPlaceholder": "до {value}",
