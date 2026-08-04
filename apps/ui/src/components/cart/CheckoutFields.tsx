@@ -274,6 +274,20 @@ export function CheckoutFields({
           }
         />
       </div>
+      <div className="mb-3.5 grid gap-3.5 min-[600px]:grid-cols-2">
+        <input
+          className={cn(FIELD, "border-brand-field")}
+          placeholder={t("viberPlaceholder")}
+          value={form.viber}
+          onChange={(e) => setForm({ ...form, viber: e.target.value })}
+        />
+        <input
+          className={cn(FIELD, "border-brand-field")}
+          placeholder={t("telegramPlaceholder")}
+          value={form.telegram}
+          onChange={(e) => setForm({ ...form, telegram: e.target.value })}
+        />
+      </div>
 
       {shipping === "pickup" ? (
         <div className="border-brand-field bg-brand-surface mb-7 flex items-start gap-3 rounded-lg border px-4.5 py-4">

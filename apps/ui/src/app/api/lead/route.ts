@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from "next/server"
 import { z } from "zod"
 
 import {
+  type OrderTotals,
   type ShippingMethod,
   VETERAN_DISCOUNT_PERCENT,
   orderTotals,
@@ -10,15 +11,19 @@ import { getEnvVar } from "@/lib/env-vars"
 import { formatPrice as price } from "@/lib/format"
 import { isProduction } from "@/lib/general-helpers"
 import { logError, logger } from "@/lib/logging"
+import { PublicStrapiClient } from "@/lib/strapi-api"
 import { fetchProductBySlug } from "@/lib/strapi-api/content/server"
 
 /**
  * Sends a lead to Telegram: either a "write to us" message from the contacts
  * page, or an order from the cart.
  *
- * Nothing is stored — Telegram is the inbox. If we ever need order history,
- * that becomes an Order collection in Strapi; this route would then write there
- * first and notify Telegram second.
+ * An order is written to the `api::order.order` collection first (so staff
+ * can look up and update its status in the admin panel later) and Telegram is
+ * notified second. A contact message is not an order, so it only ever goes to
+ * Telegram. Failure to persist the order to Strapi is logged but does not
+ * block the sale — Telegram is still the source of truth for "did this order
+ * reach a human".
  *
  * The bot token never reaches the browser: the form posts here, and only this
  * route (server-side) talks to Telegram.
@@ -50,6 +55,8 @@ const orderSchema = z.object({
   kind: z.literal("order"),
   name: z.string().trim().min(2).max(100),
   phone: z.string().trim().min(6).max(30),
+  viber: z.string().trim().max(30).optional(),
+  telegram: z.string().trim().max(30).optional(),
   shipping: z.enum(["pickup", "branch", "courier"]),
   city: z.string().trim().max(120).optional(),
   branch: z.string().trim().max(200).optional(),
@@ -108,6 +115,8 @@ interface PricedItem {
   readonly option?: string
   readonly price: number
   readonly quantity: number
+  /** Strapi documentId, kept only for the Order's optional traceability relation. */
+  readonly productId?: string
 }
 
 /**
@@ -135,6 +144,7 @@ async function repriceItems(
         option: item.option,
         price: product.price,
         quantity: item.quantity,
+        productId: product.documentId,
       }
     })
   )
@@ -183,16 +193,10 @@ function addressLines(lead: Extract<Lead, { kind: "order" }>): string[] {
 function buildOrderMessage(
   lead: Extract<Lead, { kind: "order" }>,
   items: readonly PricedItem[],
-  orderNo: string
+  orderNo: string,
+  totals: OrderTotals
 ): string {
-  const subtotal = items.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  )
-  const { discount, total } = orderTotals(
-    subtotal,
-    lead.veteran ? VETERAN_DISCOUNT_PERCENT : 0
-  )
+  const { subtotal, discount, total } = totals
 
   // Whether any of this is covered by «Дія» is settled on the call, so the order
   // carries only the method the buyer picked.
@@ -204,6 +208,8 @@ function buildOrderMessage(
     "",
     `<b>Отримувач:</b> ${esc(lead.name)}`,
     `<b>Телефон:</b> ${esc(lead.phone)}`,
+    ...(lead.viber ? [`<b>Viber:</b> ${esc(lead.viber)}`] : []),
+    ...(lead.telegram ? [`<b>Telegram:</b> ${esc(lead.telegram)}`] : []),
     "",
     `<b>Доставка:</b> ${SHIPPING_LABELS[lead.shipping]}`,
     ...addressLines(lead),
@@ -227,6 +233,57 @@ function buildOrderMessage(
       : "Доставка: за тарифами Нової Пошти (залежить від ваги, оплата при отриманні)",
     `<b>Разом за товар: ${price(total)}</b>`,
   ].join("\n")
+}
+
+/**
+ * Persists the order to `api::order.order` so staff can find it and change its
+ * status (created → confirmed → paid → shipped → completed, or cancelled) from
+ * the Strapi admin. Best-effort: a failure here is logged but must not stop the
+ * Telegram notification, since that is what actually gets the order fulfilled.
+ */
+async function createOrderRecord(
+  lead: Extract<Lead, { kind: "order" }>,
+  items: readonly PricedItem[],
+  orderNo: string,
+  totals: OrderTotals
+): Promise<void> {
+  try {
+    await PublicStrapiClient.fetchAPI(
+      "/orders",
+      {},
+      {
+        method: "POST",
+        body: JSON.stringify({
+          data: {
+            orderNo,
+            customerName: lead.name,
+            phone: lead.phone,
+            viber: lead.viber,
+            telegram: lead.telegram,
+            shipping: lead.shipping,
+            city: lead.city,
+            branch: lead.branch,
+            street: lead.street,
+            comment: lead.comment,
+            payment: lead.payment,
+            veteran: Boolean(lead.veteran),
+            items: items.map((item) => ({
+              product: item.productId,
+              productName: item.name,
+              option: item.option,
+              price: item.price,
+              quantity: item.quantity,
+            })),
+            subtotal: totals.subtotal,
+            discount: totals.discount,
+            total: totals.total,
+          },
+        }),
+      }
+    )
+  } catch (error) {
+    logError(error, "Could not save the order to Strapi", { orderNo })
+  }
 }
 
 // A crude per-IP throttle. Enough to stop a form being hammered; it lives in
@@ -330,7 +387,18 @@ export async function POST(request: NextRequest) {
       // Prices come from Strapi, never from the browser; the veteran discount is
       // a flat percentage applied on top, so there is nothing to look up.
       const items = await repriceItems(parsed.data.items)
-      text = buildOrderMessage(parsed.data, items, orderNo ?? "")
+      const subtotal = items.reduce(
+        (sum, item) => sum + item.price * item.quantity,
+        0
+      )
+      const totals = orderTotals(
+        subtotal,
+        parsed.data.veteran ? VETERAN_DISCOUNT_PERCENT : 0
+      )
+
+      // Write first (order history in the admin), notify second (Telegram).
+      await createOrderRecord(parsed.data, items, orderNo ?? "", totals)
+      text = buildOrderMessage(parsed.data, items, orderNo ?? "", totals)
     }
   } catch (error) {
     logError(error, "Could not price the order from Strapi")

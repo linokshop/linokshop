@@ -1,0 +1,92 @@
+{
+  "kind": "collectionType",
+  "collectionName": "orders",
+  "info": {
+    "singularName": "order",
+    "pluralName": "orders",
+    "displayName": "Order",
+    "description": "A checkout order placed on the ЛінОк storefront."
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "orderNo": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "created",
+        "no_answer",
+        "confirmed",
+        "paid",
+        "shipped",
+        "completed",
+        "cancelled"
+      ],
+      "default": "created",
+      "required": true
+    },
+    "customerName": {
+      "type": "string",
+      "required": true
+    },
+    "phone": {
+      "type": "string",
+      "required": true
+    },
+    "viber": {
+      "type": "string"
+    },
+    "telegram": {
+      "type": "string"
+    },
+    "shipping": {
+      "type": "enumeration",
+      "enum": ["pickup", "branch", "courier"],
+      "required": true
+    },
+    "city": {
+      "type": "string"
+    },
+    "branch": {
+      "type": "string"
+    },
+    "street": {
+      "type": "string"
+    },
+    "comment": {
+      "type": "text"
+    },
+    "payment": {
+      "type": "enumeration",
+      "enum": ["card", "cash"],
+      "required": true
+    },
+    "veteran": {
+      "type": "boolean",
+      "default": false
+    },
+    "items": {
+      "type": "component",
+      "component": "order.order-item",
+      "repeatable": true,
+      "required": true
+    },
+    "subtotal": {
+      "type": "decimal",
+      "required": true
+    },
+    "discount": {
+      "type": "decimal",
+      "default": 0
+    },
+    "total": {
+      "type": "decimal",
+      "required": true
+    }
+  }
+}

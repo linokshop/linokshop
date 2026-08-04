@@ -311,6 +311,8 @@
       "recipient": "Дані отримувача",
       "namePlaceholder": "Ім’я та прізвище",
       "phonePlaceholder": "+380 __ ___ __ __",
+      "viberPlaceholder": "Viber (необовʼязково)",
+      "telegramPlaceholder": "Telegram (необовʼязково)",
       "cityPlaceholder": "Почніть вводити місто…",
       "officePlaceholder": "Відділення Нової Пошти",
       "payment": "Оплата",

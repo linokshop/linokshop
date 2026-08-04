@@ -709,6 +709,20 @@ export interface UtilitiesTipTapRichText extends Struct.ComponentSchema {
   }
 }
 
+export interface OrderOrderItem extends Struct.ComponentSchema {
+  collectionName: "components_order_order_items"
+  info: {
+    displayName: "Order item"
+  }
+  attributes: {
+    option: Schema.Attribute.String
+    price: Schema.Attribute.Decimal & Schema.Attribute.Required
+    product: Schema.Attribute.Relation<"oneToOne", "api::product.product">
+    productName: Schema.Attribute.String & Schema.Attribute.Required
+    quantity: Schema.Attribute.Integer & Schema.Attribute.Required
+  }
+}
+
 declare module "@strapi/strapi" {
   export module Public {
     export interface ComponentSchemas {
@@ -754,6 +768,7 @@ declare module "@strapi/strapi" {
       "utilities.links-with-title": UtilitiesLinksWithTitle
       "utilities.text": UtilitiesText
       "utilities.tip-tap-rich-text": UtilitiesTipTapRichText
+      "order.order-item": OrderOrderItem
     }
   }
 }

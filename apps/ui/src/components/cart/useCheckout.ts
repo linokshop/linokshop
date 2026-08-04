@@ -50,6 +50,8 @@ export function useCheckout() {
   const [form, setForm] = useState({
     name: "",
     phone: "",
+    viber: "",
+    telegram: "",
     city: "",
     cityPicked: "",
     branch: "",
@@ -177,6 +179,8 @@ export function useCheckout() {
           kind: "order",
           name: form.name,
           phone: form.phone,
+          viber: form.viber || undefined,
+          telegram: form.telegram || undefined,
           shipping,
           city: form.cityPicked || undefined,
           branch: shipping === "branch" ? form.branch : undefined,

@@ -1615,6 +1615,62 @@ export interface PluginUsersPermissionsUser
   }
 }
 
+export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
+  collectionName: "orders"
+  info: {
+    description: "A checkout order placed on the ЛінОк storefront."
+    displayName: "Order"
+    pluralName: "orders"
+    singularName: "order"
+  }
+  options: {
+    draftAndPublish: false
+  }
+  attributes: {
+    branch: Schema.Attribute.String
+    city: Schema.Attribute.String
+    comment: Schema.Attribute.Text
+    createdAt: Schema.Attribute.DateTime
+    createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
+      Schema.Attribute.Private
+    customerName: Schema.Attribute.String & Schema.Attribute.Required
+    discount: Schema.Attribute.Decimal & Schema.Attribute.DefaultTo<0>
+    items: Schema.Attribute.Component<"order.order-item", true> &
+      Schema.Attribute.Required
+    orderNo: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique
+    payment: Schema.Attribute.Enumeration<["card", "cash"]> &
+      Schema.Attribute.Required
+    phone: Schema.Attribute.String & Schema.Attribute.Required
+    publishedAt: Schema.Attribute.DateTime
+    shipping: Schema.Attribute.Enumeration<["pickup", "branch", "courier"]> &
+      Schema.Attribute.Required
+    status: Schema.Attribute.Enumeration<
+      [
+        "created",
+        "no_answer",
+        "confirmed",
+        "paid",
+        "shipped",
+        "completed",
+        "cancelled",
+      ]
+    > &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<"created">
+    street: Schema.Attribute.String
+    subtotal: Schema.Attribute.Decimal & Schema.Attribute.Required
+    telegram: Schema.Attribute.String
+    total: Schema.Attribute.Decimal & Schema.Attribute.Required
+    updatedAt: Schema.Attribute.DateTime
+    updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
+      Schema.Attribute.Private
+    veteran: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>
+    viber: Schema.Attribute.String
+  }
+}
+
 declare module "@strapi/strapi" {
   export module Public {
     export interface ContentTypeSchemas {
@@ -1633,6 +1689,7 @@ declare module "@strapi/strapi" {
       "api::footer.footer": ApiFooterFooter
       "api::hierarchy.hierarchy": ApiHierarchyHierarchy
       "api::header.header": ApiHeaderHeader
+      "api::order.order": ApiOrderOrder
       "api::page.page": ApiPagePage
       "api::product.product": ApiProductProduct
       "api::redirect.redirect": ApiRedirectRedirect
