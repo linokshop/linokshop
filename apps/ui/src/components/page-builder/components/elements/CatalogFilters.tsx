@@ -352,17 +352,20 @@ function SubcategoryLink({
       href={href}
       aria-current={active ? "page" : undefined}
       className={cn(
-        "flex items-center gap-2.5 py-1.5 text-[14.5px] transition-colors",
+        // Negative margin + padding: the hover/active fill runs past the
+        // text to the row's full width, so the target reads as a row you
+        // click, not a label that happens to sit next to a link.
+        "-mx-2 flex items-center gap-2.5 rounded-md px-2 py-1.5 text-[14.5px] transition-colors",
         active
-          ? "text-brand-gold font-semibold"
-          : "text-brand-nav hover:text-brand-cream"
+          ? "bg-brand-surface text-brand-gold font-semibold"
+          : "text-brand-nav hover:bg-brand-surface hover:text-brand-cream"
       )}
     >
       <span
         aria-hidden
         className={cn(
           "size-1.5 shrink-0 rounded-full",
-          active ? "bg-brand-bronze" : "bg-transparent"
+          active ? "bg-brand-bronze" : "bg-brand-check"
         )}
       />
       {label}
