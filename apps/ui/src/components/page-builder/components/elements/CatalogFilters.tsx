@@ -1,8 +1,9 @@
 "use client"
 
 import { useSearchParams } from "next/navigation"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
+import { useCatalogPending } from "@/components/page-builder/components/elements/CatalogPending"
 import { PriceSlider } from "@/components/page-builder/components/elements/PriceSlider"
 import { SECTION_X_PADDING } from "@/lib/layout"
 import { Link, usePathname, useRouter } from "@/lib/navigation"
@@ -31,7 +32,9 @@ export interface AttributeGroup {
 /**
  * The filter state lives in the URL, not in React state — so a filtered view can
  * be shared, bookmarked and rendered on the server, and the back button works.
- * Local state here only holds what the user is editing before pressing "apply".
+ * Local state only mirrors it for instant checkbox feedback; every toggle pushes
+ * straight to the URL. Price is the one exception — it debounces, or every
+ * keystroke would refetch the grid.
  *
  * The category list has two modes. On the whole catalogue it is a multi-select
  * filter (checkboxes, applied on demand). Inside a subcategory the choice is
@@ -61,7 +64,6 @@ export function CatalogFilters({
     readonly price: string
     readonly brand: string
     readonly inStock: string
-    readonly apply: string
     readonly reset: string
     readonly priceFromPlaceholder: string
     readonly priceToPlaceholder: string
@@ -72,6 +74,7 @@ export function CatalogFilters({
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
+  const { startTransition } = useCatalogPending()
 
   const readList = (key: string) =>
     (searchParams.get(key) ?? "").split(",").filter(Boolean)
@@ -85,38 +88,83 @@ export function CatalogFilters({
   const [priceMax, setPriceMax] = useState(searchParams.get("priceMax") ?? "")
   const [inStock, setInStock] = useState(searchParams.get("inStock") === "true")
 
-  const toggle = (
-    list: string[],
-    setList: (next: string[]) => void,
-    slug: string
-  ) =>
-    setList(
-      list.includes(slug) ? list.filter((s) => s !== slug) : [...list, slug]
-    )
-
-  const apply = () => {
+  /**
+   * Pushes the URL from whatever is passed plus whatever isn't — an override
+   * wins over current state, so a toggle can push the *next* value without
+   * waiting a render for `setState` to land.
+   */
+  const applyParams = (override: {
+    categories?: string[]
+    brands?: string[]
+    values?: string[]
+    priceMin?: string
+    priceMax?: string
+    inStock?: boolean
+  }) => {
     const params = new URLSearchParams()
     // The sort order survives a filter change; the page number cannot — page 5
     // of the old result set may not exist in the new one.
     const sort = searchParams.get("sort")
     if (sort) params.set("sort", sort)
 
-    if (selectedCategories.length) {
-      params.set("subcategory", selectedCategories.join(","))
-    }
-    if (selectedBrands.length) params.set("brand", selectedBrands.join(","))
-    if (selectedValues.length) params.set("attr", selectedValues.join(","))
-    if (priceMin.trim()) params.set("priceMin", priceMin.trim())
-    if (priceMax.trim()) params.set("priceMax", priceMax.trim())
-    if (inStock) params.set("inStock", "true")
+    const categories = override.categories ?? selectedCategories
+    const brandSlugs = override.brands ?? selectedBrands
+    const values = override.values ?? selectedValues
+    const min = override.priceMin ?? priceMin
+    const max = override.priceMax ?? priceMax
+    const stock = override.inStock ?? inStock
+
+    if (categories.length) params.set("subcategory", categories.join(","))
+    if (brandSlugs.length) params.set("brand", brandSlugs.join(","))
+    if (values.length) params.set("attr", values.join(","))
+    if (min.trim()) params.set("priceMin", min.trim())
+    if (max.trim()) params.set("priceMax", max.trim())
+    if (stock) params.set("inStock", "true")
 
     // Object form: a `"/catalog?brand=…"` string loses its query on the way
     // through the localised router, and a bare `?…` lands on the home page.
-    router.push(
-      { pathname, query: Object.fromEntries(params) },
-      { scroll: false }
-    )
+    startTransition(() => {
+      router.push(
+        { pathname, query: Object.fromEntries(params) },
+        { scroll: false }
+      )
+    })
   }
+
+  const toggle = (
+    list: string[],
+    setList: (next: string[]) => void,
+    slug: string,
+    key: "categories" | "brands" | "values"
+  ) => {
+    const next = list.includes(slug)
+      ? list.filter((s) => s !== slug)
+      : [...list, slug]
+    setList(next)
+    applyParams({ [key]: next })
+  }
+
+  const toggleInStock = () => {
+    const next = !inStock
+    setInStock(next)
+    applyParams({ inStock: next })
+  }
+
+  // Price debounces rather than pushing per keystroke/drag-frame — skipped on
+  // the render that mounts with the URL's own value, so loading a filtered
+  // link never fires a redundant push straight back at itself.
+  const isFirstPriceRender = useRef(true)
+  useEffect(() => {
+    if (isFirstPriceRender.current) {
+      isFirstPriceRender.current = false
+
+      return
+    }
+    const id = setTimeout(() => applyParams({}), 500)
+
+    return () => clearTimeout(id)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [priceMin, priceMax])
 
   const reset = () => {
     setSelectedCategories([])
@@ -125,7 +173,9 @@ export function CatalogFilters({
     setPriceMin("")
     setPriceMax("")
     setInStock(false)
-    router.push(pathname, { scroll: false })
+    startTransition(() => {
+      router.push(pathname, { scroll: false })
+    })
   }
 
   return (
@@ -165,7 +215,8 @@ export function CatalogFilters({
                           toggle(
                             selectedCategories,
                             setSelectedCategories,
-                            sub.slug
+                            sub.slug,
+                            "categories"
                           )
                         }
                         label={sub.name}
@@ -223,7 +274,12 @@ export function CatalogFilters({
                 key={value.slug}
                 checked={selectedValues.includes(value.slug)}
                 onToggle={() =>
-                  toggle(selectedValues, setSelectedValues, value.slug)
+                  toggle(
+                    selectedValues,
+                    setSelectedValues,
+                    value.slug,
+                    "values"
+                  )
                 }
                 label={value.name}
                 count={value.count}
@@ -242,7 +298,12 @@ export function CatalogFilters({
                 key={brand.slug}
                 checked={selectedBrands.includes(brand.slug)}
                 onToggle={() =>
-                  toggle(selectedBrands, setSelectedBrands, brand.slug)
+                  toggle(
+                    selectedBrands,
+                    setSelectedBrands,
+                    brand.slug,
+                    "brands"
+                  )
                 }
                 label={brand.name}
                 count={brand.count}
@@ -255,27 +316,18 @@ export function CatalogFilters({
       <div className="mb-5.5">
         <Checkbox
           checked={inStock}
-          onToggle={() => setInStock(!inStock)}
+          onToggle={toggleInStock}
           label={labels.inStock}
         />
       </div>
 
-      <div className="flex gap-2.5">
-        <button
-          type="button"
-          onClick={apply}
-          className="bg-brand-bronze font-oswald hover:bg-brand-orange flex-1 cursor-pointer rounded-md px-3 py-3 text-sm tracking-[0.04em] text-white uppercase transition-colors"
-        >
-          {labels.apply}
-        </button>
-        <button
-          type="button"
-          onClick={reset}
-          className="border-brand-border text-brand-muted hover:border-brand-orange hover:text-brand-cream cursor-pointer rounded-md border px-3.5 py-3 text-sm transition-colors"
-        >
-          {labels.reset}
-        </button>
-      </div>
+      <button
+        type="button"
+        onClick={reset}
+        className="border-brand-border text-brand-muted hover:border-brand-orange hover:text-brand-cream w-full cursor-pointer rounded-md border px-3.5 py-3 text-sm transition-colors"
+      >
+        {labels.reset}
+      </button>
     </aside>
   )
 }

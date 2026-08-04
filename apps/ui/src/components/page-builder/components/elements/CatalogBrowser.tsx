@@ -8,6 +8,10 @@ import {
   CATALOG_RESULTS_ID,
   CatalogPagination,
 } from "@/components/page-builder/components/elements/CatalogPagination"
+import {
+  CatalogPendingProvider,
+  CatalogResultsFade,
+} from "@/components/page-builder/components/elements/CatalogPending"
 import { CatalogSort } from "@/components/page-builder/components/elements/CatalogSort"
 import { ProductCard } from "@/components/page-builder/components/elements/ProductCard"
 import { CONTENT_MAX_W, SECTION_X_PADDING } from "@/lib/layout"
@@ -151,84 +155,90 @@ export async function CatalogBrowser({
           "grid items-start gap-8 min-[900px]:grid-cols-[268px_1fr]"
         )}
       >
-        <CatalogFilters
-          categoryTree={categoryTree}
-          currentSubcategory={lockedSubcategory}
-          attributeGroups={attributeGroups}
-          priceBounds={products.priceBounds}
-          // Only brands actually present here, with their tallies. A brand that
-          // no product in this view carries is a tick that guarantees an empty
-          // page — the same reason the attribute options are pruned.
-          brands={(brands?.data ?? [])
-            .map((brand) => ({
-              slug: brand.slug ?? "",
-              name: brand.name ?? "",
-              count: products.brandCounts[brand.slug ?? ""] ?? 0,
-            }))
-            .filter((brand) => brand.count > 0)}
-          labels={{
-            categories: t("categories"),
-            price: t("price"),
-            brand: t("brand"),
-            inStock: t("inStockOnly"),
-            apply: t("apply"),
-            reset: t("reset"),
-            // The hints quote the real ends of this catalogue rather than a
-            // made-up round number — "до 10000" beside a 470 ₴ shelf is noise.
-            priceFromPlaceholder: t("priceFromPlaceholder", {
-              value: products.priceBounds.min,
-            }),
-            priceToPlaceholder: t("priceToPlaceholder", {
-              value: products.priceBounds.max,
-            }),
-            priceFromAria: t("priceFromAria"),
-            priceToAria: t("priceToAria"),
-          }}
-        />
+        {/* One transition shared by the filters and the grid beside them: a
+            checkbox already shows its own tick instantly, so what's missing
+            without this is any sign the *grid* is still catching up. */}
+        <CatalogPendingProvider>
+          <CatalogFilters
+            categoryTree={categoryTree}
+            currentSubcategory={lockedSubcategory}
+            attributeGroups={attributeGroups}
+            priceBounds={products.priceBounds}
+            // Only brands actually present here, with their tallies. A brand that
+            // no product in this view carries is a tick that guarantees an empty
+            // page — the same reason the attribute options are pruned.
+            brands={(brands?.data ?? [])
+              .map((brand) => ({
+                slug: brand.slug ?? "",
+                name: brand.name ?? "",
+                count: products.brandCounts[brand.slug ?? ""] ?? 0,
+              }))
+              .filter((brand) => brand.count > 0)}
+            labels={{
+              categories: t("categories"),
+              price: t("price"),
+              brand: t("brand"),
+              inStock: t("inStockOnly"),
+              reset: t("reset"),
+              // The hints quote the real ends of this catalogue rather than a
+              // made-up round number — "до 10000" beside a 470 ₴ shelf is noise.
+              priceFromPlaceholder: t("priceFromPlaceholder", {
+                value: products.priceBounds.min,
+              }),
+              priceToPlaceholder: t("priceToPlaceholder", {
+                value: products.priceBounds.max,
+              }),
+              priceFromAria: t("priceFromAria"),
+              priceToAria: t("priceToAria"),
+            }}
+          />
 
-        <div>
-          {/* Paging links point here, so a page change lands on the products
+          <CatalogResultsFade>
+            <div>
+              {/* Paging links point here, so a page change lands on the products
               rather than at the very top of the document. */}
-          <div
-            id={CATALOG_RESULTS_ID}
-            className="border-brand-border bg-brand-green mb-5.5 flex scroll-mt-24 flex-col gap-3 rounded-[10px] border px-5 py-3.5 min-[600px]:flex-row min-[600px]:items-center min-[600px]:justify-between"
-          >
-            <span className="text-brand-muted text-sm">
-              {total === 0
-                ? t("nothingFound")
-                : t("shown", { from: firstShown, to: lastShown, total })}
-            </span>
-            <CatalogSort current={query.sort} />
-          </div>
+              <div
+                id={CATALOG_RESULTS_ID}
+                className="border-brand-border bg-brand-green mb-5.5 flex scroll-mt-24 flex-col gap-3 rounded-[10px] border px-5 py-3.5 min-[600px]:flex-row min-[600px]:items-center min-[600px]:justify-between"
+              >
+                <span className="text-brand-muted text-sm">
+                  {total === 0
+                    ? t("nothingFound")
+                    : t("shown", { from: firstShown, to: lastShown, total })}
+                </span>
+                <CatalogSort current={query.sort} />
+              </div>
 
-          {items.length ? (
-            <div className="grid grid-cols-1 gap-3.5 min-[420px]:grid-cols-2 min-[600px]:gap-5.5 min-[1024px]:grid-cols-3">
-              {items.map((product) => (
-                <ProductCard
-                  key={product.documentId}
-                  product={toProductCard(product)}
-                  cartItem={toCartItem(product)}
-                  sizes="(min-width: 1024px) 30vw, (min-width: 420px) 45vw, 90vw"
+              {items.length ? (
+                <div className="grid grid-cols-1 gap-3.5 min-[420px]:grid-cols-2 min-[600px]:gap-5.5 min-[1024px]:grid-cols-3">
+                  {items.map((product) => (
+                    <ProductCard
+                      key={product.documentId}
+                      product={toProductCard(product)}
+                      cartItem={toCartItem(product)}
+                      sizes="(min-width: 1024px) 30vw, (min-width: 420px) 45vw, 90vw"
+                    />
+                  ))}
+                </div>
+              ) : (
+                <p className="border-brand-border bg-brand-green text-brand-nav rounded-xl border p-10 text-center">
+                  {t("emptyFiltered")}
+                </p>
+              )}
+
+              {pageCount > 1 ? (
+                <CatalogPagination
+                  page={query.page}
+                  pageCount={pageCount}
+                  searchParams={searchParams}
+                  navLabel={t("pagesAria")}
+                  prevLabel={t("prevPageAria")}
+                  nextLabel={t("nextPageAria")}
                 />
-              ))}
+              ) : null}
             </div>
-          ) : (
-            <p className="border-brand-border bg-brand-green text-brand-nav rounded-xl border p-10 text-center">
-              {t("emptyFiltered")}
-            </p>
-          )}
-
-          {pageCount > 1 ? (
-            <CatalogPagination
-              page={query.page}
-              pageCount={pageCount}
-              searchParams={searchParams}
-              navLabel={t("pagesAria")}
-              prevLabel={t("prevPageAria")}
-              nextLabel={t("nextPageAria")}
-            />
-          ) : null}
-        </div>
+          </CatalogResultsFade>
+        </CatalogPendingProvider>
       </div>
     </section>
   )
