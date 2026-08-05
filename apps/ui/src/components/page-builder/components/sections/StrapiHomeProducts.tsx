@@ -40,7 +40,6 @@ export async function StrapiHomeProducts({
     ? enrichProducts(picked, await getKasaMap()).slice(0, limit ?? 6)
     : (
         await fetchCatalogProducts(locale, {
-          categories: [],
           brands: [],
           attributeValues: [],
           inStock: false,

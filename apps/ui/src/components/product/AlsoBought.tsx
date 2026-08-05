@@ -45,7 +45,7 @@ export async function AlsoBought({
         {tiles.map((tile) => (
           <AppLink
             key={tile.slug}
-            href={`/category/${tile.categorySlug}/${tile.slug}`}
+            href={`/catalog/${tile.categorySlug}/${tile.slug}`}
             unstyled
             className="border-brand-border bg-brand-green hover:border-brand-field-hover group/tile block overflow-hidden rounded-xl border transition-[transform,box-shadow,border-color] duration-200 hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(0,0,0,0.4)]"
           >

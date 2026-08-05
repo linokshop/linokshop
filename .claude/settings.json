@@ -1,7 +1,29 @@
 {
   "permissions": {
     "allow": [
-      "Bash(node -e ' *)"
+      "Bash(node -e ' *)",
+      "Bash(curl -sL \"http://localhost:3000/category/vudylyshcha/spininhovi\" -o /tmp_check.html)",
+      "Bash(curl -sL http://localhost:3000/category/vudylyshcha/spininhovi -o __TRACKED_VAR__/check-spin.html -w 'code=%{http_code}\\\\n')",
+      "Bash(grep -oE 'Показано[^<]*' __TRACKED_VAR__/check-spin.html)",
+      "Bash(curl -s -o /dev/null -w \"next=%{http_code} time=%{time_total}\\\\n\" \"http://localhost:3000/\" --max-time 30)",
+      "Bash(mkdir -p \"catalog/[slug]/[sub]/[subsub]\")",
+      "Bash(mv \"category/[slug]/page.tsx\" \"catalog/[slug]/page.tsx\")",
+      "Bash(mv \"category/[slug]/[sub]/page.tsx\" \"catalog/[slug]/[sub]/page.tsx\")",
+      "Bash(mv \"category/[slug]/[sub]/[subsub]/page.tsx\" \"catalog/[slug]/[sub]/[subsub]/page.tsx\")",
+      "Bash(rm -rf category)",
+      "Bash(taskkill //F //PID 15148 //T)",
+      "Bash(curl -sL \"http://localhost:3000/catalog/vudylyshcha/poplavochni/bolonski\" -o /dev/null -w \"code=%{http_code}\\\\n\" --max-time 15)",
+      "Bash(curl -sL \"http://localhost:3000/catalog/vudylyshcha\" -o /dev/null -w \"code=%{http_code}\\\\n\" --max-time 15)",
+      "Bash(curl -sL \"http://localhost:3000/catalog\" -o /dev/null -w \"code=%{http_code}\\\\n\" --max-time 15)",
+      "Bash(curl -sL \"http://localhost:3000/catalog\" -o /dev/null -w \"root=%{http_code}\\\\n\" --max-time 15)",
+      "Bash(curl -sL \"http://localhost:3000/catalog/vudylyshcha\" -o /dev/null -w \"category=%{http_code}\\\\n\" --max-time 15)",
+      "Bash(curl -sL \"http://localhost:3000/catalog/vudylyshcha/poplavochni\" -o /dev/null -w \"subcategory=%{http_code}\\\\n\" --max-time 15)",
+      "Bash(curl -sL \"http://localhost:3000/catalog/vudylyshcha/poplavochni/bolonski\" -o /dev/null -w \"subsubcategory=%{http_code}\\\\n\" --max-time 15)",
+      "Bash(curl -sL \"http://localhost:3000/category/vudylyshcha\" -o /dev/null -w \"old-category-should-404=%{http_code}\\\\n\" --max-time 15)",
+      "Bash(curl -sL \"http://localhost:3000/catalog\" -o /dev/null -w \"root=%{http_code} time=%{time_total}\\\\n\" --max-time 30)",
+      "Bash(curl -sL \"http://localhost:3000/catalog?priceMin=100\" -o /dev/null -w \"root-with-query=%{http_code}\\\\n\" --max-time 15)",
+      "Bash(curl -sL \"http://localhost:3000/catalog/vudylyshcha/poplavochni/bolonski?priceMin=100\" -o /dev/null -w \"subsub-with-query=%{http_code}\\\\n\" --max-time 15)",
+      "Bash(xargs -I{} basename {})"
     ]
   }
 }

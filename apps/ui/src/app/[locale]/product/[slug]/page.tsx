@@ -130,7 +130,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <>
               {" · "}
               <AppLink
-                href={`/category/${product.subcategory.category.slug}`}
+                href={`/catalog/${product.subcategory.category.slug}`}
                 unstyled
                 className="hover:text-brand-cream"
               >
@@ -144,13 +144,25 @@ export default async function ProductPage({ params }: ProductPageProps) {
               <AppLink
                 href={
                   product.subcategory.category
-                    ? `/category/${product.subcategory.category.slug}/${product.subcategory.slug}`
+                    ? `/catalog/${product.subcategory.category.slug}/${product.subcategory.slug}`
                     : "/catalog"
                 }
                 unstyled
                 className="hover:text-brand-cream"
               >
                 {product.subcategory.name}
+              </AppLink>
+            </>
+          ) : null}
+          {product.subSubcategory && product.subcategory?.category ? (
+            <>
+              {" · "}
+              <AppLink
+                href={`/catalog/${product.subcategory.category.slug}/${product.subcategory.slug}/${product.subSubcategory.slug}`}
+                unstyled
+                className="hover:text-brand-cream"
+              >
+                {product.subSubcategory.name}
               </AppLink>
             </>
           ) : null}

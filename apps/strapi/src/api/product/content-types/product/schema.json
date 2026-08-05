@@ -35,6 +35,12 @@
       "target": "api::subcategory.subcategory",
       "inversedBy": "products"
     },
+    "subSubcategory": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::sub-subcategory.sub-subcategory",
+      "inversedBy": "products"
+    },
     "brand": {
       "type": "relation",
       "relation": "manyToOne",

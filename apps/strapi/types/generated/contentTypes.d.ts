@@ -902,6 +902,10 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
       "manyToOne",
       "api::subcategory.subcategory"
     >
+    subSubcategory: Schema.Attribute.Relation<
+      "manyToOne",
+      "api::sub-subcategory.sub-subcategory"
+    >
     updatedAt: Schema.Attribute.DateTime
     updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
       Schema.Attribute.Private
@@ -1077,6 +1081,10 @@ export interface ApiSubcategorySubcategory
     products: Schema.Attribute.Relation<"oneToMany", "api::product.product">
     publishedAt: Schema.Attribute.DateTime
     slug: Schema.Attribute.UID<"name">
+    subSubcategories: Schema.Attribute.Relation<
+      "oneToMany",
+      "api::sub-subcategory.sub-subcategory"
+    >
     updatedAt: Schema.Attribute.DateTime
     updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
       Schema.Attribute.Private
@@ -1671,6 +1679,54 @@ export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
   }
 }
 
+export interface ApiSubSubcategorySubSubcategory
+  extends Struct.CollectionTypeSchema {
+  collectionName: "sub_subcategories"
+  info: {
+    description: "An optional third level under a Subcategory, for branches of the catalog that need one (e.g. Вудилища → Поплавочні → Болонські)."
+    displayName: "Sub-subcategory"
+    pluralName: "sub-subcategories"
+    singularName: "sub-subcategory"
+  }
+  options: {
+    draftAndPublish: true
+  }
+  pluginOptions: {
+    i18n: {
+      localized: true
+    }
+  }
+  attributes: {
+    createdAt: Schema.Attribute.DateTime
+    createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
+      Schema.Attribute.Private
+    image: Schema.Attribute.Media<"images">
+    locale: Schema.Attribute.String
+    localizations: Schema.Attribute.Relation<
+      "oneToMany",
+      "api::sub-subcategory.sub-subcategory"
+    >
+    name: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true
+        }
+      }>
+    order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>
+    products: Schema.Attribute.Relation<"oneToMany", "api::product.product">
+    publishedAt: Schema.Attribute.DateTime
+    slug: Schema.Attribute.UID<"name">
+    subcategory: Schema.Attribute.Relation<
+      "manyToOne",
+      "api::subcategory.subcategory"
+    >
+    updatedAt: Schema.Attribute.DateTime
+    updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
+      Schema.Attribute.Private
+  }
+}
+
 declare module "@strapi/strapi" {
   export module Public {
     export interface ContentTypeSchemas {
@@ -1693,6 +1749,7 @@ declare module "@strapi/strapi" {
       "api::page.page": ApiPagePage
       "api::product.product": ApiProductProduct
       "api::redirect.redirect": ApiRedirectRedirect
+      "api::sub-subcategory.sub-subcategory": ApiSubSubcategorySubSubcategory
       "api::subcategory.subcategory": ApiSubcategorySubcategory
       "api::subscriber.subscriber": ApiSubscriberSubscriber
       "plugin::content-releases.release": PluginContentReleasesRelease

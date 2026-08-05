@@ -15,11 +15,16 @@ export interface FilterOption {
   readonly count?: number
 }
 
+/** A subcategory and its optional sub-subcategories — the third, leaf level. */
+export interface SubcategoryOption extends FilterOption {
+  readonly subSubcategories?: readonly FilterOption[]
+}
+
 /** A category and its subcategories — the nested category filter. */
 export interface CategoryGroup {
   readonly slug: string
   readonly name: string
-  readonly subcategories: readonly FilterOption[]
+  readonly subcategories: readonly SubcategoryOption[]
 }
 
 /** A filterable product property and the options products actually carry. */
@@ -36,18 +41,20 @@ export interface AttributeGroup {
  * straight to the URL. Price is the one exception — it debounces, or every
  * keystroke would refetch the grid.
  *
- * The category list has two modes. On the whole catalogue it is a multi-select
- * filter (checkboxes, applied on demand). Inside a subcategory the choice is
- * already made by the URL, so it becomes plain navigation — links, with the
- * current one marked — letting the reader step sideways to a sibling instead of
- * having to go back. Mixing the two would put the path and a checkbox in charge
- * of the same thing.
+ * The category/subcategory/sub-subcategory tree is pure navigation, always —
+ * plain links, never checkboxes, on every page including the unfiltered
+ * catalogue. Category is "where am I", decided by the URL path; price, brand,
+ * stock and attributes are "what do I want", decided by checkboxes that refine
+ * the current page without navigating. Keeping those two questions on two
+ * different controls is what makes the sidebar predictable from page to page.
  */
 export function CatalogFilters({
   categoryTree,
   brands,
   labels,
+  currentCategory,
   currentSubcategory,
+  currentSubSubcategory,
   attributeGroups = [],
   priceBounds,
 }: {
@@ -57,8 +64,13 @@ export function CatalogFilters({
   readonly priceBounds: { readonly min: number; readonly max: number }
   /** Per-property facets; only present inside a subcategory. */
   readonly attributeGroups?: readonly AttributeGroup[]
-  /** Set on a subcategory page: switches the category list to navigation. */
+  /** Top-level category the current page belongs to, if any — highlights it
+   *  and expands its subcategories in the tree. */
+  readonly currentCategory?: string
+  /** Set on a subcategory (or deeper) page: highlights that level in the tree. */
   readonly currentSubcategory?: string
+  /** Set on a sub-subcategory page: highlights that leaf in the tree. */
+  readonly currentSubSubcategory?: string
   readonly labels: {
     readonly categories: string
     readonly price: string
@@ -79,9 +91,6 @@ export function CatalogFilters({
   const readList = (key: string) =>
     (searchParams.get(key) ?? "").split(",").filter(Boolean)
 
-  const [selectedCategories, setSelectedCategories] = useState(() =>
-    readList("subcategory")
-  )
   const [selectedBrands, setSelectedBrands] = useState(() => readList("brand"))
   const [selectedValues, setSelectedValues] = useState(() => readList("attr"))
   const [priceMin, setPriceMin] = useState(searchParams.get("priceMin") ?? "")
@@ -94,7 +103,6 @@ export function CatalogFilters({
    * waiting a render for `setState` to land.
    */
   const applyParams = (override: {
-    categories?: string[]
     brands?: string[]
     values?: string[]
     priceMin?: string
@@ -107,14 +115,12 @@ export function CatalogFilters({
     const sort = searchParams.get("sort")
     if (sort) params.set("sort", sort)
 
-    const categories = override.categories ?? selectedCategories
     const brandSlugs = override.brands ?? selectedBrands
     const values = override.values ?? selectedValues
     const min = override.priceMin ?? priceMin
     const max = override.priceMax ?? priceMax
     const stock = override.inStock ?? inStock
 
-    if (categories.length) params.set("subcategory", categories.join(","))
     if (brandSlugs.length) params.set("brand", brandSlugs.join(","))
     if (values.length) params.set("attr", values.join(","))
     if (min.trim()) params.set("priceMin", min.trim())
@@ -135,7 +141,7 @@ export function CatalogFilters({
     list: string[],
     setList: (next: string[]) => void,
     slug: string,
-    key: "categories" | "brands" | "values"
+    key: "brands" | "values"
   ) => {
     const next = list.includes(slug)
       ? list.filter((s) => s !== slug)
@@ -167,7 +173,6 @@ export function CatalogFilters({
   }, [priceMin, priceMax])
 
   const reset = () => {
-    setSelectedCategories([])
     setSelectedBrands([])
     setSelectedValues([])
     setPriceMin("")
@@ -193,38 +198,45 @@ export function CatalogFilters({
           <FilterHeading>{labels.categories}</FilterHeading>
           <div className="border-brand-border mb-5 border-b pb-5">
             {categoryTree.map((group) => (
-              <div key={group.slug} className="mb-4 last:mb-0">
-                <div className="font-oswald text-brand-cream mb-1 text-[13.5px] tracking-[0.04em] uppercase">
-                  {group.name}
-                </div>
-                <div className="border-brand-border ml-0.5 border-l pl-2.5">
-                  {group.subcategories.map((sub) =>
-                    currentSubcategory ? (
-                      <SubcategoryLink
-                        key={sub.slug}
-                        href={`/category/${group.slug}/${sub.slug}`}
-                        label={sub.name}
-                        count={sub.count}
-                        active={sub.slug === currentSubcategory}
-                      />
-                    ) : (
-                      <Checkbox
-                        key={sub.slug}
-                        checked={selectedCategories.includes(sub.slug)}
-                        onToggle={() =>
-                          toggle(
-                            selectedCategories,
-                            setSelectedCategories,
-                            sub.slug,
-                            "categories"
-                          )
-                        }
-                        label={sub.name}
-                        count={sub.count}
-                      />
-                    )
-                  )}
-                </div>
+              <div key={group.slug} className="mb-1 last:mb-0">
+                <TreeLink
+                  href={`/catalog/${group.slug}`}
+                  label={group.name}
+                  active={group.slug === currentCategory}
+                  bold
+                />
+                {/* Only the current category's own branch is expanded — a
+                    collapsed sibling is just this one link, and clicking it
+                    is how you get its children to expand instead. */}
+                {group.subcategories.length ? (
+                  <div className="border-brand-border ml-0.5 border-l pl-2.5">
+                    {group.subcategories.map((sub) => (
+                      <div key={sub.slug}>
+                        <TreeLink
+                          href={`/catalog/${group.slug}/${sub.slug}`}
+                          label={sub.name}
+                          count={sub.count}
+                          active={sub.slug === currentSubcategory}
+                        />
+                        {/* The optional third level — most subcategories have
+                            none, so this is usually skipped. */}
+                        {sub.subSubcategories?.length ? (
+                          <div className="border-brand-border ml-0.5 border-l pl-2.5">
+                            {sub.subSubcategories.map((subSub) => (
+                              <TreeLink
+                                key={subSub.slug}
+                                href={`/catalog/${group.slug}/${sub.slug}/${subSub.slug}`}
+                                label={subSub.name}
+                                count={subSub.count}
+                                active={subSub.slug === currentSubSubcategory}
+                              />
+                            ))}
+                          </div>
+                        ) : null}
+                      </div>
+                    ))}
+                  </div>
+                ) : null}
               </div>
             ))}
           </div>
@@ -333,19 +345,24 @@ export function CatalogFilters({
 }
 
 /**
- * A sibling subcategory on a subcategory page. A link, not a checkbox: the URL
- * owns the choice here, so clicking navigates rather than staging a filter.
+ * One row of the category tree, at any of the three levels. Always a link,
+ * never a checkbox: category/subcategory/sub-subcategory is navigation, the
+ * URL owns the choice, so clicking moves the reader rather than staging a
+ * filter on the page they're already on.
  */
-function SubcategoryLink({
+function TreeLink({
   href,
   label,
   count,
   active,
+  bold = false,
 }: {
   readonly href: string
   readonly label: string
   readonly count?: number
   readonly active: boolean
+  /** The top-level category row — set apart from its (indented) children. */
+  readonly bold?: boolean
 }) {
   return (
     <Link
@@ -356,9 +373,13 @@ function SubcategoryLink({
         // text to the row's full width, so the target reads as a row you
         // click, not a label that happens to sit next to a link.
         "-mx-2 flex items-center gap-2.5 rounded-md px-2 py-1.5 text-[14.5px] transition-colors",
+        bold && "font-oswald text-[13.5px] tracking-[0.04em] uppercase",
         active
           ? "bg-brand-surface text-brand-gold font-semibold"
-          : "text-brand-nav hover:bg-brand-surface hover:text-brand-cream"
+          : cn(
+              "hover:bg-brand-surface hover:text-brand-cream",
+              bold ? "text-brand-cream" : "text-brand-nav"
+            )
       )}
     >
       <span

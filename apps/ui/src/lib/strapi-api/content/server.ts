@@ -338,6 +338,9 @@ export async function fetchProductBySlug(
                 },
               },
             },
+            // Only present for products in a branch that has a third level —
+            // most don't. Fields only: the breadcrumb just needs the name/slug.
+            subSubcategory: { fields: ["name", "slug"] },
             brand: true,
             specs: true,
             options: true,
@@ -373,9 +376,12 @@ export async function fetchProductBySlug(
 }
 
 export interface CatalogQuery {
-  readonly categories: string[]
   /** Whole-category view: every product under this category's subcategories. */
   readonly category?: string
+  /** Subcategory slug fixed by the URL path. */
+  readonly subcategory?: string
+  /** Sub-subcategory slug fixed by the URL path — the optional third level. */
+  readonly subSubcategory?: string
   readonly brands: string[]
   /** Chosen attribute-value slugs, e.g. ["3-6-m", "karbon"]. */
   readonly attributeValues: string[]
@@ -506,12 +512,16 @@ export async function fetchCatalogProducts(
   }
 
   const filters: Record<string, unknown> = {}
-  if (query.categories.length) {
-    // The catalog is reached by drilling into a subcategory, so this slug filters
-    // on the product's subcategory. A chosen subcategory always sits inside the
-    // locked category, so it is the narrower of the two and wins.
-    filters.subcategory = { slug: { $in: query.categories } }
+  // Category/subcategory/sub-subcategory is pure navigation now, not a
+  // multi-select filter — exactly one of these three is ever set, decided by
+  // how deep the URL path goes, so the narrowest one simply wins.
+  if (query.subSubcategory) {
+    filters.subSubcategory = { slug: { $eq: query.subSubcategory } }
+  } else if (query.subcategory) {
+    filters.subcategory = { slug: { $eq: query.subcategory } }
   } else if (query.category) {
+    // No subcategory/sub-subcategory picked — the category page's "whole
+    // aisle" view, everything under any of its subcategories.
     filters.subcategory = { category: { slug: { $eq: query.category } } }
   }
   if (query.brands.length) {
@@ -695,6 +705,44 @@ export async function fetchCategoryCounts(
   }
 }
 
+/**
+ * Product counts per sub-subcategory — the same `/categories/counts` response
+ * carries these alongside the subcategory counts above, so this is a second,
+ * differently-shaped read of the same (Next-deduped) request rather than a
+ * separate round trip.
+ */
+export async function fetchSubSubcategoryCounts(
+  locale: Locale
+): Promise<CategoryCount[]> {
+  try {
+    const response = await PublicStrapiClient.fetchAPI(
+      "/categories/counts",
+      { locale },
+      {
+        next: {
+          revalidate: 300,
+          tags: [
+            strapiCacheTag("api::category.category"),
+            strapiCacheTag("api::product.product"),
+          ],
+        },
+      }
+    )
+
+    return (response?.subSubcategories ?? []) as CategoryCount[]
+  } catch (e: unknown) {
+    logNonBlockingError({
+      message: `Error fetching sub-subcategory counts for locale '${locale}'`,
+      error: {
+        error: e instanceof Error ? e.message : String(e),
+        stack: e instanceof Error ? e.stack : undefined,
+      },
+    })
+
+    return []
+  }
+}
+
 export async function fetchCategories(locale: Locale) {
   try {
     return await PublicStrapiClient.fetchMany(
@@ -811,7 +859,10 @@ export async function fetchTopCategories(locale: Locale) {
       {
         locale,
         status: "published",
-        populate: { image: true, subcategories: true },
+        populate: {
+          image: true,
+          subcategories: { populate: { subSubcategories: true } },
+        },
         sort: ["order:asc", "name:asc"],
         pagination: { page: 1, pageSize: 100 },
       },
@@ -831,7 +882,7 @@ export async function fetchTopCategories(locale: Locale) {
 }
 
 /**
- * One category with its subcategories — the `/category/<slug>` page, which shows
+ * One category with its subcategories — the `/catalog/<slug>` page, which shows
  * the subcategories as tiles linking into the catalog.
  */
 export async function fetchCategoryBySlug(slug: string, locale: Locale) {
@@ -845,7 +896,13 @@ export async function fetchCategoryBySlug(slug: string, locale: Locale) {
         populate: {
           image: true,
           subcategories: {
-            populate: { image: true },
+            populate: {
+              image: true,
+              subSubcategories: {
+                populate: { image: true },
+                sort: ["order:asc", "name:asc"],
+              },
+            },
             sort: ["order:asc", "name:asc"],
           },
         },

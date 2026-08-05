@@ -8,12 +8,18 @@ const dynamicPrefix = "dynamic"
 /**
  * Ignores requests to certain paths, allowing them to be handled by other middleware or routes.
  *
- * `/product`, `/cart` and `/category` are hand-written routes, not page-builder
- * pages. Without them here, any query string — a catalogue filter, `?utm_source=…`
- * on an ad click, `?fbclid=…` on a shared link — rewrites them onto the Strapi
- * page route, which has no such page and answers 404.
+ * `/product`, `/cart` and `/catalog/<slug>...` are hand-written routes, not
+ * page-builder pages. Without them here, any query string — a catalogue
+ * filter, `?utm_source=…` on an ad click, `?fbclid=…` on a shared link —
+ * rewrites them onto the Strapi page route, which has no such page and
+ * answers 404.
+ *
+ * `/catalog/` carries the trailing slash deliberately: bare `/catalog` (no
+ * further segment) *is* the CMS page-builder page and still needs the rewrite
+ * below to read its own filters via `searchParams` — only `/catalog/<slug>…`,
+ * the hand-written category routes one level down, must be left alone.
  */
-const ignoredPaths = ["/api", "/dev", "/auth", "/product", "/cart", "/category"]
+const ignoredPaths = ["/api", "/dev", "/auth", "/product", "/cart", "/catalog/"]
 
 /**
  * Removes the locale prefix from the pathname if present, returning the path without the locale segment.

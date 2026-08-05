@@ -22,6 +22,7 @@ import {
   fetchCatalogProducts,
   fetchCategoryCounts,
   fetchSubcategoryAttributes,
+  fetchSubSubcategoryCounts,
   fetchTopCategories,
 } from "@/lib/strapi-api/content/server"
 import { cn } from "@/lib/styles"
@@ -48,12 +49,14 @@ const readNumber = (params: SearchParams, key: string) => {
 /**
  * The product grid with its filters, sort and pagination.
  *
- * Two callers share it: the CMS `sections.catalog` block (the whole catalog) and
- * the `/category/<category>/<subcategory>` route. In the latter the subcategory
- * comes from the path rather than the query, so `lockedSubcategory` pins it and
- * the category filter is dropped — the path already made that choice. Everything
- * else (price, brand, stock, sort, page) stays in the query string and therefore
- * works the same on both, because the filter/pagination links are relative.
+ * Four callers share it: the CMS `sections.catalog` block (the whole catalog,
+ * no locks) and the `/catalog/<category>[/<sub>[/<subsub>]]` routes, each
+ * passing the slug(s) the URL has drilled into. Category/subcategory/
+ * sub-subcategory is pure navigation, not a filter — exactly one `locked*`
+ * prop (or none) is ever set, and the sidebar tree renders it as links, never
+ * checkboxes. Price, brand, stock, sort and page stay in the query string and
+ * work the same on every caller, because the filter/pagination links are
+ * relative.
  */
 export async function CatalogBrowser({
   locale,
@@ -63,23 +66,30 @@ export async function CatalogBrowser({
   pageSize = 24,
   lockedSubcategory,
   lockedCategory,
+  lockedSubSubcategory,
 }: {
   readonly locale: Locale
   readonly searchParams?: SearchParams
   readonly pageSize?: number
-  /** Subcategory slug fixed by the URL path; hides the category filter. */
+  /** Subcategory slug fixed by the URL path. */
   readonly lockedSubcategory?: string
-  /** Category slug fixed by the URL path: everything under its subcategories. */
+  /** Top-level category slug fixed by the URL path — whichever category the
+   *  current page belongs to, even when locked deeper than the category itself. */
   readonly lockedCategory?: string
+  /**
+   * Sub-subcategory slug fixed by the URL path — the optional third level.
+   * `lockedSubcategory` must still be passed alongside it, since attributes
+   * stay pinned at the subcategory level regardless of how deep the URL goes.
+   */
+  readonly lockedSubSubcategory?: string
 }) {
   const t = await getTranslations({ locale, namespace: "shop.catalog" })
 
   const sortParam = readOne(searchParams, "sort")
   const query: CatalogQuery = {
-    categories: lockedSubcategory
-      ? [lockedSubcategory]
-      : readList(searchParams, "subcategory"),
     category: lockedCategory,
+    subcategory: lockedSubcategory,
+    subSubcategory: lockedSubSubcategory,
     brands: readList(searchParams, "brand"),
     attributeValues: readList(searchParams, "attr"),
     priceMin: readNumber(searchParams, "priceMin"),
@@ -94,33 +104,48 @@ export async function CatalogBrowser({
 
   // The tree is fetched in both modes: inside a subcategory it is how the reader
   // steps sideways to a sibling, so hiding it would strand them there.
-  const [products, topCategories, categoryCounts, brands, attributes] =
-    await Promise.all([
-      fetchCatalogProducts(locale, query),
-      fetchTopCategories(locale),
-      fetchCategoryCounts(locale),
-      fetchBrands(locale),
-      fetchSubcategoryAttributes(lockedSubcategory, locale),
-    ])
+  const [
+    products,
+    topCategories,
+    categoryCounts,
+    subSubcategoryCounts,
+    brands,
+    attributes,
+  ] = await Promise.all([
+    fetchCatalogProducts(locale, query),
+    fetchTopCategories(locale),
+    fetchCategoryCounts(locale),
+    fetchSubSubcategoryCounts(locale),
+    fetchBrands(locale),
+    fetchSubcategoryAttributes(lockedSubcategory, locale),
+  ])
 
-  // Nested category filter: each category with its subcategories and their
-  // product counts. Categories with no subcategories are left out.
+  // The tree is pure navigation now: every top-level category is always
+  // listed (so a reader can always jump to a different department), but only
+  // the one the URL has drilled into gets its subcategories — and their
+  // sub-subcategories — expanded. A collapsed category is just a link to its
+  // own landing page, where its children take their turn being expanded.
   const countBySlug = new Map(categoryCounts.map((c) => [c.slug, c.count]))
-  const categoryTree = (topCategories?.data ?? [])
-    // Inside a category the tree narrows to that category: offering a sibling
-    // category as a checkbox would silently carry the reader out of the page
-    // they are on.
-    .filter((category) => !lockedCategory || category.slug === lockedCategory)
-    .map((category) => ({
-      slug: category.slug ?? "",
-      name: category.name ?? "",
-      subcategories: (category.subcategories ?? []).map((sub) => ({
-        slug: sub.slug ?? "",
-        name: sub.name ?? "",
-        count: countBySlug.get(sub.slug ?? "") ?? 0,
-      })),
-    }))
-    .filter((category) => category.subcategories.length > 0)
+  const subSubCountBySlug = new Map(
+    subSubcategoryCounts.map((c) => [c.slug, c.count])
+  )
+  const categoryTree = (topCategories?.data ?? []).map((category) => ({
+    slug: category.slug ?? "",
+    name: category.name ?? "",
+    subcategories:
+      category.slug === lockedCategory
+        ? (category.subcategories ?? []).map((sub) => ({
+            slug: sub.slug ?? "",
+            name: sub.name ?? "",
+            count: countBySlug.get(sub.slug ?? "") ?? 0,
+            subSubcategories: (sub.subSubcategories ?? []).map((subSub) => ({
+              slug: subSub.slug ?? "",
+              name: subSub.name ?? "",
+              count: subSubCountBySlug.get(subSub.slug ?? "") ?? 0,
+            })),
+          }))
+        : [],
+  }))
 
   // Attribute facets for the sidebar. Options nobody has are dropped — an
   // option that can only ever return nothing is a dead end, not a filter.
@@ -161,7 +186,9 @@ export async function CatalogBrowser({
         <CatalogPendingProvider>
           <CatalogFilters
             categoryTree={categoryTree}
+            currentCategory={lockedCategory}
             currentSubcategory={lockedSubcategory}
+            currentSubSubcategory={lockedSubSubcategory}
             attributeGroups={attributeGroups}
             priceBounds={products.priceBounds}
             // Only brands actually present here, with their tallies. A brand that

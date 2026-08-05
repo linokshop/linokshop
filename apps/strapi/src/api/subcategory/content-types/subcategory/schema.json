@@ -60,6 +60,12 @@
       "relation": "oneToMany",
       "target": "api::product.product",
       "mappedBy": "subcategory"
+    },
+    "subSubcategories": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::sub-subcategory.sub-subcategory",
+      "mappedBy": "subcategory"
     }
   }
 }

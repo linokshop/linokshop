@@ -80,7 +80,7 @@ export async function StrapiHomeCategories({
           <AppLink
             key={category.documentId}
             // A tile opens the category's subcategory page, not the catalog.
-            href={`/category/${category.slug}`}
+            href={`/catalog/${category.slug}`}
             unstyled
             className="border-brand-border bg-brand-green hover:border-brand-orange group/tile block h-full overflow-hidden rounded-xl border transition-colors"
           >

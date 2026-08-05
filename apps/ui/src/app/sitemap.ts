@@ -128,7 +128,7 @@ async function shopEntries(locale: Locale): Promise<MetadataRoute.Sitemap> {
       category.slug
         ? [
             {
-              url: createPublicFullPath(`/category/${category.slug}`, locale),
+              url: createPublicFullPath(`/catalog/${category.slug}`, locale),
               lastModified: category.updatedAt ?? undefined,
               changeFrequency: "weekly" as const,
             },
@@ -136,7 +136,7 @@ async function shopEntries(locale: Locale): Promise<MetadataRoute.Sitemap> {
               .filter((sub) => sub.slug)
               .map((sub) => ({
                 url: createPublicFullPath(
-                  `/category/${category.slug}/${sub.slug}`,
+                  `/catalog/${category.slug}/${sub.slug}`,
                   locale
                 ),
                 lastModified: sub.updatedAt ?? undefined,

@@ -376,7 +376,9 @@
     },
     "categories": {
       "items": "{count, plural, one {# товар} few {# товари} many {# товарів} other {# товару}}",
+      "chooseCategory": "Оберіть категорію",
       "chooseSubcategory": "Оберіть підкатегорію",
+      "chooseSubSubcategory": "Оберіть розділ",
       "empty": "У цій категорії поки немає товарів."
     },
     "contact": {
