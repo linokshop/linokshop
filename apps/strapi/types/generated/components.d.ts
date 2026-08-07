@@ -489,72 +489,6 @@ export interface SeoUtilitiesSeoTwitter extends Struct.ComponentSchema {
   }
 }
 
-export interface SeoUtilitiesSocialIcons extends Struct.ComponentSchema {
-  collectionName: "components_seo_utilities_social_icons"
-  info: {
-    displayName: "SocialIcons"
-  }
-  attributes: {
-    socials: Schema.Attribute.Component<"utilities.image-with-link", true>
-    title: Schema.Attribute.String
-  }
-}
-
-export interface SharedFigure extends Struct.ComponentSchema {
-  collectionName: "components_shared_figures"
-  info: {
-    displayName: "Figure"
-  }
-  attributes: {
-    description: Schema.Attribute.RichText &
-      Schema.Attribute.CustomField<
-        "plugin::ckeditor5.CKEditor",
-        {
-          preset: "defaultCkEditor"
-        }
-      >
-    number: Schema.Attribute.BigInteger
-    prefix: Schema.Attribute.String
-    suffix: Schema.Attribute.String
-  }
-}
-
-export interface SharedImageWithConfig extends Struct.ComponentSchema {
-  collectionName: "components_shared_image_with_configs"
-  info: {
-    displayName: "ImageWithConfig"
-  }
-  attributes: {
-    image: Schema.Attribute.Component<"utilities.basic-image", false>
-    position: Schema.Attribute.Enumeration<["left", "right"]>
-  }
-}
-
-export interface SharedImageWithTitleAndDescription
-  extends Struct.ComponentSchema {
-  collectionName: "components_shared_image_with_title_and_descriptions"
-  info: {
-    displayName: "ImageWithTitleAndDescription"
-  }
-  attributes: {
-    description: Schema.Attribute.RichText &
-      Schema.Attribute.CustomField<
-        "plugin::ckeditor5.CKEditor",
-        {
-          preset: "defaultCkEditor"
-        }
-      >
-    image: Schema.Attribute.Component<"utilities.basic-image", false>
-    title: Schema.Attribute.RichText &
-      Schema.Attribute.CustomField<
-        "plugin::ckeditor5.CKEditor",
-        {
-          preset: "defaultCkEditor"
-        }
-      >
-  }
-}
-
 export interface UtilitiesAccordions extends Struct.ComponentSchema {
   collectionName: "components_utilities_accordions"
   info: {
@@ -671,17 +605,6 @@ export interface UtilitiesLinkDecorations extends Struct.ComponentSchema {
   }
 }
 
-export interface UtilitiesLinksWithTitle extends Struct.ComponentSchema {
-  collectionName: "components_utilities_links_with_titles"
-  info: {
-    displayName: "LinksWithTitle"
-  }
-  attributes: {
-    links: Schema.Attribute.Component<"utilities.link", true>
-    title: Schema.Attribute.String
-  }
-}
-
 export interface UtilitiesText extends Struct.ComponentSchema {
   collectionName: "components_utilities_texts"
   info: {
@@ -754,10 +677,6 @@ declare module "@strapi/strapi" {
       "seo-utilities.seo": SeoUtilitiesSeo
       "seo-utilities.seo-og": SeoUtilitiesSeoOg
       "seo-utilities.seo-twitter": SeoUtilitiesSeoTwitter
-      "seo-utilities.social-icons": SeoUtilitiesSocialIcons
-      "shared.figure": SharedFigure
-      "shared.image-with-config": SharedImageWithConfig
-      "shared.image-with-title-and-description": SharedImageWithTitleAndDescription
       "utilities.accordions": UtilitiesAccordions
       "utilities.basic-image": UtilitiesBasicImage
       "utilities.ck-editor-content": UtilitiesCkEditorContent
@@ -765,7 +684,6 @@ declare module "@strapi/strapi" {
       "utilities.image-with-link": UtilitiesImageWithLink
       "utilities.link": UtilitiesLink
       "utilities.link-decorations": UtilitiesLinkDecorations
-      "utilities.links-with-title": UtilitiesLinksWithTitle
       "utilities.text": UtilitiesText
       "utilities.tip-tap-rich-text": UtilitiesTipTapRichText
       "order.order-item": OrderOrderItem

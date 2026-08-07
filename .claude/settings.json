@@ -54,7 +54,13 @@
       "Bash(pnpm lint *)",
       "Bash(gzip -dc \"c:/Users/User/Desktop/linok/linokshop/apps/strapi/seed/exports/strapi-export-2026-05-12-144822.tar.gz\")",
       "Bash(pnpm seed:export)",
-      "Bash(gzip -dc \"c:/Users/User/Desktop/linok/linokshop/apps/strapi/seed/exports/strapi-export-2026-08-07-213741.tar.gz\")"
+      "Bash(gzip -dc \"c:/Users/User/Desktop/linok/linokshop/apps/strapi/seed/exports/strapi-export-2026-08-07-213741.tar.gz\")",
+      "Bash(powershell -Command \"Stop-Process -Id 19396 -Force\")",
+      "Bash(git -C \"c:/Users/User/Desktop/linok/linokshop\" diff --stat apps/strapi/types/generated/components.d.ts)",
+      "Bash(git -C \"c:/Users/User/Desktop/linok/linokshop\" diff --stat apps/strapi/types/generated/components.d.ts apps/strapi/config/sync/admin-role.strapi-super-admin.json)",
+      "Bash(git -C \"c:/Users/User/Desktop/linok/linokshop\" log --oneline -5)",
+      "Bash(git -C \"c:/Users/User/Desktop/linok/linokshop\" status --short)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:1337/admin)"
     ]
   }
 }
