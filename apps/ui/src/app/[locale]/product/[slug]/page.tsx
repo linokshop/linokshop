@@ -60,12 +60,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
     notFound()
   }
 
-  const deliveryNotes = [
-    t("deliveryNote1"),
-    t("deliveryNote2"),
-    t("deliveryNote3"),
-  ]
-
   const name = product.name ?? ""
 
   const images = (product.images ?? [])
@@ -74,10 +68,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
       alt: name,
     }))
     .filter((image) => image.url)
-
-  const options = (product.options ?? [])
-    .map((option) => option.text)
-    .filter((text): text is string => Boolean(text))
 
   // One spec table from two sources: the structured attributes (which also drive
   // the catalogue filters) and the free-text rows for one-offs that deserve no
@@ -195,9 +185,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
           </h1>
 
           <div className="mb-6 flex flex-wrap items-center gap-4 text-sm">
-            {product.rating ? (
-              <span className="text-brand-muted">★ {product.rating}</span>
-            ) : null}
             <span
               className={
                 product.inStock ? "text-brand-moss" : "text-brand-faded"
@@ -230,7 +217,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
               price: product.price ?? 0,
               imageUrl: images[0]?.url,
             }}
-            options={options}
             disabled={!product.inStock}
           />
 
@@ -251,17 +237,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
               →
             </span>
           </AppLink>
-
-          <ul className="border-brand-border text-brand-nav flex list-none flex-col gap-3 border-t pt-5 text-[14.5px]">
-            {deliveryNotes.map((note) => (
-              <li key={note} className="flex gap-3">
-                <span aria-hidden className="text-brand-gold">
-                  ●
-                </span>
-                {note}
-              </li>
-            ))}
-          </ul>
         </div>
       </div>
 

@@ -6,7 +6,6 @@ import { useState } from "react"
 
 import { type CartItem, useCart } from "@/lib/cart"
 import { ALSO_BOUGHT_ID } from "@/lib/layout"
-import { cn } from "@/lib/styles"
 
 /**
  * Nudge the page down to "often bought with this" once something is in the cart.
@@ -27,12 +26,9 @@ function scrollToAlsoBought() {
  */
 export function AddToCart({
   item,
-  options,
   disabled,
 }: {
   readonly item: Omit<CartItem, "quantity" | "option">
-  /** Variants like "60–120 g" — the chosen one travels with the cart line. */
-  readonly options?: readonly string[]
   readonly disabled?: boolean
 }) {
   const { add } = useCart()
@@ -40,36 +36,10 @@ export function AddToCart({
   const tc = useTranslations("shop.common")
 
   const [quantity, setQuantity] = useState(1)
-  const [option, setOption] = useState(options?.[0])
   const [added, setAdded] = useState(false)
 
   return (
     <div>
-      {options?.length ? (
-        <div className="mb-6">
-          <div className="font-oswald text-brand-muted mb-3 text-[13px] tracking-[0.06em] uppercase">
-            {t("variant")}
-          </div>
-          <div className="flex flex-wrap gap-2.5">
-            {options.map((value) => (
-              <button
-                key={value}
-                type="button"
-                onClick={() => setOption(value)}
-                className={cn(
-                  "font-oswald cursor-pointer rounded-md border-[1.5px] px-5 py-2.5 text-[15px] transition-colors",
-                  value === option
-                    ? "border-brand-bronze bg-brand-bronze/12 text-brand-cream"
-                    : "text-brand-nav border-brand-field hover:border-brand-field-hover"
-                )}
-              >
-                {value}
-              </button>
-            ))}
-          </div>
-        </div>
-      ) : null}
-
       <div className="mb-5.5 flex flex-wrap items-stretch gap-3.5">
         <div className="border-brand-field flex items-center overflow-hidden rounded-lg border-[1.5px]">
           <StepperButton
@@ -96,7 +66,7 @@ export function AddToCart({
           type="button"
           disabled={disabled}
           onClick={() => {
-            add({ ...item, option }, quantity)
+            add(item, quantity)
             setAdded(true)
             scrollToAlsoBought()
           }}
