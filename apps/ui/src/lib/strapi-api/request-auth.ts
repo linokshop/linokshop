@@ -11,7 +11,6 @@ const ALLOWED_STRAPI_ENDPOINTS: Record<string, string[]> = {
     // "api/auth/[provider]/callback",
   ],
   POST: [
-    "api/subscribers",
     "api/auth/local/register",
     "api/auth/forgot-password",
     "api/auth/reset-password",

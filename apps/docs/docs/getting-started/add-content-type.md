@@ -72,7 +72,7 @@ Attribute shape reference: [Strapi Schemas](../strapi/strapi-schemas.md). Locali
 
 ## Step 2 — Wire routes, controller, service
 
-Strapi's factory helpers cover the common case. Create three files mirroring `apps/strapi/src/api/subscriber`:
+Strapi's factory helpers cover the common case. Create three files mirroring `apps/strapi/src/api/page`:
 
 **`apps/strapi/src/api/product/routes/product.ts`**
 
@@ -127,7 +127,6 @@ export const API_ENDPOINTS: Partial<Record<UID.ContentType, string>> = {
   "api::page.page": "/pages",
   "api::footer.footer": "/footer",
   "api::navbar.navbar": "/navbar",
-  "api::subscriber.subscriber": "/subscribers",
   "api::product.product": "/products", // ← add this
 } as const
 ```

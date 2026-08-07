@@ -1091,38 +1091,6 @@ export interface ApiSubcategorySubcategory
   }
 }
 
-export interface ApiSubscriberSubscriber extends Struct.CollectionTypeSchema {
-  collectionName: "subscribers"
-  info: {
-    displayName: "Subscriber"
-    pluralName: "subscribers"
-    singularName: "subscriber"
-  }
-  options: {
-    draftAndPublish: false
-  }
-  attributes: {
-    content: Schema.Attribute.Text &
-      Schema.Attribute.CustomField<"plugin::tiptap-editor.RichText">
-    createdAt: Schema.Attribute.DateTime
-    createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
-      Schema.Attribute.Private
-    email: Schema.Attribute.Email
-    locale: Schema.Attribute.String & Schema.Attribute.Private
-    localizations: Schema.Attribute.Relation<
-      "oneToMany",
-      "api::subscriber.subscriber"
-    > &
-      Schema.Attribute.Private
-    message: Schema.Attribute.Text
-    name: Schema.Attribute.String
-    publishedAt: Schema.Attribute.DateTime
-    updatedAt: Schema.Attribute.DateTime
-    updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
-      Schema.Attribute.Private
-  }
-}
-
 export interface PluginContentReleasesRelease
   extends Struct.CollectionTypeSchema {
   collectionName: "strapi_releases"
@@ -1751,7 +1719,6 @@ declare module "@strapi/strapi" {
       "api::redirect.redirect": ApiRedirectRedirect
       "api::sub-subcategory.sub-subcategory": ApiSubSubcategorySubSubcategory
       "api::subcategory.subcategory": ApiSubcategorySubcategory
-      "api::subscriber.subscriber": ApiSubscriberSubscriber
       "plugin::content-releases.release": PluginContentReleasesRelease
       "plugin::content-releases.release-action": PluginContentReleasesReleaseAction
       "plugin::i18n.locale": PluginI18NLocale

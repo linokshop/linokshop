@@ -26,7 +26,6 @@ describe("content-type schemas", () => {
     // Each entry must have a readable schema file on disk.
     for (const [api, contentType] of [
       ["page", "page"],
-      ["subscriber", "subscriber"],
       ["navbar", "navbar"],
       ["footer", "footer"],
       ["redirect", "redirect"],
