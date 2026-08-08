@@ -71,7 +71,9 @@
       "Bash(gzip -dc \"c:/Users/User/Desktop/linok/linokshop/apps/strapi/seed/exports/strapi-export-2026-08-07-235716.tar.gz\")",
       "Bash(curl -s -o /dev/null -w \"Strapi admin: %{http_code}\\\\n\" http://localhost:1337/admin)",
       "Bash(curl -s -o /dev/null -w \"UI catalog: %{http_code}\\\\n\" http://localhost:3000/catalog)",
-      "Bash(curl -s -o /dev/null -w \"Product page: %{http_code}\\\\n\" http://localhost:3000/product/vudylyshche-fiderne-feeder-pro-3-6-m)"
+      "Bash(curl -s -o /dev/null -w \"Product page: %{http_code}\\\\n\" http://localhost:3000/product/vudylyshche-fiderne-feeder-pro-3-6-m)",
+      "Bash(git push *)",
+      "Bash(git commit *)"
     ],
     "additionalDirectories": [
       "C:\\Windows\\System32\\drivers\\etc"
