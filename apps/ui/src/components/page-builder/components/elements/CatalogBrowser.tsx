@@ -21,7 +21,6 @@ import {
   fetchBrands,
   fetchCatalogProducts,
   fetchCategoryCounts,
-  fetchSubcategoryAttributes,
   fetchSubSubcategoryCounts,
   fetchTopCategories,
 } from "@/lib/strapi-api/content/server"
@@ -76,11 +75,7 @@ export async function CatalogBrowser({
   /** Top-level category slug fixed by the URL path — whichever category the
    *  current page belongs to, even when locked deeper than the category itself. */
   readonly lockedCategory?: string
-  /**
-   * Sub-subcategory slug fixed by the URL path — the optional third level.
-   * `lockedSubcategory` must still be passed alongside it, since attributes
-   * stay pinned at the subcategory level regardless of how deep the URL goes.
-   */
+  /** Sub-subcategory slug fixed by the URL path — the optional third level. */
   readonly lockedSubSubcategory?: string
 }) {
   const t = await getTranslations({ locale, namespace: "shop.catalog" })
@@ -91,7 +86,6 @@ export async function CatalogBrowser({
     subcategory: lockedSubcategory,
     subSubcategory: lockedSubSubcategory,
     brands: readList(searchParams, "brand"),
-    attributeValues: readList(searchParams, "attr"),
     priceMin: readNumber(searchParams, "priceMin"),
     priceMax: readNumber(searchParams, "priceMax"),
     inStock: readOne(searchParams, "inStock") === "true",
@@ -110,14 +104,12 @@ export async function CatalogBrowser({
     categoryCounts,
     subSubcategoryCounts,
     brands,
-    attributes,
   ] = await Promise.all([
     fetchCatalogProducts(locale, query),
     fetchTopCategories(locale),
     fetchCategoryCounts(locale),
     fetchSubSubcategoryCounts(locale),
     fetchBrands(locale),
-    fetchSubcategoryAttributes(lockedSubcategory, locale),
   ])
 
   // The tree is pure navigation now: every top-level category is always
@@ -147,22 +139,6 @@ export async function CatalogBrowser({
         : [],
   }))
 
-  // Attribute facets for the sidebar. Options nobody has are dropped — an
-  // option that can only ever return nothing is a dead end, not a filter.
-  const attributeGroups = attributes
-    .map((attribute) => ({
-      slug: attribute.slug ?? "",
-      name: attribute.name ?? "",
-      values: (attribute.values ?? [])
-        .map((value) => ({
-          slug: value.slug ?? "",
-          name: value.name ?? "",
-          count: products.attributeCounts[value.slug ?? ""] ?? 0,
-        }))
-        .filter((value) => value.count > 0),
-    }))
-    .filter((attribute) => attribute.values.length > 0)
-
   const items = products?.data ?? []
   const pagination = products?.meta?.pagination
   const total = pagination?.total ?? 0
@@ -189,11 +165,10 @@ export async function CatalogBrowser({
             currentCategory={lockedCategory}
             currentSubcategory={lockedSubcategory}
             currentSubSubcategory={lockedSubSubcategory}
-            attributeGroups={attributeGroups}
             priceBounds={products.priceBounds}
             // Only brands actually present here, with their tallies. A brand that
             // no product in this view carries is a tick that guarantees an empty
-            // page — the same reason the attribute options are pruned.
+            // page.
             brands={(brands?.data ?? [])
               .map((brand) => ({
                 slug: brand.slug ?? "",

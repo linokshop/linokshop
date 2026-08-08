@@ -69,26 +69,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
     }))
     .filter((image) => image.url)
 
-  // One spec table from two sources: the structured attributes (which also drive
-  // the catalogue filters) and the free-text rows for one-offs that deserve no
-  // filter. Attributes come first — they are the comparable facts.
-  const attributeRows = [
-    ...(product.attributeValues ?? []).reduce((rows, value) => {
-      const label = value.attribute?.name
-      if (!label || !value.name) return rows
-      rows.set(label, [...(rows.get(label) ?? []), value.name])
-
-      return rows
-    }, new Map<string, string[]>()),
-  ].map(([label, values]) => ({ label, value: values.join(", ") }))
-
-  const specRows = [
-    ...attributeRows,
-    ...(product.specs ?? []).map((spec) => ({
+  const specRows = (product.specs ?? [])
+    .map((spec) => ({
       label: spec.label ?? "",
       value: spec.value ?? "",
-    })),
-  ].filter((row) => row.label && row.value)
+    }))
+    .filter((row) => row.label && row.value)
 
   // Whole subcategories a buyer typically needs alongside this one — a rod wants
   // worms, not one specific jar of them. Configured on the subcategory in the

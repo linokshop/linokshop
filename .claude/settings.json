@@ -60,7 +60,21 @@
       "Bash(git -C \"c:/Users/User/Desktop/linok/linokshop\" diff --stat apps/strapi/types/generated/components.d.ts apps/strapi/config/sync/admin-role.strapi-super-admin.json)",
       "Bash(git -C \"c:/Users/User/Desktop/linok/linokshop\" log --oneline -5)",
       "Bash(git -C \"c:/Users/User/Desktop/linok/linokshop\" status --short)",
-      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:1337/admin)"
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:1337/admin)",
+      "Bash(gh run *)",
+      "Bash(printf '\\\\n127.0.0.1\\\\tstrapi.local\\\\n127.0.0.1\\\\tshop.local\\\\n' >> /c/Windows/System32/drivers/etc/hosts 2>&1 && echo \"OK\" || echo \"FAILED\")",
+      "PowerShell(\"OK\")",
+      "Bash(powershell -Command \"Stop-Process -Id 2384 -Force\")",
+      "Bash(xargs grep -l -i \"attribute\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:1337/api/attributes)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:1337/api/products)",
+      "Bash(gzip -dc \"c:/Users/User/Desktop/linok/linokshop/apps/strapi/seed/exports/strapi-export-2026-08-07-235716.tar.gz\")",
+      "Bash(curl -s -o /dev/null -w \"Strapi admin: %{http_code}\\\\n\" http://localhost:1337/admin)",
+      "Bash(curl -s -o /dev/null -w \"UI catalog: %{http_code}\\\\n\" http://localhost:3000/catalog)",
+      "Bash(curl -s -o /dev/null -w \"Product page: %{http_code}\\\\n\" http://localhost:3000/product/vudylyshche-fiderne-feeder-pro-3-6-m)"
+    ],
+    "additionalDirectories": [
+      "C:\\Windows\\System32\\drivers\\etc"
     ]
   }
 }

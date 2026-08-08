@@ -41,7 +41,6 @@ export async function StrapiHomeProducts({
     : (
         await fetchCatalogProducts(locale, {
           brands: [],
-          attributeValues: [],
           inStock: false,
           sort: "popular",
           page: 1,

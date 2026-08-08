@@ -91,12 +91,6 @@
       "allowedTypes": ["images"],
       "multiple": true
     },
-    "attributeValues": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::attribute-value.attribute-value",
-      "inversedBy": "products"
-    },
     "specs": {
       "type": "component",
       "component": "elements.spec-row",

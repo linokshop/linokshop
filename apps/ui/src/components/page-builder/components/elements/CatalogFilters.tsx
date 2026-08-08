@@ -27,13 +27,6 @@ export interface CategoryGroup {
   readonly subcategories: readonly SubcategoryOption[]
 }
 
-/** A filterable product property and the options products actually carry. */
-export interface AttributeGroup {
-  readonly slug: string
-  readonly name: string
-  readonly values: readonly FilterOption[]
-}
-
 /**
  * The filter state lives in the URL, not in React state — so a filtered view can
  * be shared, bookmarked and rendered on the server, and the back button works.
@@ -43,9 +36,9 @@ export interface AttributeGroup {
  *
  * The category/subcategory/sub-subcategory tree is pure navigation, always —
  * plain links, never checkboxes, on every page including the unfiltered
- * catalogue. Category is "where am I", decided by the URL path; price, brand,
- * stock and attributes are "what do I want", decided by checkboxes that refine
- * the current page without navigating. Keeping those two questions on two
+ * catalogue. Category is "where am I", decided by the URL path; price, brand
+ * and stock are "what do I want", decided by checkboxes that refine the
+ * current page without navigating. Keeping those two questions on two
  * different controls is what makes the sidebar predictable from page to page.
  */
 export function CatalogFilters({
@@ -55,15 +48,12 @@ export function CatalogFilters({
   currentCategory,
   currentSubcategory,
   currentSubSubcategory,
-  attributeGroups = [],
   priceBounds,
 }: {
   readonly categoryTree: readonly CategoryGroup[]
   readonly brands: readonly FilterOption[]
   /** Ends of the price slider — the cheapest and dearest product in this view. */
   readonly priceBounds: { readonly min: number; readonly max: number }
-  /** Per-property facets; only present inside a subcategory. */
-  readonly attributeGroups?: readonly AttributeGroup[]
   /** Top-level category the current page belongs to, if any — highlights it
    *  and expands its subcategories in the tree. */
   readonly currentCategory?: string
@@ -92,7 +82,6 @@ export function CatalogFilters({
     (searchParams.get(key) ?? "").split(",").filter(Boolean)
 
   const [selectedBrands, setSelectedBrands] = useState(() => readList("brand"))
-  const [selectedValues, setSelectedValues] = useState(() => readList("attr"))
   const [priceMin, setPriceMin] = useState(searchParams.get("priceMin") ?? "")
   const [priceMax, setPriceMax] = useState(searchParams.get("priceMax") ?? "")
   const [inStock, setInStock] = useState(searchParams.get("inStock") === "true")
@@ -104,7 +93,6 @@ export function CatalogFilters({
    */
   const applyParams = (override: {
     brands?: string[]
-    values?: string[]
     priceMin?: string
     priceMax?: string
     inStock?: boolean
@@ -116,13 +104,11 @@ export function CatalogFilters({
     if (sort) params.set("sort", sort)
 
     const brandSlugs = override.brands ?? selectedBrands
-    const values = override.values ?? selectedValues
     const min = override.priceMin ?? priceMin
     const max = override.priceMax ?? priceMax
     const stock = override.inStock ?? inStock
 
     if (brandSlugs.length) params.set("brand", brandSlugs.join(","))
-    if (values.length) params.set("attr", values.join(","))
     if (min.trim()) params.set("priceMin", min.trim())
     if (max.trim()) params.set("priceMax", max.trim())
     if (stock) params.set("inStock", "true")
@@ -137,17 +123,12 @@ export function CatalogFilters({
     })
   }
 
-  const toggle = (
-    list: string[],
-    setList: (next: string[]) => void,
-    slug: string,
-    key: "brands" | "values"
-  ) => {
-    const next = list.includes(slug)
-      ? list.filter((s) => s !== slug)
-      : [...list, slug]
-    setList(next)
-    applyParams({ [key]: next })
+  const toggleBrand = (slug: string) => {
+    const next = selectedBrands.includes(slug)
+      ? selectedBrands.filter((s) => s !== slug)
+      : [...selectedBrands, slug]
+    setSelectedBrands(next)
+    applyParams({ brands: next })
   }
 
   const toggleInStock = () => {
@@ -174,7 +155,6 @@ export function CatalogFilters({
 
   const reset = () => {
     setSelectedBrands([])
-    setSelectedValues([])
     setPriceMin("")
     setPriceMax("")
     setInStock(false)
@@ -275,32 +255,6 @@ export function CatalogFilters({
         />
       </div>
 
-      {/* One block per property, e.g. Довжина with its lengths. Only shown
-          inside a subcategory, where a shared set of properties exists. */}
-      {attributeGroups.map((group) => (
-        <div key={group.slug}>
-          <FilterHeading>{group.name}</FilterHeading>
-          <div className="border-brand-border mb-5 border-b pb-5">
-            {group.values.map((value) => (
-              <Checkbox
-                key={value.slug}
-                checked={selectedValues.includes(value.slug)}
-                onToggle={() =>
-                  toggle(
-                    selectedValues,
-                    setSelectedValues,
-                    value.slug,
-                    "values"
-                  )
-                }
-                label={value.name}
-                count={value.count}
-              />
-            ))}
-          </div>
-        </div>
-      ))}
-
       {brands.length ? (
         <>
           <FilterHeading>{labels.brand}</FilterHeading>
@@ -309,14 +263,7 @@ export function CatalogFilters({
               <Checkbox
                 key={brand.slug}
                 checked={selectedBrands.includes(brand.slug)}
-                onToggle={() =>
-                  toggle(
-                    selectedBrands,
-                    setSelectedBrands,
-                    brand.slug,
-                    "brands"
-                  )
-                }
+                onToggle={() => toggleBrand(brand.slug)}
                 label={brand.name}
                 count={brand.count}
               />

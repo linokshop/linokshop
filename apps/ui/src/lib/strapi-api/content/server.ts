@@ -344,8 +344,6 @@ export async function fetchProductBySlug(
             brand: true,
             specs: true,
             options: true,
-            // Rendered as part of the spec table — the structured half of it.
-            attributeValues: { populate: { attribute: true } },
           },
         },
         {
@@ -383,50 +381,12 @@ export interface CatalogQuery {
   /** Sub-subcategory slug fixed by the URL path — the optional third level. */
   readonly subSubcategory?: string
   readonly brands: string[]
-  /** Chosen attribute-value slugs, e.g. ["3-6-m", "karbon"]. */
-  readonly attributeValues: string[]
   readonly priceMin?: number
   readonly priceMax?: number
   readonly inStock: boolean
   readonly sort: "popular" | "price-asc" | "price-desc" | "new"
   readonly page: number
   readonly pageSize: number
-}
-
-/**
- * Does a product satisfy the chosen attribute options?
- *
- * Options of the *same* property widen the result (Довжина 3.0 **or** 3.6) while
- * options of *different* properties narrow it (Довжина 3.6 **and** Карбон) —
- * ticking a second length must not empty the page, but ticking a material must.
- * That is the behaviour every shop filter has, and getting it backwards makes
- * the sidebar feel broken.
- */
-function matchesAttributes(
-  product: EnrichedProduct,
-  selected: readonly string[],
-  attributeOfValue: Record<string, string>
-): boolean {
-  const owned = new Set(
-    (product.attributeValues ?? [])
-      .map((value) => value.slug)
-      .filter((slug): slug is string => Boolean(slug))
-  )
-
-  const byAttribute = new Map<string, string[]>()
-  for (const slug of selected) {
-    const attribute = attributeOfValue[slug] ?? slug
-    byAttribute.set(attribute, [...(byAttribute.get(attribute) ?? []), slug])
-  }
-
-  for (const slugs of byAttribute.values()) {
-    const satisfied = slugs.some((slug) => owned.has(slug))
-    if (!satisfied) {
-      return false
-    }
-  }
-
-  return true
 }
 
 /** Epoch millis for a Strapi datetime, tolerant of a missing value. */
@@ -474,8 +434,6 @@ export interface CatalogPage {
       readonly pageCount: number
     }
   }
-  /** How many products carry each attribute value, keyed by value slug. */
-  readonly attributeCounts: Record<string, number>
   /** How many products carry each brand, keyed by brand slug. */
   readonly brandCounts: Record<string, number>
   /**
@@ -506,7 +464,6 @@ export async function fetchCatalogProducts(
         pageCount: 1,
       },
     },
-    attributeCounts: {},
     brandCounts: {},
     priceBounds: { min: 0, max: 0 },
   }
@@ -536,15 +493,10 @@ export async function fetchCatalogProducts(
           locale,
           status: "published",
           filters,
-          // Attribute values come along so the sidebar can both filter on them
-          // and count them without a second pass over the catalogue.
           populate: {
             images: true,
             subcategory: true,
             brand: true,
-            // The parent attribute comes along so the filter can tell options of
-            // the same property apart from options of different ones.
-            attributeValues: { populate: { attribute: true } },
           },
         },
         {
@@ -559,7 +511,7 @@ export async function fetchCatalogProducts(
 
     let items = enrichProducts(response?.data ?? [], kasaMap)
 
-    // Counts are taken before the attribute filter is applied, so a sidebar
+    // Counts are taken before the in-memory filters are applied, so a sidebar
     // option still shows how many products it would bring back rather than
     // collapsing to zero the moment a sibling option is ticked.
     const prices = items.map((product) => product.price)
@@ -568,26 +520,12 @@ export async function fetchCatalogProducts(
       max: prices.length ? Math.ceil(Math.max(...prices)) : 0,
     }
 
-    const attributeCounts: Record<string, number> = {}
-    const attributeOfValue: Record<string, string> = {}
     const brandCounts: Record<string, number> = {}
     for (const product of items) {
-      for (const value of product.attributeValues ?? []) {
-        if (value.slug) {
-          attributeCounts[value.slug] = (attributeCounts[value.slug] ?? 0) + 1
-          attributeOfValue[value.slug] = value.attribute?.slug ?? value.slug
-        }
-      }
       const brand = product.brand?.slug
       if (brand) {
         brandCounts[brand] = (brandCounts[brand] ?? 0) + 1
       }
-    }
-
-    if (query.attributeValues.length) {
-      items = items.filter((product) =>
-        matchesAttributes(product, query.attributeValues, attributeOfValue)
-      )
     }
 
     const { priceMin, priceMax } = query
@@ -616,7 +554,6 @@ export async function fetchCatalogProducts(
           pageCount,
         },
       },
-      attributeCounts,
       brandCounts,
       priceBounds,
     }
@@ -768,51 +705,6 @@ export async function fetchCategories(locale: Locale) {
         stack: e instanceof Error ? e.stack : undefined,
       },
     })
-  }
-}
-
-/**
- * The filterable attributes of one subcategory, each with its options.
- *
- * Attributes are attached to the subcategories they make sense for, so browsing
- * bait never offers a rod's "Тест". Returns [] outside a subcategory — the whole
- * catalogue has no single set of attributes worth showing.
- */
-export async function fetchSubcategoryAttributes(
-  subcategorySlug: string | undefined,
-  locale: Locale
-) {
-  if (!subcategorySlug) {
-    return []
-  }
-
-  try {
-    const response = await PublicStrapiClient.fetchMany(
-      "api::attribute.attribute",
-      {
-        locale,
-        status: "published",
-        filters: { subcategories: { slug: { $eq: subcategorySlug } } },
-        populate: { values: true },
-        sort: ["order:asc", "name:asc"],
-        pagination: { page: 1, pageSize: 50 },
-      },
-      {
-        next: {
-          revalidate: 600,
-          tags: [strapiCacheTag("api::attribute.attribute")],
-        },
-      }
-    )
-
-    return response?.data ?? []
-  } catch (e: unknown) {
-    logNonBlockingError({
-      message: `Error fetching attributes for '${subcategorySlug}'`,
-      error: { error: e instanceof Error ? e.message : String(e) },
-    })
-
-    return []
   }
 }
 

@@ -701,99 +701,6 @@ export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
   }
 }
 
-export interface ApiAttributeAttribute extends Struct.CollectionTypeSchema {
-  collectionName: "attributes"
-  info: {
-    description: "A filterable product property, e.g. Довжина or Тест. Its options live in Attribute value."
-    displayName: "Attribute"
-    pluralName: "attributes"
-    singularName: "attribute"
-  }
-  options: {
-    draftAndPublish: true
-  }
-  pluginOptions: {
-    i18n: {
-      localized: true
-    }
-  }
-  attributes: {
-    createdAt: Schema.Attribute.DateTime
-    createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
-      Schema.Attribute.Private
-    locale: Schema.Attribute.String
-    localizations: Schema.Attribute.Relation<
-      "oneToMany",
-      "api::attribute.attribute"
-    >
-    name: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true
-        }
-      }>
-    order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>
-    publishedAt: Schema.Attribute.DateTime
-    slug: Schema.Attribute.UID<"name">
-    subcategories: Schema.Attribute.Relation<
-      "manyToMany",
-      "api::subcategory.subcategory"
-    >
-    updatedAt: Schema.Attribute.DateTime
-    updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
-      Schema.Attribute.Private
-    values: Schema.Attribute.Relation<
-      "oneToMany",
-      "api::attribute-value.attribute-value"
-    >
-  }
-}
-
-export interface ApiAttributeValueAttributeValue
-  extends Struct.CollectionTypeSchema {
-  collectionName: "attribute_values"
-  info: {
-    description: "One option of an Attribute, e.g. 3.6 м for Довжина. Products link to these, which is what makes them filterable."
-    displayName: "Attribute value"
-    pluralName: "attribute-values"
-    singularName: "attribute-value"
-  }
-  options: {
-    draftAndPublish: true
-  }
-  pluginOptions: {
-    i18n: {
-      localized: true
-    }
-  }
-  attributes: {
-    attribute: Schema.Attribute.Relation<"manyToOne", "api::attribute.attribute">
-    createdAt: Schema.Attribute.DateTime
-    createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
-      Schema.Attribute.Private
-    locale: Schema.Attribute.String
-    localizations: Schema.Attribute.Relation<
-      "oneToMany",
-      "api::attribute-value.attribute-value"
-    >
-    name: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true
-        }
-      }>
-    order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>
-    products: Schema.Attribute.Relation<"manyToMany", "api::product.product">
-    publishedAt: Schema.Attribute.DateTime
-    slug: Schema.Attribute.UID<"name">
-    updatedAt: Schema.Attribute.DateTime
-    updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> &
-      Schema.Attribute.Private
-  }
-}
-
 export interface ApiBrandBrand extends Struct.CollectionTypeSchema {
   collectionName: "brands"
   info: {
@@ -888,10 +795,6 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
     rating: Schema.Attribute.Decimal
     recommended: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>
     slug: Schema.Attribute.UID<"name">
-    attributeValues: Schema.Attribute.Relation<
-      "manyToMany",
-      "api::attribute-value.attribute-value"
-    >
     specs: Schema.Attribute.Component<"elements.spec-row", true> &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -1074,10 +977,6 @@ export interface ApiSubcategorySubcategory
         }
       }>
     order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>
-    productAttributes: Schema.Attribute.Relation<
-      "manyToMany",
-      "api::attribute.attribute"
-    >
     products: Schema.Attribute.Relation<"oneToMany", "api::product.product">
     publishedAt: Schema.Attribute.DateTime
     slug: Schema.Attribute.UID<"name">
@@ -1707,8 +1606,6 @@ declare module "@strapi/strapi" {
       "admin::transfer-token-permission": AdminTransferTokenPermission
       "admin::user": AdminUser
       "api::brand.brand": ApiBrandBrand
-      "api::attribute.attribute": ApiAttributeAttribute
-      "api::attribute-value.attribute-value": ApiAttributeValueAttributeValue
       "api::category.category": ApiCategoryCategory
       "api::footer.footer": ApiFooterFooter
       "api::hierarchy.hierarchy": ApiHierarchyHierarchy

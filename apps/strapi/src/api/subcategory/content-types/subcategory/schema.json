@@ -44,12 +44,6 @@
       "target": "api::category.category",
       "inversedBy": "subcategories"
     },
-    "productAttributes": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::attribute.attribute",
-      "mappedBy": "subcategories"
-    },
     "alsoBought": {
       "type": "relation",
       "relation": "manyToMany",
