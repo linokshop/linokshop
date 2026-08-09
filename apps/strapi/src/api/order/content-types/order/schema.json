@@ -4,7 +4,7 @@
   "info": {
     "singularName": "order",
     "pluralName": "orders",
-    "displayName": "Order",
+    "displayName": "Замовлення",
     "description": "A checkout order placed on the ЛінОк storefront."
   },
   "options": {

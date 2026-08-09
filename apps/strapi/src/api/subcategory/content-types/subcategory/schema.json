@@ -4,7 +4,7 @@
   "info": {
     "singularName": "subcategory",
     "pluralName": "subcategories",
-    "displayName": "Subcategory",
+    "displayName": "Підкатегорія",
     "description": "A subcategory under a Category; products attach here."
   },
   "options": {

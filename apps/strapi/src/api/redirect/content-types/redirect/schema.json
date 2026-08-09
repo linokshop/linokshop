@@ -4,7 +4,7 @@
   "info": {
     "singularName": "redirect",
     "pluralName": "redirects",
-    "displayName": "Redirect"
+    "displayName": "Переспрямування"
   },
   "options": {
     "draftAndPublish": true

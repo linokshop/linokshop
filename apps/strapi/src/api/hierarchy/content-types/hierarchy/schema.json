@@ -4,7 +4,7 @@
   "info": {
     "singularName": "hierarchy",
     "pluralName": "hierarchies",
-    "displayName": "Hierarchy",
+    "displayName": "Ієрархія сторінок",
     "description": "Page hierarchy management: lists pending fullPath changes and applies them together with redirects."
   },
   "options": {

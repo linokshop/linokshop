@@ -4,7 +4,7 @@
   "info": {
     "singularName": "brand",
     "pluralName": "brands",
-    "displayName": "Brand",
+    "displayName": "Бренд",
     "description": "A product brand. A collection, not a free-text field, so the catalog filter never shows the same brand twice under different spellings."
   },
   "options": {

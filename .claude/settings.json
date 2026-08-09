@@ -73,7 +73,18 @@
       "Bash(curl -s -o /dev/null -w \"UI catalog: %{http_code}\\\\n\" http://localhost:3000/catalog)",
       "Bash(curl -s -o /dev/null -w \"Product page: %{http_code}\\\\n\" http://localhost:3000/product/vudylyshche-fiderne-feeder-pro-3-6-m)",
       "Bash(git push *)",
-      "Bash(git commit *)"
+      "Bash(git commit *)",
+      "Bash(curl -s -o /dev/null -w \"Strapi: %{http_code}\\\\n\" http://localhost:1337/admin)",
+      "Bash(curl -s -o /dev/null -w \"UI: %{http_code}\\\\n\" http://localhost:3000)",
+      "Bash(node \"C:\\\\Users\\\\User\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-User-Desktop-linok-linokshop\\\\865ddca8-4926-4146-a978-40ba112b3e11\\\\scratchpad\\\\dump-cm-config.mjs\")",
+      "Bash(cp \"C:\\\\Users\\\\User\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-User-Desktop-linok-linokshop\\\\865ddca8-4926-4146-a978-40ba112b3e11\\\\scratchpad\\\\patch-cm-labels.cjs\" \"c:/Users/User/Desktop/linok/linokshop/apps/strapi/.tmp-patch-cm.cjs\")",
+      "Bash(node .tmp-patch-cm.cjs)",
+      "Bash(yes)",
+      "Bash(cp \"C:\\\\Users\\\\User\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-User-Desktop-linok-linokshop\\\\865ddca8-4926-4146-a978-40ba112b3e11\\\\scratchpad\\\\dump-components.cjs\" \"c:/Users/User/Desktop/linok/linokshop/apps/strapi/.tmp-dump-comp.cjs\")",
+      "Bash(node .tmp-dump-comp.cjs)",
+      "Bash(cp \"C:\\\\Users\\\\User\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-User-Desktop-linok-linokshop\\\\865ddca8-4926-4146-a978-40ba112b3e11\\\\scratchpad\\\\patch-all-labels.cjs\" \"c:/Users/User/Desktop/linok/linokshop/apps/strapi/.tmp-patch-all.cjs\")",
+      "Bash(node .tmp-patch-all.cjs)",
+      "Bash(powershell -Command \"Stop-Process -Id 5888 -Force\")"
     ],
     "additionalDirectories": [
       "C:\\Windows\\System32\\drivers\\etc"
