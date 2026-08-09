@@ -1,0 +1,426 @@
+{
+  "key": "plugin_content_manager_configuration_content_types::api::order.order",
+  "value": {
+    "settings": {
+      "bulkable": true,
+      "filterable": true,
+      "searchable": true,
+      "pageSize": 10,
+      "relationOpenMode": "modal",
+      "mainField": "orderNo",
+      "defaultSortBy": "orderNo",
+      "defaultSortOrder": "ASC"
+    },
+    "metadatas": {
+      "id": {
+        "edit": {},
+        "list": {
+          "label": "id",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "orderNo": {
+        "edit": {
+          "label": "Номер замовлення",
+          "description": "Генерується автоматично при оформленні замовлення на сайті.",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "orderNo",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "status": {
+        "edit": {
+          "label": "Статус",
+          "description": "Єдине поле, яке зазвичай треба міняти вручну — відображає, на якому етапі перебуває замовлення.",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "status",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "customerName": {
+        "edit": {
+          "label": "Ім'я клієнта",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "customerName",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "phone": {
+        "edit": {
+          "label": "Телефон",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "phone",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "viber": {
+        "edit": {
+          "label": "Viber",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "viber",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "telegram": {
+        "edit": {
+          "label": "Telegram",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "telegram",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "shipping": {
+        "edit": {
+          "label": "Спосіб доставки",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "shipping",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "city": {
+        "edit": {
+          "label": "Місто",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "city",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "branch": {
+        "edit": {
+          "label": "Відділення / поштомат",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "branch",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "street": {
+        "edit": {
+          "label": "Вулиця (кур'єрська доставка)",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "street",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "comment": {
+        "edit": {
+          "label": "Коментар клієнта",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "comment",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "payment": {
+        "edit": {
+          "label": "Спосіб оплати",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "payment",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "veteran": {
+        "edit": {
+          "label": "Знижка ветерана",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "veteran",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "items": {
+        "edit": {
+          "label": "Товари в замовленні",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "items",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "subtotal": {
+        "edit": {
+          "label": "Сума товарів",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "subtotal",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "discount": {
+        "edit": {
+          "label": "Знижка",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "discount",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "total": {
+        "edit": {
+          "label": "До сплати",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "total",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "createdAt": {
+        "edit": {
+          "label": "createdAt",
+          "description": "",
+          "placeholder": "",
+          "visible": false,
+          "editable": true
+        },
+        "list": {
+          "label": "createdAt",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "updatedAt": {
+        "edit": {
+          "label": "updatedAt",
+          "description": "",
+          "placeholder": "",
+          "visible": false,
+          "editable": true
+        },
+        "list": {
+          "label": "updatedAt",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "createdBy": {
+        "edit": {
+          "label": "createdBy",
+          "description": "",
+          "placeholder": "",
+          "visible": false,
+          "editable": true,
+          "mainField": "firstname"
+        },
+        "list": {
+          "label": "createdBy",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "updatedBy": {
+        "edit": {
+          "label": "updatedBy",
+          "description": "",
+          "placeholder": "",
+          "visible": false,
+          "editable": true,
+          "mainField": "firstname"
+        },
+        "list": {
+          "label": "updatedBy",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "documentId": {
+        "edit": {},
+        "list": {
+          "label": "documentId",
+          "searchable": true,
+          "sortable": true
+        }
+      }
+    },
+    "layouts": {
+      "list": [
+        "id",
+        "orderNo",
+        "status",
+        "customerName"
+      ],
+      "edit": [
+        [
+          {
+            "name": "orderNo",
+            "size": 6
+          },
+          {
+            "name": "status",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "customerName",
+            "size": 6
+          },
+          {
+            "name": "phone",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "viber",
+            "size": 6
+          },
+          {
+            "name": "telegram",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "shipping",
+            "size": 6
+          },
+          {
+            "name": "city",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "branch",
+            "size": 6
+          },
+          {
+            "name": "street",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "comment",
+            "size": 6
+          },
+          {
+            "name": "payment",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "veteran",
+            "size": 4
+          }
+        ],
+        [
+          {
+            "name": "items",
+            "size": 12
+          }
+        ],
+        [
+          {
+            "name": "subtotal",
+            "size": 4
+          },
+          {
+            "name": "discount",
+            "size": 4
+          },
+          {
+            "name": "total",
+            "size": 4
+          }
+        ]
+      ]
+    },
+    "uid": "api::order.order"
+  }
+}

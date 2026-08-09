@@ -1,0 +1,417 @@
+{
+  "key": "plugin_content_manager_configuration_content_types::api::product.product",
+  "value": {
+    "settings": {
+      "bulkable": true,
+      "filterable": true,
+      "searchable": true,
+      "pageSize": 10,
+      "relationOpenMode": "modal",
+      "mainField": "name",
+      "defaultSortBy": "name",
+      "defaultSortOrder": "ASC"
+    },
+    "metadatas": {
+      "id": {
+        "edit": {},
+        "list": {
+          "label": "id",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "name": {
+        "edit": {
+          "label": "Назва",
+          "description": "Назва товару, яку побачить покупець.",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "name",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "slug": {
+        "edit": {
+          "label": "URL-адреса (slug)",
+          "description": "Частина посилання на сторінку товару. Формується автоматично з назви — зазвичай можна не чіпати.",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "slug",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "subcategory": {
+        "edit": {
+          "label": "Підкатегорія",
+          "description": "Розділ каталогу, до якого належить товар. Обов'язково.",
+          "placeholder": "",
+          "visible": true,
+          "editable": true,
+          "mainField": "name"
+        },
+        "list": {
+          "label": "subcategory",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "subSubcategory": {
+        "edit": {
+          "label": "Під-підкатегорія",
+          "description": "Необов'язковий третій рівень категорії — лише якщо він є в обраній підкатегорії.",
+          "placeholder": "",
+          "visible": true,
+          "editable": true,
+          "mainField": "name"
+        },
+        "list": {
+          "label": "subSubcategory",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "brand": {
+        "edit": {
+          "label": "Бренд",
+          "description": "Виробник товару.",
+          "placeholder": "",
+          "visible": true,
+          "editable": true,
+          "mainField": "name"
+        },
+        "list": {
+          "label": "brand",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "oldPrice": {
+        "edit": {
+          "label": "Стара ціна",
+          "description": "Ціна до знижки — показується закресленою поруч із поточною. Залиште порожнім, якщо знижки немає. Поточна ціна й наявність беруться з каси автоматично, тут не редагуються.",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "oldPrice",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "badge": {
+        "edit": {
+          "label": "Бейдж",
+          "description": "Короткий напис на картці товару, напр. «ХІТ» чи «НОВИНКА». Необов'язково.",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "badge",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "badgeColor": {
+        "edit": {
+          "label": "Колір бейджа",
+          "description": "Колірна схема напису над товаром.",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "badgeColor",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "rating": {
+        "edit": {
+          "label": "rating",
+          "description": "",
+          "placeholder": "",
+          "visible": false,
+          "editable": true
+        },
+        "list": {
+          "label": "rating",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "popularity": {
+        "edit": {
+          "label": "Популярність",
+          "description": "Внутрішній рейтинг для сортування «за популярністю» і добірки на головній. Більше число — вище в списку.",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "popularity",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "recommended": {
+        "edit": {
+          "label": "Рекомендований",
+          "description": "Позначає товар для добірки «Топ спорядження» на головній сторінці.",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "recommended",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "kasaCode": {
+        "edit": {
+          "label": "Код товару в касі",
+          "description": "Має ТОЧНО збігатися з кодом товару в Vchasno Kasa. Звідти беруться ціна та наявність. Якщо код не знайдено в касі — товар НЕ з'явиться на сайті, без попередження про помилку.",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "kasaCode",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "description": {
+        "edit": {
+          "label": "Опис",
+          "description": "Детальний опис товару для сторінки. Підтримує форматування (жирний, списки, посилання).",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "description",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "images": {
+        "edit": {
+          "label": "Фото",
+          "description": "Фото товару. Перше зображення — головне, показується в каталозі.",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "images",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "specs": {
+        "edit": {
+          "label": "Характеристики",
+          "description": "Довільні пари «назва – значення» для унікальних параметрів товару (вага, комплектація тощо). Якщо та сама назва характеристики повторюється в багатьох товарах підкатегорії — краще звернутись до розробника, щоб зробити її фільтром.",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "specs",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "options": {
+        "edit": {
+          "label": "options",
+          "description": "",
+          "placeholder": "",
+          "visible": false,
+          "editable": true
+        },
+        "list": {
+          "label": "options",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "createdAt": {
+        "edit": {
+          "label": "createdAt",
+          "description": "",
+          "placeholder": "",
+          "visible": false,
+          "editable": true
+        },
+        "list": {
+          "label": "createdAt",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "updatedAt": {
+        "edit": {
+          "label": "updatedAt",
+          "description": "",
+          "placeholder": "",
+          "visible": false,
+          "editable": true
+        },
+        "list": {
+          "label": "updatedAt",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "createdBy": {
+        "edit": {
+          "label": "createdBy",
+          "description": "",
+          "placeholder": "",
+          "visible": false,
+          "editable": true,
+          "mainField": "firstname"
+        },
+        "list": {
+          "label": "createdBy",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "updatedBy": {
+        "edit": {
+          "label": "updatedBy",
+          "description": "",
+          "placeholder": "",
+          "visible": false,
+          "editable": true,
+          "mainField": "firstname"
+        },
+        "list": {
+          "label": "updatedBy",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "documentId": {
+        "edit": {},
+        "list": {
+          "label": "documentId",
+          "searchable": true,
+          "sortable": true
+        }
+      }
+    },
+    "layouts": {
+      "list": [
+        "id",
+        "name",
+        "slug",
+        "subcategory"
+      ],
+      "edit": [
+        [
+          {
+            "name": "name",
+            "size": 6
+          },
+          {
+            "name": "slug",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "brand",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "oldPrice",
+            "size": 4
+          }
+        ],
+        [
+          {
+            "name": "badge",
+            "size": 6
+          },
+          {
+            "name": "rating",
+            "size": 4
+          }
+        ],
+        [
+          {
+            "name": "images",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "specs",
+            "size": 12
+          }
+        ],
+        [
+          {
+            "name": "options",
+            "size": 12
+          }
+        ],
+        [
+          {
+            "name": "badgeColor",
+            "size": 6
+          },
+          {
+            "name": "popularity",
+            "size": 4
+          }
+        ],
+        [
+          {
+            "name": "recommended",
+            "size": 4
+          }
+        ],
+        [
+          {
+            "name": "kasaCode",
+            "size": 6
+          },
+          {
+            "name": "subcategory",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "subSubcategory",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "description",
+            "size": 12
+          }
+        ]
+      ]
+    },
+    "uid": "api::product.product"
+  }
+}
