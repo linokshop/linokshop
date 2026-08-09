@@ -4,6 +4,7 @@ import type { Locale } from "next-intl"
 import { getTranslations, setRequestLocale } from "next-intl/server"
 
 import AppLink from "@/components/elementary/AppLink"
+import CkEditorRenderer from "@/components/elementary/ck-editor"
 import { AddToCart } from "@/components/product/AddToCart"
 import { AlsoBought, toAlsoBoughtTiles } from "@/components/product/AlsoBought"
 import { ProductGallery } from "@/components/product/ProductGallery"
@@ -239,17 +240,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
               <h2 className="font-oswald text-brand-cream mb-4 text-[26px] font-semibold tracking-[0.02em] uppercase">
                 {t("description")}
               </h2>
-              {product.description.split(/\n{2,}/).map((paragraph, index) => (
-                <p
-                  // Two identical paragraphs are legal copy — index is the only
-                  // stable key here.
-                  // eslint-disable-next-line react/no-array-index-key
-                  key={index}
-                  className="text-brand-nav mb-3.5 text-[15.5px] leading-[1.8] last:mb-0"
-                >
-                  {paragraph}
-                </p>
-              ))}
+              <CkEditorRenderer
+                htmlContent={product.description}
+                className="[&_p]:text-brand-nav [&_p]:mb-3.5 [&_p]:text-[15.5px] [&_p]:leading-[1.8] [&_p:last-child]:mb-0"
+              />
             </section>
           ) : null}
 

@@ -79,7 +79,11 @@
       "unique": true
     },
     "description": {
-      "type": "text",
+      "type": "customField",
+      "customField": "plugin::ckeditor5.CKEditor",
+      "options": {
+        "preset": "defaultCkEditor"
+      },
       "pluginOptions": {
         "i18n": {
           "localized": true

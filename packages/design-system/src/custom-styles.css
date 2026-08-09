@@ -11,10 +11,6 @@
   word-break: break-word;
 }
 
-.ck-editor-rich-text-page p {
-  @apply text-gray-600 dark:text-gray-400;
-}
-
 .ck-content iframe[src^="https://www.youtube.com"] {
   width: 100%;
   aspect-ratio: 16/9;
@@ -91,31 +87,31 @@
   h6 {
     @apply mb-1 text-base md:text-lg lg:text-xl;
   }
-}
 
-/* Default paragraph style */
-.ck-editor-rich-text-page p,
-.ck-editor-rich-text-page .typo-p-medium,
-.ck-editor__main .ck-content p,
-.ck-editor__main .ck-content .typo-p-medium,
-.typo-p-medium,
-.tip-tap-editor-wrapper p,
-.tip-tap-editor-wrapper .typo-p-medium {
-  @apply mb-0.5 text-sm;
-}
+  /* Default paragraph style */
+  .ck-editor-rich-text-page p,
+  .ck-editor-rich-text-page .typo-p-medium,
+  .ck-editor__main .ck-content p,
+  .ck-editor__main .ck-content .typo-p-medium,
+  .typo-p-medium,
+  .tip-tap-editor-wrapper p,
+  .tip-tap-editor-wrapper .typo-p-medium {
+    @apply mb-0.5 text-sm text-gray-600 dark:text-gray-400;
+  }
 
-.ck-editor-rich-text-page .typo-p-large,
-.ck-editor__main .ck-content .typo-p-large,
-.typo-p-large,
-.tip-tap-editor-wrapper .typo-p-large {
-  @apply mb-0.5 text-lg;
-}
+  .ck-editor-rich-text-page .typo-p-large,
+  .ck-editor__main .ck-content .typo-p-large,
+  .typo-p-large,
+  .tip-tap-editor-wrapper .typo-p-large {
+    @apply mb-0.5 text-lg;
+  }
 
-.ck-editor-rich-text-page .typo-p-small,
-.ck-editor__main .ck-content .typo-p-small,
-.typo-p-small,
-.tip-tap-editor-wrapper .typo-p-small {
-  @apply mb-0.5 text-xs;
+  .ck-editor-rich-text-page .typo-p-small,
+  .ck-editor__main .ck-content .typo-p-small,
+  .typo-p-small,
+  .tip-tap-editor-wrapper .typo-p-small {
+    @apply mb-0.5 text-xs;
+  }
 }
 
 /* We needed to rewrite default Strapi ck editor styling, that's why we used important */
