@@ -1,13 +1,14 @@
 {
-  "key": "plugin_content_manager_configuration_components::utilities.accordions",
+  "key": "plugin_content_manager_configuration_components::sections.home-categories",
   "value": {
     "settings": {
       "bulkable": true,
       "filterable": true,
       "searchable": true,
       "pageSize": 10,
-      "mainField": "question",
-      "defaultSortBy": "question",
+      "relationOpenMode": "modal",
+      "mainField": "title",
+      "defaultSortBy": "title",
       "defaultSortOrder": "ASC"
     },
     "metadatas": {
@@ -19,30 +20,44 @@
           "sortable": false
         }
       },
-      "question": {
+      "title": {
         "edit": {
-          "label": "Питання",
+          "label": "Заголовок",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "question",
+          "label": "title",
           "searchable": true,
           "sortable": true
         }
       },
-      "answer": {
+      "link": {
         "edit": {
-          "label": "Відповідь",
+          "label": "Посилання «Усі категорії»",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "answer",
+          "label": "link",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "limit": {
+        "edit": {
+          "label": "Кількість категорій",
+          "description": "Скільки категорій показати в стрічці — порожньо означає всі.",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "limit",
           "searchable": true,
           "sortable": true
         }
@@ -59,24 +74,32 @@
     "layouts": {
       "list": [
         "id",
-        "question",
-        "answer",
-        "documentId"
+        "title",
+        "link",
+        "limit"
       ],
       "edit": [
         [
           {
-            "name": "question",
+            "name": "title",
             "size": 6
-          },
+          }
+        ],
+        [
           {
-            "name": "answer",
-            "size": 6
+            "name": "link",
+            "size": 12
+          }
+        ],
+        [
+          {
+            "name": "limit",
+            "size": 4
           }
         ]
       ]
     },
-    "uid": "utilities.accordions",
+    "uid": "sections.home-categories",
     "isComponent": true
   },
   "type": "object",

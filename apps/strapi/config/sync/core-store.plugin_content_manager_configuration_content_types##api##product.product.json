@@ -413,5 +413,8 @@
       ]
     },
     "uid": "api::product.product"
-  }
+  },
+  "type": "object",
+  "environment": null,
+  "tag": null
 }

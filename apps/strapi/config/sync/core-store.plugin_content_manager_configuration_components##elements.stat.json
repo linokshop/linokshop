@@ -1,13 +1,14 @@
 {
-  "key": "plugin_content_manager_configuration_components::utilities.accordions",
+  "key": "plugin_content_manager_configuration_components::elements.stat",
   "value": {
     "settings": {
       "bulkable": true,
       "filterable": true,
       "searchable": true,
       "pageSize": 10,
-      "mainField": "question",
-      "defaultSortBy": "question",
+      "relationOpenMode": "modal",
+      "mainField": "value",
+      "defaultSortBy": "value",
       "defaultSortOrder": "ASC"
     },
     "metadatas": {
@@ -19,30 +20,30 @@
           "sortable": false
         }
       },
-      "question": {
+      "value": {
         "edit": {
-          "label": "Питання",
-          "description": "",
+          "label": "Значення",
+          "description": "Число/факт, напр. «8 років».",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "question",
+          "label": "value",
           "searchable": true,
           "sortable": true
         }
       },
-      "answer": {
+      "label": {
         "edit": {
-          "label": "Відповідь",
-          "description": "",
+          "label": "Підпис",
+          "description": "Пояснення під значенням, напр. «на ринку».",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "answer",
+          "label": "label",
           "searchable": true,
           "sortable": true
         }
@@ -59,24 +60,23 @@
     "layouts": {
       "list": [
         "id",
-        "question",
-        "answer",
-        "documentId"
+        "value",
+        "label"
       ],
       "edit": [
         [
           {
-            "name": "question",
+            "name": "value",
             "size": 6
           },
           {
-            "name": "answer",
+            "name": "label",
             "size": 6
           }
         ]
       ]
     },
-    "uid": "utilities.accordions",
+    "uid": "elements.stat",
     "isComponent": true
   },
   "type": "object",

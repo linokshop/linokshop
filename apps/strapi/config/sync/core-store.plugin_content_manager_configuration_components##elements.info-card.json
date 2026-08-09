@@ -1,13 +1,14 @@
 {
-  "key": "plugin_content_manager_configuration_components::seo-utilities.seo-twitter",
+  "key": "plugin_content_manager_configuration_components::elements.info-card",
   "value": {
     "settings": {
       "bulkable": true,
       "filterable": true,
       "searchable": true,
       "pageSize": 10,
-      "mainField": "card",
-      "defaultSortBy": "card",
+      "relationOpenMode": "modal",
+      "mainField": "badge",
+      "defaultSortBy": "badge",
       "defaultSortOrder": "ASC"
     },
     "metadatas": {
@@ -19,16 +20,30 @@
           "sortable": false
         }
       },
-      "card": {
+      "badge": {
         "edit": {
-          "label": "Тип картки",
+          "label": "Бейдж",
+          "description": "Короткий напис у кутку картки (необов'язково).",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "badge",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "badgeColor": {
+        "edit": {
+          "label": "Колір бейджа",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "card",
+          "label": "badgeColor",
           "searchable": true,
           "sortable": true
         }
@@ -47,63 +62,77 @@
           "sortable": true
         }
       },
-      "description": {
+      "text": {
         "edit": {
-          "label": "Опис",
+          "label": "Текст",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "description",
+          "label": "text",
           "searchable": true,
           "sortable": true
         }
       },
-      "siteId": {
+      "note": {
         "edit": {
-          "label": "ID сайту в Twitter",
+          "label": "Примітка",
+          "description": "Дрібний текст під основним текстом (необов'язково).",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "note",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "noteColor": {
+        "edit": {
+          "label": "Колір примітки",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "siteId",
+          "label": "noteColor",
           "searchable": true,
           "sortable": true
         }
       },
-      "creator": {
+      "highlight": {
         "edit": {
-          "label": "Автор",
-          "description": "",
+          "label": "Виділити картку",
+          "description": "Робить картку акцентною серед інших у сітці.",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "creator",
+          "label": "highlight",
           "searchable": true,
           "sortable": true
         }
       },
-      "creatorId": {
+      "link": {
         "edit": {
-          "label": "ID автора в Twitter",
-          "description": "",
+          "label": "Посилання",
+          "description": "Кнопка/лінк унизу картки (необов'язково).",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "creatorId",
-          "searchable": true,
-          "sortable": true
+          "label": "link",
+          "searchable": false,
+          "sortable": false
         }
       },
-      "images": {
+      "image": {
         "edit": {
           "label": "Зображення",
           "description": "",
@@ -112,7 +141,7 @@
           "editable": true
         },
         "list": {
-          "label": "images",
+          "label": "image",
           "searchable": false,
           "sortable": false
         }
@@ -129,14 +158,14 @@
     "layouts": {
       "list": [
         "id",
-        "card",
+        "badge",
         "title",
-        "description"
+        "text"
       ],
       "edit": [
         [
           {
-            "name": "card",
+            "name": "badge",
             "size": 6
           },
           {
@@ -146,33 +175,45 @@
         ],
         [
           {
-            "name": "description",
-            "size": 6
-          },
-          {
-            "name": "siteId",
+            "name": "text",
             "size": 6
           }
         ],
         [
           {
-            "name": "creator",
+            "name": "link",
+            "size": 12
+          }
+        ],
+        [
+          {
+            "name": "image",
+            "size": 12
+          }
+        ],
+        [
+          {
+            "name": "note",
             "size": 6
           },
           {
-            "name": "creatorId",
+            "name": "noteColor",
             "size": 6
           }
         ],
         [
           {
-            "name": "images",
+            "name": "highlight",
+            "size": 4
+          },
+          {
+            "name": "badgeColor",
             "size": 6
           }
         ]
       ]
     },
-    "uid": "seo-utilities.seo-twitter",
+    "uid": "elements.info-card",
     "isComponent": true
   },
   "type": "object",

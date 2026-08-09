@@ -1,13 +1,14 @@
 {
-  "key": "plugin_content_manager_configuration_content_types::api::page.page",
+  "key": "plugin_content_manager_configuration_components::sections.home-hero",
   "value": {
     "settings": {
       "bulkable": true,
       "filterable": true,
       "searchable": true,
       "pageSize": 10,
-      "mainField": "slug",
-      "defaultSortBy": "fullPath",
+      "relationOpenMode": "modal",
+      "mainField": "title",
+      "defaultSortBy": "title",
       "defaultSortOrder": "ASC"
     },
     "metadatas": {
@@ -15,6 +16,20 @@
         "edit": {},
         "list": {
           "label": "id",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "eyebrow": {
+        "edit": {
+          "label": "Надпис над заголовком",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "eyebrow",
           "searchable": true,
           "sortable": true
         }
@@ -22,7 +37,7 @@
       "title": {
         "edit": {
           "label": "Заголовок",
-          "description": "Основний заголовок сторінки (у меню, хлібних крихтах, якщо не задано інше).",
+          "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
@@ -33,176 +48,158 @@
           "sortable": true
         }
       },
-      "breadcrumbTitle": {
+      "titleAccent": {
         "edit": {
-          "label": "Заголовок у хлібних крихтах",
-          "description": "Використовується замість «Заголовка», якщо потрібен коротший варіант у навігаційному рядку.",
+          "label": "Акцентна частина заголовка",
+          "description": "Показується іншим кольором, напр. «ТАМ Я!».",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "breadcrumbTitle",
+          "label": "titleAccent",
           "searchable": true,
           "sortable": true
         }
       },
-      "breadcrumbsTheme": {
+      "subtitle": {
         "edit": {
-          "label": "breadcrumbsTheme",
+          "label": "Підзаголовок",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "breadcrumbsTheme",
+          "label": "subtitle",
           "searchable": true,
           "sortable": true
         }
       },
-      "slug": {
+      "backgroundImage": {
         "edit": {
-          "label": "URL-адреса (slug)",
-          "description": "Частина посилання на сторінку. Формується автоматично з заголовка.",
+          "label": "Фонове зображення",
+          "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "slug",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "fullPath": {
-        "edit": {
-          "label": "fullPath",
-          "description": "Full path will be calculated by system",
-          "placeholder": "",
-          "visible": true,
-          "editable": false
-        },
-        "list": {
-          "label": "fullPath",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "content": {
-        "edit": {
-          "label": "Контент сторінки",
-          "description": "Секції, з яких складається сторінка — додаються, видаляються і переставляються тут.",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "content",
+          "label": "backgroundImage",
           "searchable": false,
           "sortable": false
         }
       },
-      "children": {
+      "primaryLink": {
         "edit": {
-          "label": "Дочірні сторінки",
+          "label": "Основна кнопка",
           "description": "",
           "placeholder": "",
           "visible": true,
-          "editable": false,
-          "mainField": "title"
+          "editable": true
         },
         "list": {
-          "label": "children",
+          "label": "primaryLink",
           "searchable": false,
           "sortable": false
         }
       },
-      "parent": {
+      "secondaryLink": {
         "edit": {
-          "label": "Батьківська сторінка",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true,
-          "mainField": "title"
-        },
-        "list": {
-          "label": "parent",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "seo": {
-        "edit": {
-          "label": "SEO",
+          "label": "Друга кнопка",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "seo",
+          "label": "secondaryLink",
           "searchable": false,
           "sortable": false
         }
       },
-      "createdAt": {
+      "veteranImage": {
         "edit": {
-          "label": "createdAt",
+          "label": "Зображення картки ветеранської програми",
           "description": "",
           "placeholder": "",
-          "visible": false,
+          "visible": true,
           "editable": true
         },
         "list": {
-          "label": "createdAt",
-          "searchable": true,
-          "sortable": true
+          "label": "veteranImage",
+          "searchable": false,
+          "sortable": false
         }
       },
-      "updatedAt": {
+      "veteranBadge": {
         "edit": {
-          "label": "updatedAt",
+          "label": "Бейдж картки ветеранської програми",
           "description": "",
           "placeholder": "",
-          "visible": false,
+          "visible": true,
           "editable": true
         },
         "list": {
-          "label": "updatedAt",
+          "label": "veteranBadge",
           "searchable": true,
           "sortable": true
         }
       },
-      "createdBy": {
+      "veteranTitle": {
         "edit": {
-          "label": "createdBy",
+          "label": "Заголовок картки ветеранської програми",
           "description": "",
           "placeholder": "",
-          "visible": false,
-          "editable": true,
-          "mainField": "firstname"
+          "visible": true,
+          "editable": true
         },
         "list": {
-          "label": "createdBy",
+          "label": "veteranTitle",
           "searchable": true,
           "sortable": true
         }
       },
-      "updatedBy": {
+      "veteranTitleAccent": {
         "edit": {
-          "label": "updatedBy",
+          "label": "Акцентна частина заголовка (ветеранська картка)",
           "description": "",
           "placeholder": "",
-          "visible": false,
-          "editable": true,
-          "mainField": "firstname"
+          "visible": true,
+          "editable": true
         },
         "list": {
-          "label": "updatedBy",
+          "label": "veteranTitleAccent",
           "searchable": true,
           "sortable": true
+        }
+      },
+      "veteranText": {
+        "edit": {
+          "label": "Текст картки ветеранської програми",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "veteranText",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "veteranLink": {
+        "edit": {
+          "label": "Посилання картки ветеранської програми",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "veteranLink",
+          "searchable": false,
+          "sortable": false
         }
       },
       "documentId": {
@@ -218,63 +215,88 @@
       "list": [
         "id",
         "title",
-        "slug",
-        "fullPath"
+        "titleAccent",
+        "subtitle"
       ],
       "edit": [
-        [
-          {
-            "name": "slug",
-            "size": 6
-          }
-        ],
-        [
-          {
-            "name": "fullPath",
-            "size": 12
-          }
-        ],
         [
           {
             "name": "title",
             "size": 6
           },
           {
-            "name": "breadcrumbTitle",
+            "name": "titleAccent",
             "size": 6
           }
         ],
         [
           {
-            "name": "content",
+            "name": "subtitle",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "primaryLink",
             "size": 12
           }
         ],
         [
           {
-            "name": "parent",
+            "name": "secondaryLink",
+            "size": 12
+          }
+        ],
+        [
+          {
+            "name": "veteranBadge",
             "size": 6
           },
           {
-            "name": "children",
+            "name": "veteranTitle",
             "size": 6
           }
         ],
         [
           {
-            "name": "seo",
+            "name": "veteranText",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "veteranLink",
             "size": 12
           }
         ],
         [
           {
-            "name": "breadcrumbsTheme",
+            "name": "eyebrow",
             "size": 6
+          }
+        ],
+        [
+          {
+            "name": "backgroundImage",
+            "size": 12
+          }
+        ],
+        [
+          {
+            "name": "veteranTitleAccent",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "veteranImage",
+            "size": 12
           }
         ]
       ]
     },
-    "uid": "api::page.page"
+    "uid": "sections.home-hero",
+    "isComponent": true
   },
   "type": "object",
   "environment": null,

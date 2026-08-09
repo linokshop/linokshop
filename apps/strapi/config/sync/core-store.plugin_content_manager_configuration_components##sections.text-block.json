@@ -1,13 +1,14 @@
 {
-  "key": "plugin_content_manager_configuration_components::utilities.basic-image",
+  "key": "plugin_content_manager_configuration_components::sections.text-block",
   "value": {
     "settings": {
       "bulkable": true,
       "filterable": true,
       "searchable": true,
       "pageSize": 10,
-      "mainField": "alt",
-      "defaultSortBy": "alt",
+      "relationOpenMode": "modal",
+      "mainField": "eyebrow",
+      "defaultSortBy": "eyebrow",
       "defaultSortOrder": "ASC"
     },
     "metadatas": {
@@ -19,72 +20,86 @@
           "sortable": false
         }
       },
-      "media": {
+      "eyebrow": {
         "edit": {
-          "label": "Зображення",
+          "label": "Надпис над заголовком",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "media",
-          "searchable": false,
-          "sortable": false
-        }
-      },
-      "alt": {
-        "edit": {
-          "label": "Альтернативний текст",
-          "description": "Опис зображення для доступності та SEO — що на ньому зображено.",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "alt",
+          "label": "eyebrow",
           "searchable": true,
           "sortable": true
         }
       },
-      "width": {
+      "title": {
         "edit": {
-          "label": "Ширина (px)",
-          "description": "Технічне поле, зазвичай можна не заповнювати.",
+          "label": "Заголовок",
+          "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "width",
+          "label": "title",
           "searchable": true,
           "sortable": true
         }
       },
-      "height": {
+      "text": {
         "edit": {
-          "label": "Висота (px)",
-          "description": "Технічне поле, зазвичай можна не заповнювати.",
+          "label": "Текст",
+          "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "height",
+          "label": "text",
           "searchable": true,
           "sortable": true
         }
       },
-      "fallbackSrc": {
+      "theme": {
         "edit": {
-          "label": "Запасне зображення",
-          "description": "Показується, якщо основне не завантажилось.",
+          "label": "Кольорова тема",
+          "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "fallbackSrc",
+          "label": "theme",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "align": {
+        "edit": {
+          "label": "Вирівнювання",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "align",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "headingLevel": {
+        "edit": {
+          "label": "Рівень заголовка (HTML)",
+          "description": "Технічне налаштування для структури сторінки — зазвичай не потребує змін.",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "headingLevel",
           "searchable": true,
           "sortable": true
         }
@@ -101,40 +116,44 @@
     "layouts": {
       "list": [
         "id",
-        "media",
-        "alt",
-        "width"
+        "eyebrow",
+        "title",
+        "text"
       ],
       "edit": [
         [
           {
-            "name": "media",
+            "name": "eyebrow",
             "size": 6
           },
           {
-            "name": "alt",
+            "name": "title",
             "size": 6
           }
         ],
         [
           {
-            "name": "width",
-            "size": 4
+            "name": "text",
+            "size": 6
           },
           {
-            "name": "height",
-            "size": 4
+            "name": "theme",
+            "size": 6
           }
         ],
         [
           {
-            "name": "fallbackSrc",
+            "name": "align",
+            "size": 6
+          },
+          {
+            "name": "headingLevel",
             "size": 6
           }
         ]
       ]
     },
-    "uid": "utilities.basic-image",
+    "uid": "sections.text-block",
     "isComponent": true
   },
   "type": "object",

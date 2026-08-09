@@ -22,11 +22,11 @@
       },
       "lastRecalculationAt": {
         "edit": {
-          "label": "lastRecalculationAt",
-          "description": "",
+          "label": "Останній перерахунок",
+          "description": "Технічний службовий запис — редагувати не потрібно.",
           "placeholder": "",
           "visible": true,
-          "editable": false
+          "editable": true
         },
         "list": {
           "label": "lastRecalculationAt",
@@ -102,6 +102,12 @@
       }
     },
     "layouts": {
+      "list": [
+        "id",
+        "lastRecalculationAt",
+        "createdAt",
+        "updatedAt"
+      ],
       "edit": [
         [
           {
@@ -109,12 +115,6 @@
             "size": 6
           }
         ]
-      ],
-      "list": [
-        "id",
-        "lastRecalculationAt",
-        "createdAt",
-        "updatedAt"
       ]
     },
     "uid": "api::hierarchy.hierarchy"

@@ -1,0 +1,220 @@
+{
+  "key": "plugin_content_manager_configuration_components::sections.contact-form",
+  "value": {
+    "settings": {
+      "bulkable": true,
+      "filterable": true,
+      "searchable": true,
+      "pageSize": 10,
+      "relationOpenMode": "modal",
+      "mainField": "title",
+      "defaultSortBy": "title",
+      "defaultSortOrder": "ASC"
+    },
+    "metadatas": {
+      "id": {
+        "edit": {},
+        "list": {
+          "label": "id",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "title": {
+        "edit": {
+          "label": "Заголовок",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "title",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "text": {
+        "edit": {
+          "label": "Текст",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "text",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "nameLabel": {
+        "edit": {
+          "label": "Підпис поля «Ім'я»",
+          "description": "Необов'язково — є типовий варіант.",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "nameLabel",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "phoneLabel": {
+        "edit": {
+          "label": "Підпис поля «Телефон»",
+          "description": "Необов'язково — є типовий варіант.",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "phoneLabel",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "messageLabel": {
+        "edit": {
+          "label": "Підпис поля «Повідомлення»",
+          "description": "Необов'язково — є типовий варіант.",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "messageLabel",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "submitLabel": {
+        "edit": {
+          "label": "Текст кнопки відправки",
+          "description": "Необов'язково — є типовий варіант.",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "submitLabel",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "enabled": {
+        "edit": {
+          "label": "Форма активна",
+          "description": "Вимкніть, щоб приховати кнопку відправки й показати замість неї текст із поля «Текст при вимкненій формі».",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "enabled",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "disabledNote": {
+        "edit": {
+          "label": "Текст при вимкненій формі",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "disabledNote",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "theme": {
+        "edit": {
+          "label": "Кольорова тема",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "theme",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "documentId": {
+        "edit": {},
+        "list": {
+          "label": "documentId",
+          "searchable": true,
+          "sortable": true
+        }
+      }
+    },
+    "layouts": {
+      "list": [
+        "id",
+        "title",
+        "text",
+        "nameLabel"
+      ],
+      "edit": [
+        [
+          {
+            "name": "title",
+            "size": 6
+          },
+          {
+            "name": "text",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "nameLabel",
+            "size": 6
+          },
+          {
+            "name": "phoneLabel",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "messageLabel",
+            "size": 6
+          },
+          {
+            "name": "submitLabel",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "enabled",
+            "size": 4
+          },
+          {
+            "name": "disabledNote",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "theme",
+            "size": 6
+          }
+        ]
+      ]
+    },
+    "uid": "sections.contact-form",
+    "isComponent": true
+  },
+  "type": "object",
+  "environment": null,
+  "tag": null
+}

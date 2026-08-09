@@ -21,7 +21,7 @@
       },
       "text": {
         "edit": {
-          "label": "text",
+          "label": "Текст",
           "description": "",
           "placeholder": "",
           "visible": true,
@@ -32,12 +32,21 @@
           "searchable": true,
           "sortable": true
         }
+      },
+      "documentId": {
+        "edit": {},
+        "list": {
+          "label": "documentId",
+          "searchable": true,
+          "sortable": true
+        }
       }
     },
     "layouts": {
       "list": [
         "id",
-        "text"
+        "text",
+        "documentId"
       ],
       "edit": [
         [

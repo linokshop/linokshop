@@ -21,8 +21,8 @@
       },
       "isCategoryLink": {
         "edit": {
-          "label": "isCategoryLink",
-          "description": "",
+          "label": "Випадаюче меню категорій",
+          "description": "Увімкніть, якщо цей пункт має розкриватись списком підкатегорій.",
           "placeholder": "",
           "visible": true,
           "editable": false
@@ -35,8 +35,8 @@
       },
       "link": {
         "edit": {
-          "label": "link",
-          "description": "",
+          "label": "Посилання",
+          "description": "Використовується, якщо «Випадаюче меню категорій» вимкнено.",
           "placeholder": "",
           "visible": true,
           "editable": true
@@ -49,8 +49,8 @@
       },
       "categoryItems": {
         "edit": {
-          "label": "categoryItems",
-          "description": "",
+          "label": "Пункти списку",
+          "description": "Підпосилання, які показуються під цим пунктом меню (якщо «Випадаюче меню категорій» увімкнено).",
           "placeholder": "",
           "visible": true,
           "editable": true
@@ -63,7 +63,7 @@
       },
       "label": {
         "edit": {
-          "label": "label",
+          "label": "Текст пункту меню",
           "description": "",
           "placeholder": "",
           "visible": true,

@@ -214,5 +214,8 @@
       ]
     },
     "uid": "api::sub-subcategory.sub-subcategory"
-  }
+  },
+  "type": "object",
+  "environment": null,
+  "tag": null
 }

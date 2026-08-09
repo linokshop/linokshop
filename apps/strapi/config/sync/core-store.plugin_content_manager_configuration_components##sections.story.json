@@ -1,13 +1,14 @@
 {
-  "key": "plugin_content_manager_configuration_components::utilities.basic-image",
+  "key": "plugin_content_manager_configuration_components::sections.story",
   "value": {
     "settings": {
       "bulkable": true,
       "filterable": true,
       "searchable": true,
       "pageSize": 10,
-      "mainField": "alt",
-      "defaultSortBy": "alt",
+      "relationOpenMode": "modal",
+      "mainField": "title",
+      "defaultSortBy": "title",
       "defaultSortOrder": "ASC"
     },
     "metadatas": {
@@ -19,7 +20,35 @@
           "sortable": false
         }
       },
-      "media": {
+      "title": {
+        "edit": {
+          "label": "Заголовок",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "title",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "text": {
+        "edit": {
+          "label": "Текст",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "text",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "image": {
         "edit": {
           "label": "Зображення",
           "description": "",
@@ -28,63 +57,49 @@
           "editable": true
         },
         "list": {
-          "label": "media",
+          "label": "image",
           "searchable": false,
           "sortable": false
         }
       },
-      "alt": {
+      "imageSide": {
         "edit": {
-          "label": "Альтернативний текст",
-          "description": "Опис зображення для доступності та SEO — що на ньому зображено.",
+          "label": "Сторона зображення",
+          "description": "З якого боку показати фото відносно тексту.",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "alt",
+          "label": "imageSide",
           "searchable": true,
           "sortable": true
         }
       },
-      "width": {
+      "stats": {
         "edit": {
-          "label": "Ширина (px)",
-          "description": "Технічне поле, зазвичай можна не заповнювати.",
+          "label": "Цифри/факти",
+          "description": "Компонент «Stat» — напр. «8 років на ринку».",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "width",
-          "searchable": true,
-          "sortable": true
+          "label": "stats",
+          "searchable": false,
+          "sortable": false
         }
       },
-      "height": {
+      "theme": {
         "edit": {
-          "label": "Висота (px)",
-          "description": "Технічне поле, зазвичай можна не заповнювати.",
+          "label": "Кольорова тема",
+          "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "height",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "fallbackSrc": {
-        "edit": {
-          "label": "Запасне зображення",
-          "description": "Показується, якщо основне не завантажилось.",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "fallbackSrc",
+          "label": "theme",
           "searchable": true,
           "sortable": true
         }
@@ -101,40 +116,48 @@
     "layouts": {
       "list": [
         "id",
-        "media",
-        "alt",
-        "width"
+        "title",
+        "text",
+        "image"
       ],
       "edit": [
         [
           {
-            "name": "media",
+            "name": "title",
             "size": 6
           },
           {
-            "name": "alt",
+            "name": "text",
             "size": 6
           }
         ],
         [
           {
-            "name": "width",
-            "size": 4
-          },
-          {
-            "name": "height",
-            "size": 4
+            "name": "image",
+            "size": 12
           }
         ],
         [
           {
-            "name": "fallbackSrc",
+            "name": "imageSide",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "stats",
+            "size": 12
+          }
+        ],
+        [
+          {
+            "name": "theme",
             "size": 6
           }
         ]
       ]
     },
-    "uid": "utilities.basic-image",
+    "uid": "sections.story",
     "isComponent": true
   },
   "type": "object",

@@ -1,13 +1,14 @@
 {
-  "key": "plugin_content_manager_configuration_components::utilities.basic-image",
+  "key": "plugin_content_manager_configuration_components::order.order-item",
   "value": {
     "settings": {
       "bulkable": true,
       "filterable": true,
       "searchable": true,
       "pageSize": 10,
-      "mainField": "alt",
-      "defaultSortBy": "alt",
+      "relationOpenMode": "modal",
+      "mainField": "productName",
+      "defaultSortBy": "productName",
       "defaultSortOrder": "ASC"
     },
     "metadatas": {
@@ -19,72 +20,73 @@
           "sortable": false
         }
       },
-      "media": {
+      "product": {
         "edit": {
-          "label": "Зображення",
+          "label": "Товар",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true,
+          "mainField": "name"
+        },
+        "list": {
+          "label": "product",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "productName": {
+        "edit": {
+          "label": "Назва товару на момент замовлення",
+          "description": "Зберігається окремо від товару, щоб назва в замовленні не змінилась, якщо товар пізніше перейменують.",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "productName",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "option": {
+        "edit": {
+          "label": "Варіант",
+          "description": "Обраний варіант товару, якщо покупець його вказав (може бути порожнім).",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "option",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "price": {
+        "edit": {
+          "label": "Ціна на момент замовлення",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "media",
-          "searchable": false,
-          "sortable": false
-        }
-      },
-      "alt": {
-        "edit": {
-          "label": "Альтернативний текст",
-          "description": "Опис зображення для доступності та SEO — що на ньому зображено.",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "alt",
+          "label": "price",
           "searchable": true,
           "sortable": true
         }
       },
-      "width": {
+      "quantity": {
         "edit": {
-          "label": "Ширина (px)",
-          "description": "Технічне поле, зазвичай можна не заповнювати.",
+          "label": "Кількість",
+          "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "width",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "height": {
-        "edit": {
-          "label": "Висота (px)",
-          "description": "Технічне поле, зазвичай можна не заповнювати.",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "height",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "fallbackSrc": {
-        "edit": {
-          "label": "Запасне зображення",
-          "description": "Показується, якщо основне не завантажилось.",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "fallbackSrc",
+          "label": "quantity",
           "searchable": true,
           "sortable": true
         }
@@ -101,40 +103,40 @@
     "layouts": {
       "list": [
         "id",
-        "media",
-        "alt",
-        "width"
+        "product",
+        "productName",
+        "option"
       ],
       "edit": [
         [
           {
-            "name": "media",
+            "name": "product",
             "size": 6
           },
           {
-            "name": "alt",
+            "name": "productName",
             "size": 6
           }
         ],
         [
           {
-            "name": "width",
-            "size": 4
+            "name": "option",
+            "size": 6
           },
           {
-            "name": "height",
+            "name": "price",
             "size": 4
           }
         ],
         [
           {
-            "name": "fallbackSrc",
-            "size": 6
+            "name": "quantity",
+            "size": 4
           }
         ]
       ]
     },
-    "uid": "utilities.basic-image",
+    "uid": "order.order-item",
     "isComponent": true
   },
   "type": "object",

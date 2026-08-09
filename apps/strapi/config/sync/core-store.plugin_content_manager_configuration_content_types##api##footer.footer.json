@@ -21,8 +21,8 @@
       },
       "sections": {
         "edit": {
-          "label": "sections",
-          "description": "",
+          "label": "Колонки футера",
+          "description": "Групи посилань у нижній частині сайту (напр. «Каталог», «Магазин»).",
           "placeholder": "",
           "visible": true,
           "editable": true
@@ -35,8 +35,8 @@
       },
       "links": {
         "edit": {
-          "label": "links",
-          "description": "",
+          "label": "Нижні посилання",
+          "description": "Окремі посилання під колонками (напр. правові сторінки).",
           "placeholder": "",
           "visible": true,
           "editable": true
@@ -49,8 +49,8 @@
       },
       "copyRight": {
         "edit": {
-          "label": "copyRight",
-          "description": "",
+          "label": "Текст копірайту",
+          "description": "Напр. «© 2026 ЛінОк · Рибальський магазин».",
           "placeholder": "",
           "visible": true,
           "editable": true
@@ -63,7 +63,7 @@
       },
       "logoImage": {
         "edit": {
-          "label": "logoImage",
+          "label": "Логотип",
           "description": "",
           "placeholder": "",
           "visible": true,
@@ -73,6 +73,160 @@
           "label": "logoImage",
           "searchable": false,
           "sortable": false
+        }
+      },
+      "brandName": {
+        "edit": {
+          "label": "brandName",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "brandName",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "description": {
+        "edit": {
+          "label": "description",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "description",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "slogan": {
+        "edit": {
+          "label": "slogan",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "slogan",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "ribbonText": {
+        "edit": {
+          "label": "ribbonText",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "ribbonText",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "ribbonLink": {
+        "edit": {
+          "label": "ribbonLink",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "ribbonLink",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "ribbonImage": {
+        "edit": {
+          "label": "ribbonImage",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "ribbonImage",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "contactTitle": {
+        "edit": {
+          "label": "contactTitle",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "contactTitle",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "contactAddress": {
+        "edit": {
+          "label": "contactAddress",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "contactAddress",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "contactPhone": {
+        "edit": {
+          "label": "contactPhone",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "contactPhone",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "contactHours": {
+        "edit": {
+          "label": "contactHours",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "contactHours",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "bottomNote": {
+        "edit": {
+          "label": "bottomNote",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "bottomNote",
+          "searchable": true,
+          "sortable": true
         }
       },
       "createdAt": {
@@ -146,7 +300,8 @@
       "list": [
         "id",
         "logoImage",
-        "documentId"
+        "documentId",
+        "brandName"
       ],
       "edit": [
         [
@@ -170,6 +325,64 @@
         [
           {
             "name": "links",
+            "size": 12
+          }
+        ],
+        [
+          {
+            "name": "brandName",
+            "size": 6
+          },
+          {
+            "name": "description",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "slogan",
+            "size": 6
+          },
+          {
+            "name": "ribbonText",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "ribbonLink",
+            "size": 12
+          }
+        ],
+        [
+          {
+            "name": "contactTitle",
+            "size": 6
+          },
+          {
+            "name": "contactAddress",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "contactPhone",
+            "size": 6
+          },
+          {
+            "name": "contactHours",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "bottomNote",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "ribbonImage",
             "size": 12
           }
         ]

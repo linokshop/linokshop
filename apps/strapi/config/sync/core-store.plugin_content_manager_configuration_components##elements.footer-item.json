@@ -21,8 +21,8 @@
       },
       "title": {
         "edit": {
-          "label": "title",
-          "description": "",
+          "label": "Заголовок колонки",
+          "description": "Напр. «Каталог» або «Магазин».",
           "placeholder": "",
           "visible": true,
           "editable": true
@@ -35,8 +35,8 @@
       },
       "links": {
         "edit": {
-          "label": "links",
-          "description": "",
+          "label": "Посилання",
+          "description": "Список посилань у цій колонці футера.",
           "placeholder": "",
           "visible": true,
           "editable": true
@@ -46,13 +46,22 @@
           "searchable": false,
           "sortable": false
         }
+      },
+      "documentId": {
+        "edit": {},
+        "list": {
+          "label": "documentId",
+          "searchable": true,
+          "sortable": true
+        }
       }
     },
     "layouts": {
       "list": [
         "id",
         "title",
-        "links"
+        "links",
+        "documentId"
       ],
       "edit": [
         [

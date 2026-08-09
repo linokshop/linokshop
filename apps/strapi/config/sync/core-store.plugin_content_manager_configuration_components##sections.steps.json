@@ -1,13 +1,14 @@
 {
-  "key": "plugin_content_manager_configuration_components::utilities.accordions",
+  "key": "plugin_content_manager_configuration_components::sections.steps",
   "value": {
     "settings": {
       "bulkable": true,
       "filterable": true,
       "searchable": true,
       "pageSize": 10,
-      "mainField": "question",
-      "defaultSortBy": "question",
+      "relationOpenMode": "modal",
+      "mainField": "title",
+      "defaultSortBy": "title",
       "defaultSortOrder": "ASC"
     },
     "metadatas": {
@@ -19,30 +20,44 @@
           "sortable": false
         }
       },
-      "question": {
+      "title": {
         "edit": {
-          "label": "Питання",
+          "label": "Заголовок",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "question",
+          "label": "title",
           "searchable": true,
           "sortable": true
         }
       },
-      "answer": {
+      "steps": {
         "edit": {
-          "label": "Відповідь",
+          "label": "Кроки",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "answer",
+          "label": "steps",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "theme": {
+        "edit": {
+          "label": "Кольорова тема",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "theme",
           "searchable": true,
           "sortable": true
         }
@@ -59,24 +74,32 @@
     "layouts": {
       "list": [
         "id",
-        "question",
-        "answer",
-        "documentId"
+        "title",
+        "steps",
+        "theme"
       ],
       "edit": [
         [
           {
-            "name": "question",
+            "name": "title",
             "size": 6
-          },
+          }
+        ],
+        [
           {
-            "name": "answer",
+            "name": "steps",
+            "size": 12
+          }
+        ],
+        [
+          {
+            "name": "theme",
             "size": 6
           }
         ]
       ]
     },
-    "uid": "utilities.accordions",
+    "uid": "sections.steps",
     "isComponent": true
   },
   "type": "object",

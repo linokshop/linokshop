@@ -6,8 +6,9 @@
       "filterable": true,
       "searchable": true,
       "pageSize": 10,
-      "mainField": "id",
-      "defaultSortBy": "id",
+      "relationOpenMode": "modal",
+      "mainField": "logoTitle",
+      "defaultSortBy": "logoTitle",
       "defaultSortOrder": "ASC"
     },
     "metadatas": {
@@ -21,7 +22,7 @@
       },
       "logoImage": {
         "edit": {
-          "label": "logoImage",
+          "label": "Логотип",
           "description": "",
           "placeholder": "",
           "visible": true,
@@ -35,8 +36,8 @@
       },
       "navbarItems": {
         "edit": {
-          "label": "navbarItems",
-          "description": "",
+          "label": "Пункти меню",
+          "description": "Головне навігаційне меню зверху сайту.",
           "placeholder": "",
           "visible": true,
           "editable": true
@@ -49,14 +50,84 @@
       },
       "primaryButtons": {
         "edit": {
-          "label": "primaryButtons",
-          "description": "",
+          "label": "Кнопки",
+          "description": "Напр. кнопка «Кошик».",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
           "label": "primaryButtons",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "logoTitle": {
+        "edit": {
+          "label": "logoTitle",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "logoTitle",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "logoSubtitle": {
+        "edit": {
+          "label": "logoSubtitle",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "logoSubtitle",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "topStripText": {
+        "edit": {
+          "label": "topStripText",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "topStripText",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "topStripLink": {
+        "edit": {
+          "label": "topStripLink",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "topStripLink",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "veteranLink": {
+        "edit": {
+          "label": "veteranLink",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "veteranLink",
           "searchable": false,
           "sortable": false
         }
@@ -132,8 +203,8 @@
       "list": [
         "id",
         "logoImage",
-        "documentId",
-        "navbarItems"
+        "navbarItems",
+        "primaryButtons"
       ],
       "edit": [
         [
@@ -151,6 +222,34 @@
         [
           {
             "name": "primaryButtons",
+            "size": 12
+          }
+        ],
+        [
+          {
+            "name": "logoTitle",
+            "size": 6
+          },
+          {
+            "name": "logoSubtitle",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "topStripText",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "topStripLink",
+            "size": 12
+          }
+        ],
+        [
+          {
+            "name": "veteranLink",
             "size": 12
           }
         ]

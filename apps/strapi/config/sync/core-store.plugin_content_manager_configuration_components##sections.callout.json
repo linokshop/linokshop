@@ -1,13 +1,14 @@
 {
-  "key": "plugin_content_manager_configuration_components::utilities.basic-image",
+  "key": "plugin_content_manager_configuration_components::sections.callout",
   "value": {
     "settings": {
       "bulkable": true,
       "filterable": true,
       "searchable": true,
       "pageSize": 10,
-      "mainField": "alt",
-      "defaultSortBy": "alt",
+      "relationOpenMode": "modal",
+      "mainField": "title",
+      "defaultSortBy": "title",
       "defaultSortOrder": "ASC"
     },
     "metadatas": {
@@ -19,72 +20,58 @@
           "sortable": false
         }
       },
-      "media": {
+      "title": {
         "edit": {
-          "label": "Зображення",
+          "label": "Заголовок",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "media",
-          "searchable": false,
-          "sortable": false
-        }
-      },
-      "alt": {
-        "edit": {
-          "label": "Альтернативний текст",
-          "description": "Опис зображення для доступності та SEO — що на ньому зображено.",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "alt",
+          "label": "title",
           "searchable": true,
           "sortable": true
         }
       },
-      "width": {
+      "subtitle": {
         "edit": {
-          "label": "Ширина (px)",
-          "description": "Технічне поле, зазвичай можна не заповнювати.",
+          "label": "Підзаголовок",
+          "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "width",
+          "label": "subtitle",
           "searchable": true,
           "sortable": true
         }
       },
-      "height": {
+      "note": {
         "edit": {
-          "label": "Висота (px)",
-          "description": "Технічне поле, зазвичай можна не заповнювати.",
+          "label": "Примітка",
+          "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "height",
+          "label": "note",
           "searchable": true,
           "sortable": true
         }
       },
-      "fallbackSrc": {
+      "color": {
         "edit": {
-          "label": "Запасне зображення",
-          "description": "Показується, якщо основне не завантажилось.",
+          "label": "Колірна схема",
+          "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "fallbackSrc",
+          "label": "color",
           "searchable": true,
           "sortable": true
         }
@@ -101,40 +88,34 @@
     "layouts": {
       "list": [
         "id",
-        "media",
-        "alt",
-        "width"
+        "title",
+        "subtitle",
+        "note"
       ],
       "edit": [
         [
           {
-            "name": "media",
+            "name": "title",
             "size": 6
           },
           {
-            "name": "alt",
+            "name": "subtitle",
             "size": 6
           }
         ],
         [
           {
-            "name": "width",
-            "size": 4
+            "name": "note",
+            "size": 6
           },
           {
-            "name": "height",
-            "size": 4
-          }
-        ],
-        [
-          {
-            "name": "fallbackSrc",
+            "name": "color",
             "size": 6
           }
         ]
       ]
     },
-    "uid": "utilities.basic-image",
+    "uid": "sections.callout",
     "isComponent": true
   },
   "type": "object",

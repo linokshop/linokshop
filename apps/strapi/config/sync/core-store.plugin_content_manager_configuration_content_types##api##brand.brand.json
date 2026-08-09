@@ -157,5 +157,8 @@
       ]
     },
     "uid": "api::brand.brand"
-  }
+  },
+  "type": "object",
+  "environment": null,
+  "tag": null
 }

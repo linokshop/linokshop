@@ -195,5 +195,8 @@
       ]
     },
     "uid": "api::category.category"
-  }
+  },
+  "type": "object",
+  "environment": null,
+  "tag": null
 }

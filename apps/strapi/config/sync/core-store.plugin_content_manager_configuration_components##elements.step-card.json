@@ -1,13 +1,14 @@
 {
-  "key": "plugin_content_manager_configuration_components::utilities.accordions",
+  "key": "plugin_content_manager_configuration_components::elements.step-card",
   "value": {
     "settings": {
       "bulkable": true,
       "filterable": true,
       "searchable": true,
       "pageSize": 10,
-      "mainField": "question",
-      "defaultSortBy": "question",
+      "relationOpenMode": "modal",
+      "mainField": "number",
+      "defaultSortBy": "number",
       "defaultSortOrder": "ASC"
     },
     "metadatas": {
@@ -19,30 +20,44 @@
           "sortable": false
         }
       },
-      "question": {
+      "number": {
         "edit": {
-          "label": "Питання",
-          "description": "",
+          "label": "Номер кроку",
+          "description": "Напр. 1, 2, 3.",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "question",
+          "label": "number",
           "searchable": true,
           "sortable": true
         }
       },
-      "answer": {
+      "title": {
         "edit": {
-          "label": "Відповідь",
+          "label": "Заголовок кроку",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "answer",
+          "label": "title",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "text": {
+        "edit": {
+          "label": "Опис кроку",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "text",
           "searchable": true,
           "sortable": true
         }
@@ -59,24 +74,30 @@
     "layouts": {
       "list": [
         "id",
-        "question",
-        "answer",
-        "documentId"
+        "number",
+        "title",
+        "text"
       ],
       "edit": [
         [
           {
-            "name": "question",
+            "name": "number",
             "size": 6
           },
           {
-            "name": "answer",
+            "name": "title",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "text",
             "size": 6
           }
         ]
       ]
     },
-    "uid": "utilities.accordions",
+    "uid": "elements.step-card",
     "isComponent": true
   },
   "type": "object",

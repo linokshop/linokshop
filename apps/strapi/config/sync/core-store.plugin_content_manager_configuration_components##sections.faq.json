@@ -1,13 +1,14 @@
 {
-  "key": "plugin_content_manager_configuration_components::utilities.accordions",
+  "key": "plugin_content_manager_configuration_components::sections.faq",
   "value": {
     "settings": {
       "bulkable": true,
       "filterable": true,
       "searchable": true,
       "pageSize": 10,
-      "mainField": "question",
-      "defaultSortBy": "question",
+      "relationOpenMode": "modal",
+      "mainField": "title",
+      "defaultSortBy": "title",
       "defaultSortOrder": "ASC"
     },
     "metadatas": {
@@ -19,7 +20,35 @@
           "sortable": false
         }
       },
-      "question": {
+      "title": {
+        "edit": {
+          "label": "Заголовок",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "title",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "theme": {
+        "edit": {
+          "label": "Кольорова тема",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "theme",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "items": {
         "edit": {
           "label": "Питання",
           "description": "",
@@ -28,23 +57,9 @@
           "editable": true
         },
         "list": {
-          "label": "question",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "answer": {
-        "edit": {
-          "label": "Відповідь",
-          "description": "",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "answer",
-          "searchable": true,
-          "sortable": true
+          "label": "items",
+          "searchable": false,
+          "sortable": false
         }
       },
       "documentId": {
@@ -59,24 +74,30 @@
     "layouts": {
       "list": [
         "id",
-        "question",
-        "answer",
-        "documentId"
+        "title",
+        "theme",
+        "items"
       ],
       "edit": [
         [
           {
-            "name": "question",
+            "name": "title",
             "size": 6
           },
           {
-            "name": "answer",
+            "name": "theme",
             "size": 6
+          }
+        ],
+        [
+          {
+            "name": "items",
+            "size": 12
           }
         ]
       ]
     },
-    "uid": "utilities.accordions",
+    "uid": "sections.faq",
     "isComponent": true
   },
   "type": "object",

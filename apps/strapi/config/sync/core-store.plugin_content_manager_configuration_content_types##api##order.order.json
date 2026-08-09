@@ -422,5 +422,8 @@
       ]
     },
     "uid": "api::order.order"
-  }
+  },
+  "type": "object",
+  "environment": null,
+  "tag": null
 }

@@ -1,13 +1,14 @@
 {
-  "key": "plugin_content_manager_configuration_components::utilities.accordions",
+  "key": "plugin_content_manager_configuration_components::sections.news",
   "value": {
     "settings": {
       "bulkable": true,
       "filterable": true,
       "searchable": true,
       "pageSize": 10,
-      "mainField": "question",
-      "defaultSortBy": "question",
+      "relationOpenMode": "modal",
+      "mainField": "title",
+      "defaultSortBy": "title",
       "defaultSortOrder": "ASC"
     },
     "metadatas": {
@@ -19,32 +20,46 @@
           "sortable": false
         }
       },
-      "question": {
+      "title": {
         "edit": {
-          "label": "Питання",
+          "label": "Заголовок",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "question",
+          "label": "title",
           "searchable": true,
           "sortable": true
         }
       },
-      "answer": {
+      "theme": {
         "edit": {
-          "label": "Відповідь",
+          "label": "Кольорова тема",
           "description": "",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "answer",
+          "label": "theme",
           "searchable": true,
           "sortable": true
+        }
+      },
+      "items": {
+        "edit": {
+          "label": "Новини",
+          "description": "Список новин (компонент «NewsCard»).",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "items",
+          "searchable": false,
+          "sortable": false
         }
       },
       "documentId": {
@@ -59,24 +74,30 @@
     "layouts": {
       "list": [
         "id",
-        "question",
-        "answer",
-        "documentId"
+        "title",
+        "theme",
+        "items"
       ],
       "edit": [
         [
           {
-            "name": "question",
+            "name": "title",
             "size": 6
           },
           {
-            "name": "answer",
+            "name": "theme",
             "size": 6
+          }
+        ],
+        [
+          {
+            "name": "items",
+            "size": 12
           }
         ]
       ]
     },
-    "uid": "utilities.accordions",
+    "uid": "sections.news",
     "isComponent": true
   },
   "type": "object",

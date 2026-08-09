@@ -1,13 +1,14 @@
 {
-  "key": "plugin_content_manager_configuration_components::utilities.basic-image",
+  "key": "plugin_content_manager_configuration_components::elements.news-card",
   "value": {
     "settings": {
       "bulkable": true,
       "filterable": true,
       "searchable": true,
       "pageSize": 10,
-      "mainField": "alt",
-      "defaultSortBy": "alt",
+      "relationOpenMode": "modal",
+      "mainField": "date",
+      "defaultSortBy": "date",
       "defaultSortOrder": "ASC"
     },
     "metadatas": {
@@ -19,7 +20,63 @@
           "sortable": false
         }
       },
-      "media": {
+      "date": {
+        "edit": {
+          "label": "Дата",
+          "description": "Дата публікації новини.",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "date",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "title": {
+        "edit": {
+          "label": "Заголовок",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "title",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "text": {
+        "edit": {
+          "label": "Короткий опис",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "text",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "link": {
+        "edit": {
+          "label": "Посилання",
+          "description": "Куди веде картка новини.",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "link",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "image": {
         "edit": {
           "label": "Зображення",
           "description": "",
@@ -28,65 +85,9 @@
           "editable": true
         },
         "list": {
-          "label": "media",
+          "label": "image",
           "searchable": false,
           "sortable": false
-        }
-      },
-      "alt": {
-        "edit": {
-          "label": "Альтернативний текст",
-          "description": "Опис зображення для доступності та SEO — що на ньому зображено.",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "alt",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "width": {
-        "edit": {
-          "label": "Ширина (px)",
-          "description": "Технічне поле, зазвичай можна не заповнювати.",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "width",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "height": {
-        "edit": {
-          "label": "Висота (px)",
-          "description": "Технічне поле, зазвичай можна не заповнювати.",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "height",
-          "searchable": true,
-          "sortable": true
-        }
-      },
-      "fallbackSrc": {
-        "edit": {
-          "label": "Запасне зображення",
-          "description": "Показується, якщо основне не завантажилось.",
-          "placeholder": "",
-          "visible": true,
-          "editable": true
-        },
-        "list": {
-          "label": "fallbackSrc",
-          "searchable": true,
-          "sortable": true
         }
       },
       "documentId": {
@@ -101,40 +102,42 @@
     "layouts": {
       "list": [
         "id",
-        "media",
-        "alt",
-        "width"
+        "date",
+        "title",
+        "text"
       ],
       "edit": [
         [
           {
-            "name": "media",
+            "name": "date",
             "size": 6
           },
           {
-            "name": "alt",
+            "name": "title",
             "size": 6
           }
         ],
         [
           {
-            "name": "width",
-            "size": 4
-          },
-          {
-            "name": "height",
-            "size": 4
+            "name": "text",
+            "size": 6
           }
         ],
         [
           {
-            "name": "fallbackSrc",
-            "size": 6
+            "name": "link",
+            "size": 12
+          }
+        ],
+        [
+          {
+            "name": "image",
+            "size": 12
           }
         ]
       ]
     },
-    "uid": "utilities.basic-image",
+    "uid": "elements.news-card",
     "isComponent": true
   },
   "type": "object",
