@@ -29,7 +29,7 @@
           "editable": true
         },
         "list": {
-          "label": "name",
+          "label": "Назва",
           "searchable": true,
           "sortable": true
         }
@@ -43,7 +43,7 @@
           "editable": true
         },
         "list": {
-          "label": "slug",
+          "label": "URL-адреса (slug)",
           "searchable": true,
           "sortable": true
         }
@@ -58,7 +58,7 @@
           "mainField": "name"
         },
         "list": {
-          "label": "products",
+          "label": "Товари",
           "searchable": false,
           "sortable": false
         }

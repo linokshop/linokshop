@@ -29,7 +29,7 @@
           "editable": true
         },
         "list": {
-          "label": "value",
+          "label": "Значення",
           "searchable": true,
           "sortable": true
         }
@@ -43,7 +43,7 @@
           "editable": true
         },
         "list": {
-          "label": "label",
+          "label": "Підпис",
           "searchable": true,
           "sortable": true
         }

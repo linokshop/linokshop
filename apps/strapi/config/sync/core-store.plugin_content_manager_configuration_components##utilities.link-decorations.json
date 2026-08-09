@@ -28,7 +28,7 @@
           "editable": true
         },
         "list": {
-          "label": "variant",
+          "label": "Варіант оформлення",
           "searchable": true,
           "sortable": true
         }
@@ -42,7 +42,7 @@
           "editable": true
         },
         "list": {
-          "label": "size",
+          "label": "Розмір",
           "searchable": true,
           "sortable": true
         }
@@ -56,7 +56,7 @@
           "editable": true
         },
         "list": {
-          "label": "hasIcons",
+          "label": "Показувати іконки",
           "searchable": true,
           "sortable": true
         }
@@ -70,7 +70,7 @@
           "editable": true
         },
         "list": {
-          "label": "leftIcon",
+          "label": "Іконка зліва",
           "searchable": false,
           "sortable": false
         }
@@ -84,7 +84,7 @@
           "editable": true
         },
         "list": {
-          "label": "rightIcon",
+          "label": "Іконка справа",
           "searchable": false,
           "sortable": false
         }
@@ -98,7 +98,7 @@
           "editable": true
         },
         "list": {
-          "label": "disableAnimations",
+          "label": "Вимкнути анімації",
           "searchable": true,
           "sortable": true
         }

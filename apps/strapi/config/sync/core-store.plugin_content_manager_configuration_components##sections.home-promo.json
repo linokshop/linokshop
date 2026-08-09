@@ -29,7 +29,7 @@
           "editable": true
         },
         "list": {
-          "label": "variant",
+          "label": "Варіант оформлення",
           "searchable": true,
           "sortable": true
         }
@@ -43,7 +43,7 @@
           "editable": true
         },
         "list": {
-          "label": "eyebrow",
+          "label": "Надпис над заголовком",
           "searchable": true,
           "sortable": true
         }
@@ -57,7 +57,7 @@
           "editable": true
         },
         "list": {
-          "label": "title",
+          "label": "Заголовок",
           "searchable": true,
           "sortable": true
         }
@@ -71,7 +71,7 @@
           "editable": true
         },
         "list": {
-          "label": "image",
+          "label": "Зображення",
           "searchable": false,
           "sortable": false
         }
@@ -85,7 +85,7 @@
           "editable": true
         },
         "list": {
-          "label": "text",
+          "label": "Текст",
           "searchable": true,
           "sortable": true
         }
@@ -99,7 +99,7 @@
           "editable": true
         },
         "list": {
-          "label": "link",
+          "label": "Посилання",
           "searchable": false,
           "sortable": false
         }

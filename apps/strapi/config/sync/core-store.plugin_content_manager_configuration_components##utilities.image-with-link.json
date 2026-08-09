@@ -28,7 +28,7 @@
           "editable": true
         },
         "list": {
-          "label": "image",
+          "label": "Зображення",
           "searchable": false,
           "sortable": false
         }
@@ -42,7 +42,7 @@
           "editable": true
         },
         "list": {
-          "label": "link",
+          "label": "Посилання",
           "searchable": false,
           "sortable": false
         }

@@ -29,7 +29,7 @@
           "editable": true
         },
         "list": {
-          "label": "title",
+          "label": "Заголовок",
           "searchable": true,
           "sortable": true
         }
@@ -43,7 +43,7 @@
           "editable": true
         },
         "list": {
-          "label": "text",
+          "label": "Текст",
           "searchable": true,
           "sortable": true
         }
@@ -57,7 +57,7 @@
           "editable": true
         },
         "list": {
-          "label": "nameLabel",
+          "label": "Підпис поля «Ім'я»",
           "searchable": true,
           "sortable": true
         }
@@ -71,7 +71,7 @@
           "editable": true
         },
         "list": {
-          "label": "phoneLabel",
+          "label": "Підпис поля «Телефон»",
           "searchable": true,
           "sortable": true
         }
@@ -85,7 +85,7 @@
           "editable": true
         },
         "list": {
-          "label": "messageLabel",
+          "label": "Підпис поля «Повідомлення»",
           "searchable": true,
           "sortable": true
         }
@@ -99,7 +99,7 @@
           "editable": true
         },
         "list": {
-          "label": "submitLabel",
+          "label": "Текст кнопки відправки",
           "searchable": true,
           "sortable": true
         }
@@ -113,7 +113,7 @@
           "editable": true
         },
         "list": {
-          "label": "enabled",
+          "label": "Форма активна",
           "searchable": true,
           "sortable": true
         }
@@ -127,7 +127,7 @@
           "editable": true
         },
         "list": {
-          "label": "disabledNote",
+          "label": "Текст при вимкненій формі",
           "searchable": true,
           "sortable": true
         }
@@ -141,7 +141,7 @@
           "editable": true
         },
         "list": {
-          "label": "theme",
+          "label": "Кольорова тема",
           "searchable": true,
           "sortable": true
         }

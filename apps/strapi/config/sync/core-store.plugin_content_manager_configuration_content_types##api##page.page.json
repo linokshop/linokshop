@@ -28,7 +28,7 @@
           "editable": true
         },
         "list": {
-          "label": "title",
+          "label": "Заголовок",
           "searchable": true,
           "sortable": true
         }
@@ -42,21 +42,21 @@
           "editable": true
         },
         "list": {
-          "label": "breadcrumbTitle",
+          "label": "Заголовок у хлібних крихтах",
           "searchable": true,
           "sortable": true
         }
       },
       "breadcrumbsTheme": {
         "edit": {
-          "label": "breadcrumbsTheme",
-          "description": "",
+          "label": "Тема хлібних крихт",
+          "description": "Колір навігаційного рядка вгорі сторінки — авто підбирається сам, або можна задати вручну.",
           "placeholder": "",
           "visible": true,
           "editable": true
         },
         "list": {
-          "label": "breadcrumbsTheme",
+          "label": "Тема хлібних крихт",
           "searchable": true,
           "sortable": true
         }
@@ -70,7 +70,7 @@
           "editable": true
         },
         "list": {
-          "label": "slug",
+          "label": "URL-адреса (slug)",
           "searchable": true,
           "sortable": true
         }
@@ -98,7 +98,7 @@
           "editable": true
         },
         "list": {
-          "label": "content",
+          "label": "Контент сторінки",
           "searchable": false,
           "sortable": false
         }
@@ -113,7 +113,7 @@
           "mainField": "title"
         },
         "list": {
-          "label": "children",
+          "label": "Дочірні сторінки",
           "searchable": false,
           "sortable": false
         }
@@ -128,7 +128,7 @@
           "mainField": "title"
         },
         "list": {
-          "label": "parent",
+          "label": "Батьківська сторінка",
           "searchable": true,
           "sortable": true
         }
@@ -142,7 +142,7 @@
           "editable": true
         },
         "list": {
-          "label": "seo",
+          "label": "SEO",
           "searchable": false,
           "sortable": false
         }

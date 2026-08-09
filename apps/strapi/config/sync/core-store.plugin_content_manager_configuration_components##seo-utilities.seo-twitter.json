@@ -28,7 +28,7 @@
           "editable": true
         },
         "list": {
-          "label": "card",
+          "label": "Тип картки",
           "searchable": true,
           "sortable": true
         }
@@ -42,7 +42,7 @@
           "editable": true
         },
         "list": {
-          "label": "title",
+          "label": "Заголовок",
           "searchable": true,
           "sortable": true
         }
@@ -56,7 +56,7 @@
           "editable": true
         },
         "list": {
-          "label": "description",
+          "label": "Опис",
           "searchable": true,
           "sortable": true
         }
@@ -70,7 +70,7 @@
           "editable": true
         },
         "list": {
-          "label": "siteId",
+          "label": "ID сайту в Twitter",
           "searchable": true,
           "sortable": true
         }
@@ -84,7 +84,7 @@
           "editable": true
         },
         "list": {
-          "label": "creator",
+          "label": "Автор",
           "searchable": true,
           "sortable": true
         }
@@ -98,7 +98,7 @@
           "editable": true
         },
         "list": {
-          "label": "creatorId",
+          "label": "ID автора в Twitter",
           "searchable": true,
           "sortable": true
         }
@@ -112,7 +112,7 @@
           "editable": true
         },
         "list": {
-          "label": "images",
+          "label": "Зображення",
           "searchable": false,
           "sortable": false
         }

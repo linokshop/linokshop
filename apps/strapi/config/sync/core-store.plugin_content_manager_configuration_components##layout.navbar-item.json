@@ -28,7 +28,7 @@
           "editable": false
         },
         "list": {
-          "label": "isCategoryLink",
+          "label": "Випадаюче меню категорій",
           "searchable": true,
           "sortable": true
         }
@@ -42,7 +42,7 @@
           "editable": true
         },
         "list": {
-          "label": "link",
+          "label": "Посилання",
           "searchable": false,
           "sortable": false
         }
@@ -56,7 +56,7 @@
           "editable": true
         },
         "list": {
-          "label": "categoryItems",
+          "label": "Пункти списку",
           "searchable": false,
           "sortable": false
         }
@@ -70,7 +70,7 @@
           "editable": true
         },
         "list": {
-          "label": "label",
+          "label": "Текст пункту меню",
           "searchable": true,
           "sortable": true
         }

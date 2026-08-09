@@ -29,7 +29,7 @@
           "editable": true
         },
         "list": {
-          "label": "title",
+          "label": "Заголовок",
           "searchable": true,
           "sortable": true
         }
@@ -43,7 +43,7 @@
           "editable": true
         },
         "list": {
-          "label": "subtitle",
+          "label": "Підзаголовок",
           "searchable": true,
           "sortable": true
         }
@@ -57,7 +57,7 @@
           "editable": true
         },
         "list": {
-          "label": "note",
+          "label": "Примітка",
           "searchable": true,
           "sortable": true
         }
@@ -71,7 +71,7 @@
           "editable": true
         },
         "list": {
-          "label": "color",
+          "label": "Колірна схема",
           "searchable": true,
           "sortable": true
         }

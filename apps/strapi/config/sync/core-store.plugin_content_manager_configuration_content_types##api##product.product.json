@@ -29,7 +29,7 @@
           "editable": true
         },
         "list": {
-          "label": "name",
+          "label": "Назва",
           "searchable": true,
           "sortable": true
         }
@@ -43,7 +43,7 @@
           "editable": true
         },
         "list": {
-          "label": "slug",
+          "label": "URL-адреса (slug)",
           "searchable": true,
           "sortable": true
         }
@@ -58,7 +58,7 @@
           "mainField": "name"
         },
         "list": {
-          "label": "subcategory",
+          "label": "Підкатегорія",
           "searchable": true,
           "sortable": true
         }
@@ -73,7 +73,7 @@
           "mainField": "name"
         },
         "list": {
-          "label": "subSubcategory",
+          "label": "Під-підкатегорія",
           "searchable": true,
           "sortable": true
         }
@@ -88,7 +88,7 @@
           "mainField": "name"
         },
         "list": {
-          "label": "brand",
+          "label": "Бренд",
           "searchable": true,
           "sortable": true
         }
@@ -102,7 +102,7 @@
           "editable": true
         },
         "list": {
-          "label": "oldPrice",
+          "label": "Стара ціна",
           "searchable": true,
           "sortable": true
         }
@@ -116,7 +116,7 @@
           "editable": true
         },
         "list": {
-          "label": "badge",
+          "label": "Бейдж",
           "searchable": true,
           "sortable": true
         }
@@ -130,7 +130,7 @@
           "editable": true
         },
         "list": {
-          "label": "badgeColor",
+          "label": "Колір бейджа",
           "searchable": true,
           "sortable": true
         }
@@ -158,7 +158,7 @@
           "editable": true
         },
         "list": {
-          "label": "popularity",
+          "label": "Популярність",
           "searchable": true,
           "sortable": true
         }
@@ -172,7 +172,7 @@
           "editable": true
         },
         "list": {
-          "label": "recommended",
+          "label": "Рекомендований",
           "searchable": true,
           "sortable": true
         }
@@ -186,7 +186,7 @@
           "editable": true
         },
         "list": {
-          "label": "kasaCode",
+          "label": "Код товару в касі",
           "searchable": true,
           "sortable": true
         }
@@ -200,7 +200,7 @@
           "editable": true
         },
         "list": {
-          "label": "description",
+          "label": "Опис",
           "searchable": false,
           "sortable": false
         }
@@ -214,7 +214,7 @@
           "editable": true
         },
         "list": {
-          "label": "images",
+          "label": "Фото",
           "searchable": false,
           "sortable": false
         }
@@ -228,7 +228,7 @@
           "editable": true
         },
         "list": {
-          "label": "specs",
+          "label": "Характеристики",
           "searchable": false,
           "sortable": false
         }

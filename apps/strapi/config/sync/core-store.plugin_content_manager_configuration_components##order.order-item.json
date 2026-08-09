@@ -30,7 +30,7 @@
           "mainField": "name"
         },
         "list": {
-          "label": "product",
+          "label": "Товар",
           "searchable": true,
           "sortable": true
         }
@@ -44,7 +44,7 @@
           "editable": true
         },
         "list": {
-          "label": "productName",
+          "label": "Назва товару на момент замовлення",
           "searchable": true,
           "sortable": true
         }
@@ -58,7 +58,7 @@
           "editable": true
         },
         "list": {
-          "label": "option",
+          "label": "Варіант",
           "searchable": true,
           "sortable": true
         }
@@ -72,7 +72,7 @@
           "editable": true
         },
         "list": {
-          "label": "price",
+          "label": "Ціна на момент замовлення",
           "searchable": true,
           "sortable": true
         }
@@ -86,7 +86,7 @@
           "editable": true
         },
         "list": {
-          "label": "quantity",
+          "label": "Кількість",
           "searchable": true,
           "sortable": true
         }

@@ -29,7 +29,7 @@
           "editable": true
         },
         "list": {
-          "label": "eyebrow",
+          "label": "Надпис над заголовком",
           "searchable": true,
           "sortable": true
         }
@@ -43,7 +43,7 @@
           "editable": true
         },
         "list": {
-          "label": "title",
+          "label": "Заголовок",
           "searchable": true,
           "sortable": true
         }
@@ -57,7 +57,7 @@
           "editable": true
         },
         "list": {
-          "label": "titleAccent",
+          "label": "Акцентна частина заголовка",
           "searchable": true,
           "sortable": true
         }
@@ -71,7 +71,7 @@
           "editable": true
         },
         "list": {
-          "label": "subtitle",
+          "label": "Підзаголовок",
           "searchable": true,
           "sortable": true
         }
@@ -85,7 +85,7 @@
           "editable": true
         },
         "list": {
-          "label": "backgroundImage",
+          "label": "Фонове зображення",
           "searchable": false,
           "sortable": false
         }
@@ -99,7 +99,7 @@
           "editable": true
         },
         "list": {
-          "label": "primaryLink",
+          "label": "Основна кнопка",
           "searchable": false,
           "sortable": false
         }
@@ -113,7 +113,7 @@
           "editable": true
         },
         "list": {
-          "label": "secondaryLink",
+          "label": "Друга кнопка",
           "searchable": false,
           "sortable": false
         }
@@ -127,7 +127,7 @@
           "editable": true
         },
         "list": {
-          "label": "veteranImage",
+          "label": "Зображення картки ветеранської програми",
           "searchable": false,
           "sortable": false
         }
@@ -141,7 +141,7 @@
           "editable": true
         },
         "list": {
-          "label": "veteranBadge",
+          "label": "Бейдж картки ветеранської програми",
           "searchable": true,
           "sortable": true
         }
@@ -155,7 +155,7 @@
           "editable": true
         },
         "list": {
-          "label": "veteranTitle",
+          "label": "Заголовок картки ветеранської програми",
           "searchable": true,
           "sortable": true
         }
@@ -169,7 +169,7 @@
           "editable": true
         },
         "list": {
-          "label": "veteranTitleAccent",
+          "label": "Акцентна частина заголовка (ветеранська картка)",
           "searchable": true,
           "sortable": true
         }
@@ -183,7 +183,7 @@
           "editable": true
         },
         "list": {
-          "label": "veteranText",
+          "label": "Текст картки ветеранської програми",
           "searchable": true,
           "sortable": true
         }
@@ -197,7 +197,7 @@
           "editable": true
         },
         "list": {
-          "label": "veteranLink",
+          "label": "Посилання картки ветеранської програми",
           "searchable": false,
           "sortable": false
         }

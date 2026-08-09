@@ -29,7 +29,7 @@
           "editable": true
         },
         "list": {
-          "label": "items",
+          "label": "Контактні рядки",
           "searchable": false,
           "sortable": false
         }
@@ -43,7 +43,7 @@
           "editable": true
         },
         "list": {
-          "label": "socialsLabel",
+          "label": "Підпис соцмереж",
           "searchable": true,
           "sortable": true
         }
@@ -57,7 +57,7 @@
           "editable": true
         },
         "list": {
-          "label": "socials",
+          "label": "Соцмережі",
           "searchable": false,
           "sortable": false
         }
@@ -71,7 +71,7 @@
           "editable": true
         },
         "list": {
-          "label": "latitude",
+          "label": "Широта",
           "searchable": true,
           "sortable": true
         }
@@ -85,7 +85,7 @@
           "editable": true
         },
         "list": {
-          "label": "longitude",
+          "label": "Довгота",
           "searchable": true,
           "sortable": true
         }
@@ -99,7 +99,7 @@
           "editable": true
         },
         "list": {
-          "label": "zoom",
+          "label": "Масштаб мапи",
           "searchable": true,
           "sortable": true
         }
@@ -113,7 +113,7 @@
           "editable": true
         },
         "list": {
-          "label": "mapTitle",
+          "label": "Заголовок мапи",
           "searchable": true,
           "sortable": true
         }
@@ -127,7 +127,7 @@
           "editable": true
         },
         "list": {
-          "label": "theme",
+          "label": "Кольорова тема",
           "searchable": true,
           "sortable": true
         }

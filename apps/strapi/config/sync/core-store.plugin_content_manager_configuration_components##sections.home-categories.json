@@ -29,7 +29,7 @@
           "editable": true
         },
         "list": {
-          "label": "title",
+          "label": "Заголовок",
           "searchable": true,
           "sortable": true
         }
@@ -43,7 +43,7 @@
           "editable": true
         },
         "list": {
-          "label": "link",
+          "label": "Посилання «Усі категорії»",
           "searchable": false,
           "sortable": false
         }
@@ -57,7 +57,7 @@
           "editable": true
         },
         "list": {
-          "label": "limit",
+          "label": "Кількість категорій",
           "searchable": true,
           "sortable": true
         }

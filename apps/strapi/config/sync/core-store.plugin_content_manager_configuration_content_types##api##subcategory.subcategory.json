@@ -29,7 +29,7 @@
           "editable": true
         },
         "list": {
-          "label": "name",
+          "label": "Назва",
           "searchable": true,
           "sortable": true
         }
@@ -43,7 +43,7 @@
           "editable": true
         },
         "list": {
-          "label": "slug",
+          "label": "URL-адреса (slug)",
           "searchable": true,
           "sortable": true
         }
@@ -57,7 +57,7 @@
           "editable": true
         },
         "list": {
-          "label": "image",
+          "label": "Зображення",
           "searchable": false,
           "sortable": false
         }
@@ -71,7 +71,7 @@
           "editable": true
         },
         "list": {
-          "label": "order",
+          "label": "Порядок сортування",
           "searchable": true,
           "sortable": true
         }
@@ -86,7 +86,7 @@
           "mainField": "name"
         },
         "list": {
-          "label": "category",
+          "label": "Категорія",
           "searchable": true,
           "sortable": true
         }
@@ -101,7 +101,7 @@
           "mainField": "name"
         },
         "list": {
-          "label": "alsoBought",
+          "label": "Часто купують разом",
           "searchable": false,
           "sortable": false
         }
@@ -116,7 +116,7 @@
           "mainField": "name"
         },
         "list": {
-          "label": "products",
+          "label": "Товари",
           "searchable": false,
           "sortable": false
         }
@@ -131,7 +131,7 @@
           "mainField": "name"
         },
         "list": {
-          "label": "subSubcategories",
+          "label": "Під-підкатегорії",
           "searchable": false,
           "sortable": false
         }

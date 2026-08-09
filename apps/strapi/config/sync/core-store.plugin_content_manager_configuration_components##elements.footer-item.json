@@ -28,7 +28,7 @@
           "editable": true
         },
         "list": {
-          "label": "title",
+          "label": "Заголовок колонки",
           "searchable": true,
           "sortable": true
         }
@@ -42,7 +42,7 @@
           "editable": true
         },
         "list": {
-          "label": "links",
+          "label": "Посилання",
           "searchable": false,
           "sortable": false
         }

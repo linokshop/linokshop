@@ -29,7 +29,7 @@
           "editable": true
         },
         "list": {
-          "label": "title",
+          "label": "Заголовок",
           "searchable": true,
           "sortable": true
         }
@@ -43,7 +43,7 @@
           "editable": true
         },
         "list": {
-          "label": "text",
+          "label": "Текст",
           "searchable": true,
           "sortable": true
         }
@@ -57,7 +57,7 @@
           "editable": true
         },
         "list": {
-          "label": "image",
+          "label": "Зображення",
           "searchable": false,
           "sortable": false
         }
@@ -71,7 +71,7 @@
           "editable": true
         },
         "list": {
-          "label": "imageSide",
+          "label": "Сторона зображення",
           "searchable": true,
           "sortable": true
         }
@@ -85,7 +85,7 @@
           "editable": true
         },
         "list": {
-          "label": "stats",
+          "label": "Цифри/факти",
           "searchable": false,
           "sortable": false
         }
@@ -99,7 +99,7 @@
           "editable": true
         },
         "list": {
-          "label": "theme",
+          "label": "Кольорова тема",
           "searchable": true,
           "sortable": true
         }

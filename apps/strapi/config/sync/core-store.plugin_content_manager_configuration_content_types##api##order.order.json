@@ -29,7 +29,7 @@
           "editable": true
         },
         "list": {
-          "label": "orderNo",
+          "label": "Номер замовлення",
           "searchable": true,
           "sortable": true
         }
@@ -43,7 +43,7 @@
           "editable": true
         },
         "list": {
-          "label": "status",
+          "label": "Статус",
           "searchable": true,
           "sortable": true
         }
@@ -57,7 +57,7 @@
           "editable": true
         },
         "list": {
-          "label": "customerName",
+          "label": "Ім'я клієнта",
           "searchable": true,
           "sortable": true
         }
@@ -71,7 +71,7 @@
           "editable": true
         },
         "list": {
-          "label": "phone",
+          "label": "Телефон",
           "searchable": true,
           "sortable": true
         }
@@ -85,7 +85,7 @@
           "editable": true
         },
         "list": {
-          "label": "viber",
+          "label": "Viber",
           "searchable": true,
           "sortable": true
         }
@@ -99,7 +99,7 @@
           "editable": true
         },
         "list": {
-          "label": "telegram",
+          "label": "Telegram",
           "searchable": true,
           "sortable": true
         }
@@ -113,7 +113,7 @@
           "editable": true
         },
         "list": {
-          "label": "shipping",
+          "label": "Спосіб доставки",
           "searchable": true,
           "sortable": true
         }
@@ -127,7 +127,7 @@
           "editable": true
         },
         "list": {
-          "label": "city",
+          "label": "Місто",
           "searchable": true,
           "sortable": true
         }
@@ -141,7 +141,7 @@
           "editable": true
         },
         "list": {
-          "label": "branch",
+          "label": "Відділення / поштомат",
           "searchable": true,
           "sortable": true
         }
@@ -155,7 +155,7 @@
           "editable": true
         },
         "list": {
-          "label": "street",
+          "label": "Вулиця (кур'єрська доставка)",
           "searchable": true,
           "sortable": true
         }
@@ -169,7 +169,7 @@
           "editable": true
         },
         "list": {
-          "label": "comment",
+          "label": "Коментар клієнта",
           "searchable": true,
           "sortable": true
         }
@@ -183,7 +183,7 @@
           "editable": true
         },
         "list": {
-          "label": "payment",
+          "label": "Спосіб оплати",
           "searchable": true,
           "sortable": true
         }
@@ -197,7 +197,7 @@
           "editable": true
         },
         "list": {
-          "label": "veteran",
+          "label": "Знижка ветерана",
           "searchable": true,
           "sortable": true
         }
@@ -211,7 +211,7 @@
           "editable": true
         },
         "list": {
-          "label": "items",
+          "label": "Товари в замовленні",
           "searchable": false,
           "sortable": false
         }
@@ -225,7 +225,7 @@
           "editable": true
         },
         "list": {
-          "label": "subtotal",
+          "label": "Сума товарів",
           "searchable": true,
           "sortable": true
         }
@@ -239,7 +239,7 @@
           "editable": true
         },
         "list": {
-          "label": "discount",
+          "label": "Знижка",
           "searchable": true,
           "sortable": true
         }
@@ -253,7 +253,7 @@
           "editable": true
         },
         "list": {
-          "label": "total",
+          "label": "До сплати",
           "searchable": true,
           "sortable": true
         }

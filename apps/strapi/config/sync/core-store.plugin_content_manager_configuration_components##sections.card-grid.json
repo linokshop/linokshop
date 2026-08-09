@@ -29,7 +29,7 @@
           "editable": true
         },
         "list": {
-          "label": "title",
+          "label": "Заголовок",
           "searchable": true,
           "sortable": true
         }
@@ -43,7 +43,7 @@
           "editable": true
         },
         "list": {
-          "label": "subtitle",
+          "label": "Підзаголовок",
           "searchable": true,
           "sortable": true
         }
@@ -57,7 +57,7 @@
           "editable": true
         },
         "list": {
-          "label": "columns",
+          "label": "Кількість колонок",
           "searchable": true,
           "sortable": true
         }
@@ -71,7 +71,7 @@
           "editable": true
         },
         "list": {
-          "label": "cardAlign",
+          "label": "Вирівнювання карток",
           "searchable": true,
           "sortable": true
         }
@@ -85,7 +85,7 @@
           "editable": true
         },
         "list": {
-          "label": "imageStyle",
+          "label": "Стиль зображень",
           "searchable": true,
           "sortable": true
         }
@@ -99,7 +99,7 @@
           "editable": true
         },
         "list": {
-          "label": "theme",
+          "label": "Кольорова тема",
           "searchable": true,
           "sortable": true
         }
@@ -113,7 +113,7 @@
           "editable": true
         },
         "list": {
-          "label": "align",
+          "label": "Вирівнювання заголовка",
           "searchable": true,
           "sortable": true
         }
@@ -127,7 +127,7 @@
           "editable": true
         },
         "list": {
-          "label": "banded",
+          "label": "Смуга-фон",
           "searchable": true,
           "sortable": true
         }
@@ -141,7 +141,7 @@
           "editable": true
         },
         "list": {
-          "label": "cards",
+          "label": "Картки",
           "searchable": false,
           "sortable": false
         }
@@ -155,7 +155,7 @@
           "editable": true
         },
         "list": {
-          "label": "footnote",
+          "label": "Виноска",
           "searchable": true,
           "sortable": true
         }

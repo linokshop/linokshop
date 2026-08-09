@@ -28,7 +28,7 @@
           "editable": true
         },
         "list": {
-          "label": "text",
+          "label": "Текст",
           "searchable": true,
           "sortable": true
         }

@@ -29,7 +29,7 @@
           "editable": true
         },
         "list": {
-          "label": "title",
+          "label": "Заголовок",
           "searchable": true,
           "sortable": true
         }
@@ -43,7 +43,7 @@
           "editable": true
         },
         "list": {
-          "label": "link",
+          "label": "Посилання «Усі товари»",
           "searchable": false,
           "sortable": false
         }
@@ -58,7 +58,7 @@
           "mainField": "name"
         },
         "list": {
-          "label": "products",
+          "label": "Товари",
           "searchable": false,
           "sortable": false
         }
@@ -72,7 +72,7 @@
           "editable": true
         },
         "list": {
-          "label": "limit",
+          "label": "Кількість товарів",
           "searchable": true,
           "sortable": true
         }

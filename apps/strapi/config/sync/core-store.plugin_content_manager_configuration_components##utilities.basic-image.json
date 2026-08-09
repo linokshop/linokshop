@@ -28,7 +28,7 @@
           "editable": true
         },
         "list": {
-          "label": "media",
+          "label": "Зображення",
           "searchable": false,
           "sortable": false
         }
@@ -42,7 +42,7 @@
           "editable": true
         },
         "list": {
-          "label": "alt",
+          "label": "Альтернативний текст",
           "searchable": true,
           "sortable": true
         }
@@ -56,7 +56,7 @@
           "editable": true
         },
         "list": {
-          "label": "width",
+          "label": "Ширина (px)",
           "searchable": true,
           "sortable": true
         }
@@ -70,7 +70,7 @@
           "editable": true
         },
         "list": {
-          "label": "height",
+          "label": "Висота (px)",
           "searchable": true,
           "sortable": true
         }
@@ -84,7 +84,7 @@
           "editable": true
         },
         "list": {
-          "label": "fallbackSrc",
+          "label": "Запасне зображення",
           "searchable": true,
           "sortable": true
         }

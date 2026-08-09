@@ -29,7 +29,7 @@
           "editable": true
         },
         "list": {
-          "label": "logoImage",
+          "label": "Логотип",
           "searchable": false,
           "sortable": false
         }
@@ -43,7 +43,7 @@
           "editable": true
         },
         "list": {
-          "label": "navbarItems",
+          "label": "Пункти меню",
           "searchable": false,
           "sortable": false
         }
@@ -57,7 +57,7 @@
           "editable": true
         },
         "list": {
-          "label": "primaryButtons",
+          "label": "Кнопки",
           "searchable": false,
           "sortable": false
         }

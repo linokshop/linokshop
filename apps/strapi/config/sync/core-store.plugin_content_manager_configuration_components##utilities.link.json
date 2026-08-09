@@ -28,7 +28,7 @@
           "editable": true
         },
         "list": {
-          "label": "type",
+          "label": "Тип посилання",
           "searchable": true,
           "sortable": true
         }
@@ -42,7 +42,7 @@
           "editable": true
         },
         "list": {
-          "label": "label",
+          "label": "Текст посилання",
           "searchable": true,
           "sortable": true
         }
@@ -56,7 +56,7 @@
           "editable": true
         },
         "list": {
-          "label": "newTab",
+          "label": "Відкривати в новій вкладці",
           "searchable": true,
           "sortable": true
         }
@@ -70,7 +70,7 @@
           "editable": true
         },
         "list": {
-          "label": "href",
+          "label": "URL",
           "searchable": true,
           "sortable": true
         }
@@ -85,7 +85,7 @@
           "mainField": "title"
         },
         "list": {
-          "label": "page",
+          "label": "Сторінка",
           "searchable": true,
           "sortable": true
         }
@@ -99,7 +99,7 @@
           "editable": true
         },
         "list": {
-          "label": "decorations",
+          "label": "Стиль оформлення",
           "searchable": false,
           "sortable": false
         }

@@ -29,7 +29,7 @@
           "editable": true
         },
         "list": {
-          "label": "name",
+          "label": "Назва",
           "searchable": true,
           "sortable": true
         }
@@ -43,7 +43,7 @@
           "editable": true
         },
         "list": {
-          "label": "slug",
+          "label": "URL-адреса (slug)",
           "searchable": true,
           "sortable": true
         }
@@ -57,7 +57,7 @@
           "editable": true
         },
         "list": {
-          "label": "image",
+          "label": "Зображення",
           "searchable": false,
           "sortable": false
         }
@@ -71,7 +71,7 @@
           "editable": true
         },
         "list": {
-          "label": "order",
+          "label": "Порядок сортування",
           "searchable": true,
           "sortable": true
         }
@@ -86,7 +86,7 @@
           "mainField": "name"
         },
         "list": {
-          "label": "subcategories",
+          "label": "Підкатегорії",
           "searchable": false,
           "sortable": false
         }

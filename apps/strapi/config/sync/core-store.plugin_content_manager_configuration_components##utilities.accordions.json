@@ -28,7 +28,7 @@
           "editable": true
         },
         "list": {
-          "label": "question",
+          "label": "Питання",
           "searchable": true,
           "sortable": true
         }
@@ -42,7 +42,7 @@
           "editable": true
         },
         "list": {
-          "label": "answer",
+          "label": "Відповідь",
           "searchable": true,
           "sortable": true
         }

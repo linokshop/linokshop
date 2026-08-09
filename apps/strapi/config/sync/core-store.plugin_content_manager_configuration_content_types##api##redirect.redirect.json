@@ -28,7 +28,7 @@
           "editable": true
         },
         "list": {
-          "label": "source",
+          "label": "Стара адреса",
           "searchable": true,
           "sortable": true
         }
@@ -42,7 +42,7 @@
           "editable": true
         },
         "list": {
-          "label": "destination",
+          "label": "Нова адреса",
           "searchable": true,
           "sortable": true
         }

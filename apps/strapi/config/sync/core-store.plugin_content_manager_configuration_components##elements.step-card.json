@@ -29,7 +29,7 @@
           "editable": true
         },
         "list": {
-          "label": "number",
+          "label": "Номер кроку",
           "searchable": true,
           "sortable": true
         }
@@ -43,7 +43,7 @@
           "editable": true
         },
         "list": {
-          "label": "title",
+          "label": "Заголовок кроку",
           "searchable": true,
           "sortable": true
         }
@@ -57,7 +57,7 @@
           "editable": true
         },
         "list": {
-          "label": "text",
+          "label": "Опис кроку",
           "searchable": true,
           "sortable": true
         }
