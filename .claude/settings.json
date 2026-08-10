@@ -103,7 +103,8 @@
       "Bash(/c/Users/User/Desktop/linok/linokshop/node_modules/.bin/config-sync diff *)",
       "Bash(node .tmp-diff-keys.cjs)",
       "mcp__chrome-devtools__wait_for",
-      "Bash(node build-guide.cjs)"
+      "Bash(node build-guide.cjs)",
+      "Bash(openssl rand *)"
     ],
     "additionalDirectories": [
       "C:\\Windows\\System32\\drivers\\etc"
