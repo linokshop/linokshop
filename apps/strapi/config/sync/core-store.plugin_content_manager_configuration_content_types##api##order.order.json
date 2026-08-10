@@ -34,7 +34,7 @@
           "sortable": true
         }
       },
-      "status": {
+      "orderStatus": {
         "edit": {
           "label": "Статус",
           "description": "Єдине поле, яке зазвичай треба міняти вручну — відображає, на якому етапі перебуває замовлення.",
@@ -329,7 +329,7 @@
       "list": [
         "id",
         "orderNo",
-        "status",
+        "orderStatus",
         "customerName"
       ],
       "edit": [
@@ -339,7 +339,7 @@
             "size": 6
           },
           {
-            "name": "status",
+            "name": "orderStatus",
             "size": 6
           }
         ],

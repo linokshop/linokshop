@@ -84,7 +84,26 @@
       "Bash(node .tmp-dump-comp.cjs)",
       "Bash(cp \"C:\\\\Users\\\\User\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-User-Desktop-linok-linokshop\\\\865ddca8-4926-4146-a978-40ba112b3e11\\\\scratchpad\\\\patch-all-labels.cjs\" \"c:/Users/User/Desktop/linok/linokshop/apps/strapi/.tmp-patch-all.cjs\")",
       "Bash(node .tmp-patch-all.cjs)",
-      "Bash(powershell -Command \"Stop-Process -Id 5888 -Force\")"
+      "Bash(powershell -Command \"Stop-Process -Id 5888 -Force\")",
+      "Bash(cp \"C:\\\\Users\\\\User\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-User-Desktop-linok-linokshop\\\\865ddca8-4926-4146-a978-40ba112b3e11\\\\scratchpad\\\\patch-list-labels.cjs\" \"c:/Users/User/Desktop/linok/linokshop/apps/strapi/.tmp-patch-list.cjs\")",
+      "Bash(node .tmp-patch-list.cjs)",
+      "Bash(xargs grep -l \"cli\\\\|commander\\\\|program\")",
+      "Bash(npx config-sync *)",
+      "Bash(powershell -Command \"Stop-Process -Id 8284 -Force\")",
+      "Bash(tasklist)",
+      "Bash(pnpm dev:strapi)",
+      "Bash(echo \"started strapi, pid $!\")",
+      "Bash(pnpm dev:ui)",
+      "Bash(echo \"started ui, pid $!\")",
+      "Bash(grep -v \"\\\\.map$\")",
+      "Bash(jobs -l)",
+      "Bash(kill -9 2125 2124)",
+      "Bash(node .tmp-check-order-cols.cjs)",
+      "Bash(node -e \"console.log\\(__dirname\\)\")",
+      "Bash(/c/Users/User/Desktop/linok/linokshop/node_modules/.bin/config-sync diff *)",
+      "Bash(node .tmp-diff-keys.cjs)",
+      "mcp__chrome-devtools__wait_for",
+      "Bash(node build-guide.cjs)"
     ],
     "additionalDirectories": [
       "C:\\Windows\\System32\\drivers\\etc"

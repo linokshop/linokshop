@@ -1500,7 +1500,7 @@ export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
   collectionName: "orders"
   info: {
     description: "A checkout order placed on the ЛінОк storefront."
-    displayName: "Order"
+    displayName: "Замовлення"
     pluralName: "orders"
     singularName: "order"
   }
@@ -1521,13 +1521,7 @@ export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
     orderNo: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.Unique
-    payment: Schema.Attribute.Enumeration<["card", "cash"]> &
-      Schema.Attribute.Required
-    phone: Schema.Attribute.String & Schema.Attribute.Required
-    publishedAt: Schema.Attribute.DateTime
-    shipping: Schema.Attribute.Enumeration<["pickup", "branch", "courier"]> &
-      Schema.Attribute.Required
-    status: Schema.Attribute.Enumeration<
+    orderStatus: Schema.Attribute.Enumeration<
       [
         "Створено",
         "Не відповідає",
@@ -1540,6 +1534,12 @@ export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<"Створено">
+    payment: Schema.Attribute.Enumeration<["card", "cash"]> &
+      Schema.Attribute.Required
+    phone: Schema.Attribute.String & Schema.Attribute.Required
+    publishedAt: Schema.Attribute.DateTime
+    shipping: Schema.Attribute.Enumeration<["pickup", "branch", "courier"]> &
+      Schema.Attribute.Required
     street: Schema.Attribute.String
     subtotal: Schema.Attribute.Decimal & Schema.Attribute.Required
     telegram: Schema.Attribute.String
