@@ -4,7 +4,7 @@ export interface ElementsSpecRow extends Struct.ComponentSchema {
   collectionName: "components_elements_spec_rows"
   info: {
     description: "A key–value specification row."
-    displayName: "SpecRow"
+    displayName: "Рядок характеристики"
   }
   attributes: {
     label: Schema.Attribute.String
@@ -16,7 +16,7 @@ export interface ElementsContactItem extends Struct.ComponentSchema {
   collectionName: "components_elements_contact_items"
   info: {
     description: 'One contact line: label, value and an optional note ("Без вихідних").'
-    displayName: "ContactItem"
+    displayName: "Контактний рядок"
   }
   attributes: {
     emphasis: Schema.Attribute.Enumeration<["normal", "large"]> &
@@ -32,7 +32,7 @@ export interface ElementsStat extends Struct.ComponentSchema {
   collectionName: "components_elements_stats"
   info: {
     description: 'A single figure: value and its label ("8 років" / "на ринку").'
-    displayName: "Stat"
+    displayName: "Цифра/факт"
   }
   attributes: {
     label: Schema.Attribute.String
@@ -44,7 +44,7 @@ export interface ElementsStepCard extends Struct.ComponentSchema {
   collectionName: "components_elements_step_cards"
   info: {
     description: "A single numbered step: number, title and text."
-    displayName: "StepCard"
+    displayName: "Картка кроку"
   }
   attributes: {
     number: Schema.Attribute.String
@@ -76,7 +76,7 @@ export interface ElementsInfoCard extends Struct.ComponentSchema {
   collectionName: "components_elements_info_cards"
   info: {
     description: "A generic card: badge, title, text, link and image."
-    displayName: "InfoCard"
+    displayName: "Інфокартка"
   }
   attributes: {
     badge: Schema.Attribute.String
@@ -99,7 +99,7 @@ export interface ElementsNewsCard extends Struct.ComponentSchema {
   collectionName: "components_elements_news_cards"
   info: {
     description: "A horizontal news item: image, date, title, text and link."
-    displayName: "NewsCard"
+    displayName: "Картка новини"
   }
   attributes: {
     date: Schema.Attribute.String
@@ -114,7 +114,7 @@ export interface ElementsFooterItem extends Struct.ComponentSchema {
   collectionName: "components_elements_footer_items"
   info: {
     description: ""
-    displayName: "FooterItem"
+    displayName: "Колонка футера"
   }
   attributes: {
     links: Schema.Attribute.Component<"utilities.link", true>
@@ -125,7 +125,7 @@ export interface ElementsFooterItem extends Struct.ComponentSchema {
 export interface LayoutNavbarItem extends Struct.ComponentSchema {
   collectionName: "components_layout_navbar_items"
   info: {
-    displayName: "NavbarItem"
+    displayName: "Пункт меню"
   }
   attributes: {
     categoryItems: Schema.Attribute.Component<"utilities.link", true>
@@ -139,7 +139,7 @@ export interface SectionsHomeCategories extends Struct.ComponentSchema {
   collectionName: "components_sections_home_categories"
   info: {
     description: "ЛінОк homepage category grid."
-    displayName: "HomeCategories"
+    displayName: "Категорії на головній"
   }
   attributes: {
     limit: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<6>
@@ -152,7 +152,7 @@ export interface SectionsCatalog extends Struct.ComponentSchema {
   collectionName: "components_sections_catalogs"
   info: {
     description: "ЛінОк catalog: filter sidebar + product grid (visual)."
-    displayName: "Catalog"
+    displayName: "Каталог"
   }
   attributes: {
     pageSize: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<12>
@@ -165,7 +165,7 @@ export interface SectionsCardGrid extends Struct.ComponentSchema {
   collectionName: "components_sections_card_grids"
   info: {
     description: "A grid of generic info cards (promos, features, etc.)."
-    displayName: "CardGrid"
+    displayName: "Сітка карток"
   }
   attributes: {
     align: Schema.Attribute.Enumeration<["left", "center"]> &
@@ -190,7 +190,7 @@ export interface SectionsVetHero extends Struct.ComponentSchema {
   collectionName: "components_sections_vet_heroes"
   info: {
     description: "Veteran-programme page hero: badge, headline, CTA and a photo panel."
-    displayName: "VetHero"
+    displayName: "Банер ветеранської програми"
   }
   attributes: {
     badge: Schema.Attribute.String
@@ -207,7 +207,7 @@ export interface SectionsCallout extends Struct.ComponentSchema {
   collectionName: "components_sections_callouts"
   info: {
     description: "A loud full-width band — a thank-you or a slogan. Three centred lines."
-    displayName: "Callout"
+    displayName: "Банер-заклик"
   }
   attributes: {
     color: Schema.Attribute.Enumeration<["orange", "bronze", "steel"]> &
@@ -222,7 +222,7 @@ export interface SectionsContacts extends Struct.ComponentSchema {
   collectionName: "components_sections_contacts"
   info: {
     description: "Contact details beside an OpenStreetMap map."
-    displayName: "Contacts"
+    displayName: "Контакти"
   }
   attributes: {
     items: Schema.Attribute.Component<"elements.contact-item", true>
@@ -241,7 +241,7 @@ export interface SectionsContactForm extends Struct.ComponentSchema {
   collectionName: "components_sections_contact_forms"
   info: {
     description: "\"Write to us\" form. Sending is off until the Telegram bot is wired up — flip `enabled` then."
-    displayName: "ContactForm"
+    displayName: "Форма зв'язку"
   }
   attributes: {
     disabledNote: Schema.Attribute.Text
@@ -264,7 +264,7 @@ export interface SectionsStory extends Struct.ComponentSchema {
   collectionName: "components_sections_stories"
   info: {
     description: "Photo beside a text column, with optional figures underneath."
-    displayName: "Story"
+    displayName: "Історія/блок з фото"
   }
   attributes: {
     image: Schema.Attribute.Component<"utilities.basic-image", false>
@@ -282,7 +282,7 @@ export interface SectionsFaq extends Struct.ComponentSchema {
   collectionName: "components_sections_faqs"
   info: {
     description: "Frequently asked questions — an accordion list."
-    displayName: "Faq"
+    displayName: "Часті питання"
   }
   attributes: {
     items: Schema.Attribute.Component<"utilities.accordions", true>
@@ -296,7 +296,7 @@ export interface SectionsNews extends Struct.ComponentSchema {
   collectionName: "components_sections_news"
   info: {
     description: "A list of horizontal news cards."
-    displayName: "News"
+    displayName: "Новини"
   }
   attributes: {
     items: Schema.Attribute.Component<"elements.news-card", true>
@@ -310,7 +310,7 @@ export interface SectionsSteps extends Struct.ComponentSchema {
   collectionName: "components_sections_steps"
   info: {
     description: "Numbered steps section (e.g. how it works)."
-    displayName: "Steps"
+    displayName: "Кроки"
   }
   attributes: {
     steps: Schema.Attribute.Component<"elements.step-card", true>
@@ -324,7 +324,7 @@ export interface SectionsTextBlock extends Struct.ComponentSchema {
   collectionName: "components_sections_text_blocks"
   info: {
     description: "Centered eyebrow + title + text block."
-    displayName: "TextBlock"
+    displayName: "Текстовий блок"
   }
   attributes: {
     align: Schema.Attribute.Enumeration<["center", "left"]> &
@@ -343,7 +343,7 @@ export interface SectionsHomePromo extends Struct.ComponentSchema {
   collectionName: "components_sections_home_promos"
   info: {
     description: "ЛінОк homepage promo banner."
-    displayName: "HomePromo"
+    displayName: "Промо-банер"
   }
   attributes: {
     eyebrow: Schema.Attribute.String
@@ -360,7 +360,7 @@ export interface SectionsHomeProgram extends Struct.ComponentSchema {
   collectionName: "components_sections_home_programs"
   info: {
     description: "ЛінОк homepage veteran-program banner."
-    displayName: "HomeProgram"
+    displayName: "Банер програми"
   }
   attributes: {
     badge: Schema.Attribute.String
@@ -381,7 +381,7 @@ export interface SectionsHomeProducts extends Struct.ComponentSchema {
   collectionName: "components_sections_home_products"
   info: {
     description: "Homepage product rail. Products are picked from the Product collection — pick them here, or leave empty to show the most popular ones."
-    displayName: "HomeProducts"
+    displayName: "Товари на головній"
   }
   attributes: {
     limit: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<6>
@@ -395,7 +395,7 @@ export interface SectionsHomeHero extends Struct.ComponentSchema {
   collectionName: "components_sections_home_heroes"
   info: {
     description: "ЛінОк homepage hero: headline + CTAs and the veteran-program card."
-    displayName: "HomeHero"
+    displayName: "Головний банер"
   }
   attributes: {
     backgroundImage: Schema.Attribute.Component<"utilities.basic-image", false>
@@ -418,7 +418,7 @@ export interface SeoUtilitiesSeo extends Struct.ComponentSchema {
   collectionName: "components_seo_utilities_seos"
   info: {
     description: ""
-    displayName: "Seo"
+    displayName: "SEO"
     icon: "search"
   }
   attributes: {
@@ -458,7 +458,7 @@ export interface SeoUtilitiesSeo extends Struct.ComponentSchema {
 export interface SeoUtilitiesSeoOg extends Struct.ComponentSchema {
   collectionName: "components_seo_utilities_seo_ogs"
   info: {
-    displayName: "SeoOg"
+    displayName: "SEO Open Graph"
     icon: "oneToMany"
   }
   attributes: {
@@ -475,7 +475,7 @@ export interface SeoUtilitiesSeoOg extends Struct.ComponentSchema {
 export interface SeoUtilitiesSeoTwitter extends Struct.ComponentSchema {
   collectionName: "components_seo_utilities_seo_twitters"
   info: {
-    displayName: "SeoTwitter"
+    displayName: "SEO Twitter"
     icon: "oneToMany"
   }
   attributes: {
@@ -493,7 +493,7 @@ export interface UtilitiesAccordions extends Struct.ComponentSchema {
   collectionName: "components_utilities_accordions"
   info: {
     description: ""
-    displayName: "Accordions"
+    displayName: "Акордеон"
   }
   attributes: {
     answer: Schema.Attribute.Text & Schema.Attribute.Required
@@ -504,7 +504,7 @@ export interface UtilitiesAccordions extends Struct.ComponentSchema {
 export interface UtilitiesBasicImage extends Struct.ComponentSchema {
   collectionName: "components_utilities_basic_images"
   info: {
-    displayName: "BasicImage"
+    displayName: "Зображення"
   }
   attributes: {
     alt: Schema.Attribute.String
@@ -552,7 +552,7 @@ export interface UtilitiesImageWithLink extends Struct.ComponentSchema {
   collectionName: "components_utilities_image_with_links"
   info: {
     description: ""
-    displayName: "ImageWithLink"
+    displayName: "Зображення з посиланням"
   }
   attributes: {
     image: Schema.Attribute.Component<"utilities.basic-image", false>
@@ -563,7 +563,7 @@ export interface UtilitiesImageWithLink extends Struct.ComponentSchema {
 export interface UtilitiesLink extends Struct.ComponentSchema {
   collectionName: "components_utilities_links"
   info: {
-    displayName: "Link"
+    displayName: "Посилання"
   }
   attributes: {
     decorations: Schema.Attribute.Component<"utilities.link-decorations", false>
@@ -582,7 +582,7 @@ export interface UtilitiesLink extends Struct.ComponentSchema {
 export interface UtilitiesLinkDecorations extends Struct.ComponentSchema {
   collectionName: "components_utilities_link_decorations"
   info: {
-    displayName: "LinkDecorations"
+    displayName: "Стиль посилання"
   }
   attributes: {
     disableAnimations: Schema.Attribute.Boolean &
@@ -608,7 +608,7 @@ export interface UtilitiesLinkDecorations extends Struct.ComponentSchema {
 export interface UtilitiesText extends Struct.ComponentSchema {
   collectionName: "components_utilities_texts"
   info: {
-    displayName: "Text"
+    displayName: "Текст"
   }
   attributes: {
     text: Schema.Attribute.String
@@ -635,7 +635,7 @@ export interface UtilitiesTipTapRichText extends Struct.ComponentSchema {
 export interface OrderOrderItem extends Struct.ComponentSchema {
   collectionName: "components_order_order_items"
   info: {
-    displayName: "Order item"
+    displayName: "Товар замовлення"
   }
   attributes: {
     option: Schema.Attribute.String

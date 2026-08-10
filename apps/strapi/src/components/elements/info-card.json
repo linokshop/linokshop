@@ -1,7 +1,7 @@
 {
   "collectionName": "components_elements_info_cards",
   "info": {
-    "displayName": "InfoCard",
+    "displayName": "Інфокартка",
     "description": "A generic card: badge, title, text, link and image."
   },
   "options": {},

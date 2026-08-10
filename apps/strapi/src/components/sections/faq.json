@@ -1,7 +1,7 @@
 {
   "collectionName": "components_sections_faqs",
   "info": {
-    "displayName": "Faq",
+    "displayName": "Часті питання",
     "description": "Frequently asked questions — an accordion list."
   },
   "options": {},

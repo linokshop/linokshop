@@ -1,7 +1,7 @@
 {
   "collectionName": "components_sections_home_heroes",
   "info": {
-    "displayName": "HomeHero",
+    "displayName": "Головний банер",
     "description": "ЛінОк homepage hero: headline + CTAs and the veteran-program card."
   },
   "options": {},

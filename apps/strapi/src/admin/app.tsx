@@ -2,6 +2,8 @@ import { setPluginConfig } from "@_sh/strapi-plugin-ckeditor"
 import { Cloud } from "@strapi/icons"
 import type { StrapiApp } from "@strapi/strapi/admin"
 
+// eslint-disable-next-line import-x/order
+import { uk } from "./uk"
 import "@repo/design-system/styles.css"
 
 import { defaultCkEditorConfig, simpleCkEditorConfig } from "./ckeditor/configs"
@@ -11,6 +13,9 @@ import Hierarchy from "./extensions/Hierarchy"
 export default {
   config: {
     locales: ["en", "uk"],
+    translations: {
+      uk,
+    },
   },
   async bootstrap(app: StrapiApp) {
     app

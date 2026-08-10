@@ -1,7 +1,7 @@
 {
   "collectionName": "components_sections_card_grids",
   "info": {
-    "displayName": "CardGrid",
+    "displayName": "Сітка карток",
     "description": "A grid of generic info cards (promos, features, etc.)."
   },
   "options": {},

@@ -1,7 +1,7 @@
 {
   "collectionName": "components_sections_text_blocks",
   "info": {
-    "displayName": "TextBlock",
+    "displayName": "Текстовий блок",
     "description": "Centered eyebrow + title + text block."
   },
   "options": {},

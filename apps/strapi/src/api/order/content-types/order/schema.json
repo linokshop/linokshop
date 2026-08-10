@@ -19,15 +19,15 @@
     "status": {
       "type": "enumeration",
       "enum": [
-        "created",
-        "no_answer",
-        "confirmed",
-        "paid",
-        "shipped",
-        "completed",
-        "cancelled"
+        "Створено",
+        "Не відповідає",
+        "Підтверджено",
+        "Оплачено",
+        "Відправлено",
+        "Завершено",
+        "Скасовано"
       ],
-      "default": "created",
+      "default": "Створено",
       "required": true
     },
     "customerName": {

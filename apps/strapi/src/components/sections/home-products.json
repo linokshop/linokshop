@@ -1,7 +1,7 @@
 {
   "collectionName": "components_sections_home_products",
   "info": {
-    "displayName": "HomeProducts",
+    "displayName": "Товари на головній",
     "description": "Homepage product rail. Products are picked from the Product collection — pick them here, or leave empty to show the most popular ones."
   },
   "options": {},

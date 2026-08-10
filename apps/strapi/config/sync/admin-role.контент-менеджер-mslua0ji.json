@@ -1,0 +1,574 @@
+{
+  "documentId": "tu0zrrut0exa8kyk8yzp3i04",
+  "name": "Контент-менеджер",
+  "code": "контент-менеджер-mslua0ji",
+  "description": "Наповнення каталогу: товари, категорії, бренди, статуси замовлень. Без доступу до налаштувань і технічних розділів.",
+  "locale": null,
+  "permissions": [
+    {
+      "documentId": "qmmiykvovbvkegc0ltoioutf",
+      "action": "plugin::content-manager.explorer.create",
+      "actionParameters": {},
+      "subject": "api::brand.brand",
+      "properties": {
+        "fields": [
+          "name",
+          "slug",
+          "products"
+        ],
+        "locales": [
+          "uk"
+        ]
+      },
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "ww8p2wmpm3dyfgl0oo0e0i9q",
+      "action": "plugin::content-manager.explorer.delete",
+      "actionParameters": {},
+      "subject": "api::brand.brand",
+      "properties": {
+        "locales": [
+          "uk"
+        ]
+      },
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "dlm2jjvjuvz1udhqfc49p4er",
+      "action": "plugin::content-manager.explorer.publish",
+      "actionParameters": {},
+      "subject": "api::brand.brand",
+      "properties": {
+        "locales": [
+          "uk"
+        ]
+      },
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "m1o79nxou0y9bacl6e1u8341",
+      "action": "plugin::content-manager.explorer.read",
+      "actionParameters": {},
+      "subject": "api::brand.brand",
+      "properties": {
+        "fields": [
+          "name",
+          "slug",
+          "products"
+        ],
+        "locales": [
+          "uk"
+        ]
+      },
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "cqzyl2ssr5rdrkxkrjwu0fkj",
+      "action": "plugin::content-manager.explorer.update",
+      "actionParameters": {},
+      "subject": "api::brand.brand",
+      "properties": {
+        "fields": [
+          "name",
+          "slug",
+          "products"
+        ],
+        "locales": [
+          "uk"
+        ]
+      },
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "gs1l3x77i4b1d76d6tpvc0jz",
+      "action": "plugin::content-manager.explorer.create",
+      "actionParameters": {},
+      "subject": "api::category.category",
+      "properties": {
+        "fields": [
+          "name",
+          "slug",
+          "image",
+          "order",
+          "subcategories"
+        ],
+        "locales": [
+          "uk"
+        ]
+      },
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "gey86ig1m91t9x19nu47s5ry",
+      "action": "plugin::content-manager.explorer.delete",
+      "actionParameters": {},
+      "subject": "api::category.category",
+      "properties": {
+        "locales": [
+          "uk"
+        ]
+      },
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "eey2mx7shln34iv1793vakp0",
+      "action": "plugin::content-manager.explorer.publish",
+      "actionParameters": {},
+      "subject": "api::category.category",
+      "properties": {
+        "locales": [
+          "uk"
+        ]
+      },
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "eobjb5g1mu7atqwjclzprfy4",
+      "action": "plugin::content-manager.explorer.read",
+      "actionParameters": {},
+      "subject": "api::category.category",
+      "properties": {
+        "fields": [
+          "name",
+          "slug",
+          "image",
+          "order",
+          "subcategories"
+        ],
+        "locales": [
+          "uk"
+        ]
+      },
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "jn6ovg020kx7qk6dw53k28iy",
+      "action": "plugin::content-manager.explorer.update",
+      "actionParameters": {},
+      "subject": "api::category.category",
+      "properties": {
+        "fields": [
+          "name",
+          "slug",
+          "image",
+          "order",
+          "subcategories"
+        ],
+        "locales": [
+          "uk"
+        ]
+      },
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "ve14hi6uehdyim0b79daue1c",
+      "action": "plugin::content-manager.explorer.read",
+      "actionParameters": {},
+      "subject": "api::order.order",
+      "properties": {
+        "fields": [
+          "orderNo",
+          "status",
+          "customerName",
+          "phone",
+          "viber",
+          "telegram",
+          "shipping",
+          "city",
+          "branch",
+          "street",
+          "comment",
+          "payment",
+          "veteran",
+          "items.product",
+          "items.productName",
+          "items.option",
+          "items.price",
+          "items.quantity",
+          "subtotal",
+          "discount",
+          "total"
+        ]
+      },
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "x2ke6r7q479cyh3mq9qbgyph",
+      "action": "plugin::content-manager.explorer.update",
+      "actionParameters": {},
+      "subject": "api::order.order",
+      "properties": {
+        "fields": [
+          "orderNo",
+          "status",
+          "customerName",
+          "phone",
+          "viber",
+          "telegram",
+          "shipping",
+          "city",
+          "branch",
+          "street",
+          "comment",
+          "payment",
+          "veteran",
+          "items.product",
+          "items.productName",
+          "items.option",
+          "items.price",
+          "items.quantity",
+          "subtotal",
+          "discount",
+          "total"
+        ]
+      },
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "jme1tlr8izowykc8viraoefj",
+      "action": "plugin::content-manager.explorer.create",
+      "actionParameters": {},
+      "subject": "api::product.product",
+      "properties": {
+        "fields": [
+          "name",
+          "slug",
+          "subcategory",
+          "subSubcategory",
+          "brand",
+          "oldPrice",
+          "badge",
+          "badgeColor",
+          "rating",
+          "popularity",
+          "recommended",
+          "kasaCode",
+          "description",
+          "images",
+          "specs.label",
+          "specs.value",
+          "options.text"
+        ],
+        "locales": [
+          "uk"
+        ]
+      },
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "muv2qq34uimllfd0zum28vuu",
+      "action": "plugin::content-manager.explorer.delete",
+      "actionParameters": {},
+      "subject": "api::product.product",
+      "properties": {
+        "locales": [
+          "uk"
+        ]
+      },
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "atuim6pr526ynq6ehef53s7y",
+      "action": "plugin::content-manager.explorer.publish",
+      "actionParameters": {},
+      "subject": "api::product.product",
+      "properties": {
+        "locales": [
+          "uk"
+        ]
+      },
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "b5wzjd1q3sodrw0za1fy3s54",
+      "action": "plugin::content-manager.explorer.read",
+      "actionParameters": {},
+      "subject": "api::product.product",
+      "properties": {
+        "fields": [
+          "name",
+          "slug",
+          "subcategory",
+          "subSubcategory",
+          "brand",
+          "oldPrice",
+          "badge",
+          "badgeColor",
+          "rating",
+          "popularity",
+          "recommended",
+          "kasaCode",
+          "description",
+          "images",
+          "specs.label",
+          "specs.value",
+          "options.text"
+        ],
+        "locales": [
+          "uk"
+        ]
+      },
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "pb0rhsavrwr9jf73rwmxvhkv",
+      "action": "plugin::content-manager.explorer.update",
+      "actionParameters": {},
+      "subject": "api::product.product",
+      "properties": {
+        "fields": [
+          "name",
+          "slug",
+          "subcategory",
+          "subSubcategory",
+          "brand",
+          "oldPrice",
+          "badge",
+          "badgeColor",
+          "rating",
+          "popularity",
+          "recommended",
+          "kasaCode",
+          "description",
+          "images",
+          "specs.label",
+          "specs.value",
+          "options.text"
+        ],
+        "locales": [
+          "uk"
+        ]
+      },
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "i0x06dnbgg62kht1ll1o5j4c",
+      "action": "plugin::content-manager.explorer.create",
+      "actionParameters": {},
+      "subject": "api::sub-subcategory.sub-subcategory",
+      "properties": {
+        "fields": [
+          "name",
+          "slug",
+          "image",
+          "order",
+          "subcategory",
+          "products"
+        ],
+        "locales": [
+          "uk"
+        ]
+      },
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "wp86uimsew5lbq1rq4s7ytyl",
+      "action": "plugin::content-manager.explorer.delete",
+      "actionParameters": {},
+      "subject": "api::sub-subcategory.sub-subcategory",
+      "properties": {
+        "locales": [
+          "uk"
+        ]
+      },
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "qz7p2tfsxups3k2lk2u107yl",
+      "action": "plugin::content-manager.explorer.publish",
+      "actionParameters": {},
+      "subject": "api::sub-subcategory.sub-subcategory",
+      "properties": {
+        "locales": [
+          "uk"
+        ]
+      },
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "jyckwcfg37qcevixtdd0gqlw",
+      "action": "plugin::content-manager.explorer.read",
+      "actionParameters": {},
+      "subject": "api::sub-subcategory.sub-subcategory",
+      "properties": {
+        "fields": [
+          "name",
+          "slug",
+          "image",
+          "order",
+          "subcategory",
+          "products"
+        ],
+        "locales": [
+          "uk"
+        ]
+      },
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "vup4yvscehfyfo2chwyyxel3",
+      "action": "plugin::content-manager.explorer.update",
+      "actionParameters": {},
+      "subject": "api::sub-subcategory.sub-subcategory",
+      "properties": {
+        "fields": [
+          "name",
+          "slug",
+          "image",
+          "order",
+          "subcategory",
+          "products"
+        ],
+        "locales": [
+          "uk"
+        ]
+      },
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "grtzts5koov57tj121ucqj4t",
+      "action": "plugin::content-manager.explorer.create",
+      "actionParameters": {},
+      "subject": "api::subcategory.subcategory",
+      "properties": {
+        "fields": [
+          "name",
+          "slug",
+          "image",
+          "order",
+          "category",
+          "alsoBought",
+          "products",
+          "subSubcategories"
+        ],
+        "locales": [
+          "uk"
+        ]
+      },
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "x6b2kkkk5k0yj7ec5bsbf615",
+      "action": "plugin::content-manager.explorer.delete",
+      "actionParameters": {},
+      "subject": "api::subcategory.subcategory",
+      "properties": {
+        "locales": [
+          "uk"
+        ]
+      },
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "plocb60qpomub06noof1lip5",
+      "action": "plugin::content-manager.explorer.publish",
+      "actionParameters": {},
+      "subject": "api::subcategory.subcategory",
+      "properties": {
+        "locales": [
+          "uk"
+        ]
+      },
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "e4bcso5hbd0fhnmh9jues9xd",
+      "action": "plugin::content-manager.explorer.read",
+      "actionParameters": {},
+      "subject": "api::subcategory.subcategory",
+      "properties": {
+        "fields": [
+          "name",
+          "slug",
+          "image",
+          "order",
+          "category",
+          "alsoBought",
+          "products",
+          "subSubcategories"
+        ],
+        "locales": [
+          "uk"
+        ]
+      },
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "k9yo3hkbe3q4ocktm14vlla2",
+      "action": "plugin::content-manager.explorer.update",
+      "actionParameters": {},
+      "subject": "api::subcategory.subcategory",
+      "properties": {
+        "fields": [
+          "name",
+          "slug",
+          "image",
+          "order",
+          "category",
+          "alsoBought",
+          "products",
+          "subSubcategories"
+        ],
+        "locales": [
+          "uk"
+        ]
+      },
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "ch02airsa62wil3af0os563p",
+      "action": "plugin::upload.assets.create",
+      "actionParameters": {},
+      "subject": null,
+      "properties": {},
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "nagnza1aazt53cfk3bymenk2",
+      "action": "plugin::upload.assets.update",
+      "actionParameters": {},
+      "subject": null,
+      "properties": {},
+      "conditions": [],
+      "locale": null
+    },
+    {
+      "documentId": "dhp65uh7suupgnvdbctnsv72",
+      "action": "plugin::upload.read",
+      "actionParameters": {},
+      "subject": null,
+      "properties": {},
+      "conditions": [],
+      "locale": null
+    }
+  ]
+}

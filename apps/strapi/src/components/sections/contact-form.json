@@ -1,7 +1,7 @@
 {
   "collectionName": "components_sections_contact_forms",
   "info": {
-    "displayName": "ContactForm",
+    "displayName": "Форма зв'язку",
     "description": "\"Write to us\" form. Sending is off until the Telegram bot is wired up — flip `enabled` then."
   },
   "options": {},

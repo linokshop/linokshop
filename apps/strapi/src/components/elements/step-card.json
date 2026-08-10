@@ -1,7 +1,7 @@
 {
   "collectionName": "components_elements_step_cards",
   "info": {
-    "displayName": "StepCard",
+    "displayName": "Картка кроку",
     "description": "A single numbered step: number, title and text."
   },
   "options": {},

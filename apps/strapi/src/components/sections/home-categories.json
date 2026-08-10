@@ -1,7 +1,7 @@
 {
   "collectionName": "components_sections_home_categories",
   "info": {
-    "displayName": "HomeCategories",
+    "displayName": "Категорії на головній",
     "description": "Homepage category grid. Tiles are read from the Category collection — item counts are computed, not typed in."
   },
   "options": {},

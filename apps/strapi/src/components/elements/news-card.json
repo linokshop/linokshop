@@ -1,7 +1,7 @@
 {
   "collectionName": "components_elements_news_cards",
   "info": {
-    "displayName": "NewsCard",
+    "displayName": "Картка новини",
     "description": "A horizontal news item: image, date, title, text and link."
   },
   "options": {},

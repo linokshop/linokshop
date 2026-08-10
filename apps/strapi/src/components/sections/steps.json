@@ -1,7 +1,7 @@
 {
   "collectionName": "components_sections_steps",
   "info": {
-    "displayName": "Steps",
+    "displayName": "Кроки",
     "description": "Numbered steps section (e.g. how it works)."
   },
   "options": {},

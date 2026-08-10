@@ -1,7 +1,7 @@
 {
   "collectionName": "components_elements_stats",
   "info": {
-    "displayName": "Stat",
+    "displayName": "Цифра/факт",
     "description": "A single figure: value and its label (\"8 років\" / \"на ринку\")."
   },
   "options": {},

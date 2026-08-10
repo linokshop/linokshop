@@ -1,7 +1,7 @@
 {
   "collectionName": "components_elements_contact_items",
   "info": {
-    "displayName": "ContactItem",
+    "displayName": "Контактний рядок",
     "description": "One contact line: label, value and an optional note (\"Без вихідних\")."
   },
   "options": {},

@@ -1529,17 +1529,17 @@ export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
       Schema.Attribute.Required
     status: Schema.Attribute.Enumeration<
       [
-        "created",
-        "no_answer",
-        "confirmed",
-        "paid",
-        "shipped",
-        "completed",
-        "cancelled",
+        "Створено",
+        "Не відповідає",
+        "Підтверджено",
+        "Оплачено",
+        "Відправлено",
+        "Завершено",
+        "Скасовано",
       ]
     > &
       Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<"created">
+      Schema.Attribute.DefaultTo<"Створено">
     street: Schema.Attribute.String
     subtotal: Schema.Attribute.Decimal & Schema.Attribute.Required
     telegram: Schema.Attribute.String

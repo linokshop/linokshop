@@ -1,7 +1,7 @@
 {
   "collectionName": "components_sections_catalogs",
   "info": {
-    "displayName": "Catalog",
+    "displayName": "Каталог",
     "description": "The catalog: filter sidebar + product grid. Products, categories and brands are read from their collections — this component only carries the copy and the page size."
   },
   "options": {},

@@ -1,7 +1,7 @@
 {
   "collectionName": "components_sections_stories",
   "info": {
-    "displayName": "Story",
+    "displayName": "Історія/блок з фото",
     "description": "Photo beside a text column, with optional figures underneath."
   },
   "options": {},
