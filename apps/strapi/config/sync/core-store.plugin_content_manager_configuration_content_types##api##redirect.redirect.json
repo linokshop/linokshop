@@ -36,7 +36,7 @@
       "destination": {
         "edit": {
           "label": "Нова адреса",
-          "description": "URL, куди перенаправити (якщо не обрано сторінку нижче).",
+          "description": "URL, куди перенаправити відвідувача, напр. /nova-storinka.",
           "placeholder": "",
           "visible": true,
           "editable": true
